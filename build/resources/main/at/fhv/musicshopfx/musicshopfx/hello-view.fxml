@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <TextField id="musicSearchTextField" layoutX="76.0" layoutY="67.0" prefHeight="25.0" prefWidth="399.0" promptText="Song Title..." />
+        <Button id="musicSearchButton" layoutX="488.0" layoutY="67.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Search" />
+        <TableView layoutX="76.0" layoutY="106.0" prefHeight="373.0" prefWidth="707.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+            </columns>
+        </TableView>
+      <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
+         <children>
+            <VBox layoutY="90.0" prefHeight="200.0" prefWidth="60.0" AnchorPane.topAnchor="20.0" />
+         </children></AnchorPane>
+    </children>
+</AnchorPane>
