@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sharedrmi">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/sharedrmi.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
