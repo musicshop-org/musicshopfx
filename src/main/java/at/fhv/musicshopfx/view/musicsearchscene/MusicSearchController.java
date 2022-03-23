@@ -1,4 +1,4 @@
-package at.fhv.musicshopfx.musicshopfx;
+package at.fhv.musicshopfx.view.musicsearchscene;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,42 +9,34 @@ import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
 
 
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.time.LocalDate;
 import java.util.List;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+public class MusicSearchController {
+
     @FXML
     private Button musicSearchButton;
 
     @FXML
     private TextField musicSearchTextField;
 
-//    @FXML
-//    private TableView musicSearchResultTableView;
-
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-
-    @FXML private TableView<AlbumDTO> musicSearchResultTableView;
-    @FXML private TableColumn<AlbumDTO, String> albumTitleCol;
-    @FXML private TableColumn<AlbumDTO, String> releaseDateCol;
-    @FXML private TableColumn<AlbumDTO, String> mediumTypeCol;
-    @FXML private TableColumn<AlbumDTO, String> priceCol;
+    private TableView<AlbumDTO> musicSearchResultTableView;
+    @FXML
+    private TableColumn<AlbumDTO, String> albumTitleCol;
+    @FXML
+    private TableColumn<AlbumDTO, String> releaseDateCol;
+    @FXML
+    private TableColumn<AlbumDTO, String> mediumTypeCol;
+    @FXML
+    private TableColumn<AlbumDTO, String> priceCol;
 
 
     @FXML
-    protected void onMusicSearchButtonClick(){
-
+    protected void onMusicSearchButtonClick() {
 
         //TODO: only call Naming.lookup at startup and add error handling
         try {
@@ -60,11 +52,7 @@ public class HelloController {
             priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
             musicSearchResultTableView.setItems(albumDTO);
 
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
 
