@@ -1,14 +1,21 @@
-package at.fhv.musicshopfx.view.musicsearchscene;
+package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
 
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -24,6 +31,9 @@ public class MusicSearchController {
     private TextField musicSearchTextField;
 
     @FXML
+    private Button switchSceneButton;
+
+    @FXML
     private TableView<AlbumDTO> musicSearchResultTableView;
     @FXML
     private TableColumn<AlbumDTO, String> albumTitleCol;
@@ -34,6 +44,9 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     protected void onMusicSearchButtonClick() {
@@ -55,6 +68,16 @@ public class MusicSearchController {
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @FXML
+    protected void switchSceneButtonClick(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("productOverview-view.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
 
     }
 
