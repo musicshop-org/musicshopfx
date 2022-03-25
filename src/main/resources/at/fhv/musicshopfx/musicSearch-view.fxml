@@ -60,6 +60,5 @@
                 </VBox>
             </children>
         </AnchorPane>
-        <Button fx:id="switchSceneButton" layoutX="606.0" layoutY="67.0" mnemonicParsing="false" onAction="#switchSceneButtonClick" text="Switch scene" />
     </children>
 </AnchorPane>
