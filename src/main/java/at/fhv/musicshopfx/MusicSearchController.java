@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
@@ -44,9 +45,11 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
 
+
     private Stage stage;
     private Scene scene;
     private Parent root;
+
 
     @FXML
     protected void onMusicSearchButtonClick() {
@@ -69,15 +72,51 @@ public class MusicSearchController {
             e.printStackTrace();
         }
 
+
+    }
+
+
+    @FXML
+    protected void musicSearchResultTableViewMouseClick(MouseEvent e) throws IOException {
+
+        if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+            AlbumDTO albumDTO = musicSearchResultTableView.getSelectionModel().getSelectedItem();
+
+
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("productOverview-view.fxml"));
+//
+//            root = loader.load();
+//            MusicOverviewController musicOverviewController = loader.getController();
+//
+//            musicOverviewController.setData(albumDTO);
+
+
+            switchScene("productOverview-view.fxml", e, albumDTO);
+//            loadProductOverviewScene(musicSearchResultTableView.getSelectionModel().getSelectedItem());
+
+        }
+    }
+
+    private void loadProductOverviewScene(AlbumDTO albumDTO) {
+
+
+    }
+
+    private void switchScene(String fxml, MouseEvent event, AlbumDTO albumDTO) throws IOException {
+        //FXMLLoader loader = FXMLLoader.load(getClass().getResource(fxml));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+        MusicOverviewController musicOverviewController = loader.getController();
+        musicOverviewController.setData(albumDTO);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
     protected void switchSceneButtonClick(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("productOverview-view.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
 
     }
 
