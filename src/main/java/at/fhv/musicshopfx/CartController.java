@@ -14,28 +14,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javax.imageio.ImageIO;
-import sharedrmi.application.api.ProductService;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
-import sharedrmi.application.dto.ShoppingCartDTO;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
+import sharedrmi.domain.enums.MediumType;
+import sharedrmi.domain.valueobjects.AlbumId;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CartController {
 
     @FXML
-    private TableView cartView;
+    private TableView<CartLineItem> cartView;
     @FXML
     private TableColumn<AlbumDTO, String> albumTitleCol;
     @FXML
@@ -50,8 +43,6 @@ public class CartController {
     private TableColumn<AlbumDTO, Image> xCol;
     @FXML
     private Label totalLabel;
-
-    private final ObservableList<ImageWrapper> data = FXCollections.observableArrayList();
 
     private Stage stage;
     private Scene scene;
@@ -71,18 +62,61 @@ public class CartController {
 //            e.printStackTrace();
 //        }
 
-        File file = new File("cross.png");
-        Image image = new Image(file.toURI().toString());
-        ImageView xImage = new ImageView(image);
-        ImageWrapper imageWrapper = new ImageWrapper(xImage);
+        // test data
+        List<AlbumDTO> albumDTOs = new ArrayList<>();
+        AlbumDTO dto = new AlbumDTO("song1", BigDecimal.ONE, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str", null);
+        AlbumDTO dto2 = new AlbumDTO("song2", BigDecimal.TEN, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str2", null);
+        AlbumDTO dto3 = new AlbumDTO("song3", BigDecimal.valueOf(20), 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str3", null);
+        albumDTOs.add(dto);
+        albumDTOs.add(dto2);
+        albumDTOs.add(dto3);
+
+
+        List<CartLineItem> cartLineItemList = new ArrayList<>();
+        String imagePath = "src/main/resources/at/fhv/musicshopfx/images/cross.png";
+
+        for (AlbumDTO singleDTO : albumDTOs)
+        {
+            cartLineItemList.add(new CartLineItem(singleDTO.getTitle(),
+                                                  "Artist",
+                                                  singleDTO.getMediumType(),
+                                                  1,
+                                                  singleDTO.getPrice(),
+                                                  getImageView(imagePath, 20, 20)
+            ));
+        }
+
+        ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
 
         xCol.setCellValueFactory(new PropertyValueFactory<>("image"));
+        albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
 
-        data.add(imageWrapper);
+        cartView.setItems(obsDTOs);
+    }
 
-        cartView.setItems(data);
+    private ImageView getImageView(String imagePath, int height, int width) throws FileNotFoundException {
+        FileInputStream inpStr = new FileInputStream(imagePath);
+        Image image = new Image(inpStr);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
 
+        return imageView;
+    }
 
+    @FXML
+    protected void cartViewClicked(MouseEvent e) {
+
+        if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+            CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
+            int idx = cartView.getSelectionModel().getSelectedIndex();
+
+            System.out.println(cartLineItem.getTitle() + " " + idx);
+        }
     }
 
     @FXML

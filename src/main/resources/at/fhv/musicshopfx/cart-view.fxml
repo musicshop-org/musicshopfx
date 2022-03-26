@@ -24,14 +24,14 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" layoutX="103.0" layoutY="73.0" prefHeight="337.0" prefWidth="595.0">
+        <TableView fx:id="cartView" layoutX="103.0" layoutY="73.0" onMouseClicked="#cartViewClicked" onMousePressed="#cartViewClicked" prefHeight="337.0" prefWidth="556.0">
             <columns>
                 <TableColumn fx:id="albumTitleCol" editable="false" prefWidth="130.66663360595703" text="Album Title" />
                 <TableColumn fx:id="artistCol" editable="false" prefWidth="134.6666717529297" text="Artist" />
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="92.666748046875" text="Medium" />
                 <TableColumn fx:id="quantityCol" prefWidth="88.66677856445312" text="Quanitity" />
             <TableColumn fx:id="priceCol" editable="false" prefWidth="69.99993896484375" text="Price" />
-            <TableColumn prefWidth="75.0" fx:id="xCol" />
+            <TableColumn prefWidth="34.6666259765625" fx:id="xCol" />
             </columns>
         </TableView>
         <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
@@ -65,15 +65,15 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Label fx:id="totalLabel" layoutX="638.0" layoutY="414.0" prefHeight="18.0" prefWidth="60.0" text="0 €">
+      <Label fx:id="totalLabel" layoutX="599.0" layoutY="420.0" prefHeight="18.0" prefWidth="60.0" text="0 €">
          <font>
             <Font size="13.0" />
          </font></Label>
-      <Label layoutX="582.0" layoutY="414.0" prefHeight="18.0" prefWidth="38.0" text="Total:">
+      <Label layoutX="543.0" layoutY="420.0" prefHeight="18.0" prefWidth="38.0" text="Total:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="buyButton" layoutX="579.0" layoutY="439.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" />
+      <Button fx:id="buyButton" layoutX="540.0" layoutY="445.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" />
     </children>
 </AnchorPane>
