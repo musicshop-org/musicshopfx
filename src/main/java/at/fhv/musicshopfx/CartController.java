@@ -3,6 +3,7 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -39,4 +40,28 @@ public class CartController {
     private TableColumn<AlbumDTO, String> quantityCol;
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
+
+    @FXML
+    protected void searchSymbolMouseClicked(MouseEvent e) throws IOException {
+        switchScene("musicSearch-view.fxml", e);
+    }
+
+    @FXML
+    protected void cartSymbolMouseClicked(MouseEvent e) throws IOException {
+        switchScene("cart-view.fxml", e);
+    }
+
+    private void switchScene(String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

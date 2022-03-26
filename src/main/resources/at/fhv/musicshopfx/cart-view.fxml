@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.CartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.CartController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -37,7 +37,7 @@
                 <Line endX="62.0" startX="62.0" startY="460.0" stroke="#9a9a9a" strokeWidth="0.5" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="61.5" AnchorPane.topAnchor="-0.5" />
                 <VBox layoutY="90.0" prefHeight="435.0" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#searchSymbolMouseClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@images/search.png" />
                             </image>
@@ -48,12 +48,12 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolMouseClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="13.0" top="15.0" />
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />

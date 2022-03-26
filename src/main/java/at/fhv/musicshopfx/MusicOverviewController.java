@@ -3,16 +3,24 @@ package at.fhv.musicshopfx;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +46,10 @@ public class MusicOverviewController {
     private TableColumn genreCol;
     @FXML
     private TableColumn artistCol;
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
 
     public void setData(AlbumDTO albumDTO){
@@ -74,5 +86,22 @@ public class MusicOverviewController {
 
     }
 
+    @FXML
+    protected void searchSymbolMouseClicked(MouseEvent e) throws IOException {
+        switchScene("musicSearch-view.fxml", e);
+    }
 
+    @FXML
+    protected void cartSymbolMouseClicked(MouseEvent e) throws IOException {
+        switchScene("cart-view.fxml", e);
+    }
+
+    private void switchScene(String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
