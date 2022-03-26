@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
@@ -97,6 +98,13 @@ public class MusicSearchController {
         }
     }
 
+    @FXML
+    protected void cartSymbolMouseClicked(MouseEvent e) throws IOException {
+        System.out.println("cart clicked!");
+
+        switchScene("cart-view.fxml");
+    }
+
     private void loadProductOverviewScene(AlbumDTO albumDTO) {
 
 
@@ -107,8 +115,19 @@ public class MusicSearchController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         root = loader.load();
         MusicOverviewController musicOverviewController = loader.getController();
+
         musicOverviewController.setData(albumDTO);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void switchScene(String fxml) throws IOException {
+        //FXMLLoader loader = FXMLLoader.load(getClass().getResource(fxml));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+        MusicOverviewController musicOverviewController = loader.getController();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
