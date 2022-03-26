@@ -1,5 +1,7 @@
 package at.fhv.musicshopfx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,16 +9,33 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import sharedrmi.application.api.ProductService;
+import sharedrmi.application.api.ShoppingCartService;
+import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.application.dto.ShoppingCartDTO;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.UUID;
 
 public class CartController {
 
     @FXML
-    private TableView<AlbumDTO> cartView;
+    private TableView cartView;
     @FXML
     private TableColumn<AlbumDTO, String> albumTitleCol;
     @FXML
@@ -28,17 +47,40 @@ public class CartController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
     @FXML
-    private TableColumn<AlbumDTO, String> xCol;
+    private TableColumn<AlbumDTO, Image> xCol;
     @FXML
     private Label totalLabel;
+
+    private final ObservableList<ImageWrapper> data = FXCollections.observableArrayList();
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    public void setData() {
+    public void setData() throws IOException {
         totalLabel.setText("15 €");
         System.out.println("Data set!");
+
+        // TODO: Implement after adding to Shopping Cart is implemented!
+//        try {
+//            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
+//            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(UUID.randomUUID());
+//            ShoppingCartDTO shoppingCart = shoppingCartService.displayCart();
+//
+//        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+        xCol.setCellValueFactory(new PropertyValueFactory<>("image"));
+
+        ImageView xImage = new ImageView(new Image(this.getClass().getResourceAsStream("cross.png")));
+        ImageWrapper imageWrapper = new ImageWrapper(xImage);
+
+        data.add(imageWrapper);
+
+        cartView.setItems(data);
+
+
     }
 
     @FXML

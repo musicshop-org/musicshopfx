@@ -69,7 +69,6 @@ public class MusicSearchController {
 
     }
 
-
     @FXML
     protected void musicSearchResultTableViewMouseClick(MouseEvent e) throws IOException {
 

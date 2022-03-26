@@ -2,6 +2,7 @@ module at.fhv.musicshopfx {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
+    requires java.desktop;
     // requires sharedrmi;
 
     opens at.fhv.musicshopfx to javafx.fxml;
