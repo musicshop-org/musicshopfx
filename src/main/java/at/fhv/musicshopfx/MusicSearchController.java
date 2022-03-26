@@ -58,7 +58,7 @@ public class MusicSearchController {
         try {
             ProductService productService = (ProductService) Naming.lookup("rmi://localhost/ProductService");
 
-            List<AlbumDTO> albums = productService.findAlbumsByTitle(musicSearchTextField.getText());
+            List<AlbumDTO> albums = productService.findAlbumsBySongTitle(musicSearchTextField.getText());
 
             ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
 

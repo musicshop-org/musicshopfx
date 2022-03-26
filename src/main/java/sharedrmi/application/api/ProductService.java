@@ -13,7 +13,7 @@ import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 
 public interface ProductService extends Remote {
-    List<AlbumDTO> findAlbumsByTitle(String var1) throws RemoteException;
+    List<AlbumDTO> findAlbumsBySongTitle(String var1) throws RemoteException;
 
     List<SongDTO> findSongsByTitle(String var1) throws RemoteException;
 
