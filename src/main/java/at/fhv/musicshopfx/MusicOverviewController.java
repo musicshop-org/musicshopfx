@@ -87,18 +87,31 @@ public class MusicOverviewController {
     }
 
     @FXML
-    protected void searchSymbolMouseClicked(MouseEvent e) throws IOException {
+    protected void searchSymbolClicked(MouseEvent e) throws IOException {
         switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
-    protected void cartSymbolMouseClicked(MouseEvent e) throws IOException {
-        switchScene("cart-view.fxml", e);
+    protected void cartSymbolClicked(MouseEvent e) throws IOException {
+        switchSceneToCartView("cart-view.fxml", e);
     }
 
     private void switchScene(String fxml, Event event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         root = loader.load();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void switchSceneToCartView(String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+
+        CartController cartController = loader.getController();
+        cartController.setData();
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
