@@ -65,35 +65,25 @@ public class MusicOverviewController {
         ArtistDTO artist = artists.get(0);
         artistTextField.setText(artist.getName());
 
-//        while (iter.hasNext())
-//        {
-//            List<ArtistDTO> artists = iter.next().getArtists();
-//            for(ArtistDTO a : artists)
-//            {
-//                System.out.println(a.getName());
-//            }
-//        }
-
         ObservableList<SongDTO> songDTOs = FXCollections.observableArrayList(songs);
 
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         genreCol.setCellValueFactory(new PropertyValueFactory<>("genre"));
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artists"));
 
-
         songsTableView.setItems(songDTOs);
-
-
     }
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        switchScene("musicSearch-view.fxml", e);
+        if (e.isPrimaryButtonDown())
+            switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        switchSceneToCartView("cart-view.fxml", e);
+        if (e.isPrimaryButtonDown())
+            switchSceneToCartView("cart-view.fxml", e);
     }
 
     private void switchScene(String fxml, Event event) throws IOException {

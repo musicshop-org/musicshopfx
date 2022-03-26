@@ -15,4 +15,6 @@ module at.fhv.musicshopfx {
 
     //exports at.fhv.musicshopfx.view.musicsearchscene to javafx.fxml;
     exports at.fhv.musicshopfx;
+    exports sharedrmi.domain;
+    opens sharedrmi.domain to javafx.fxml;
 }

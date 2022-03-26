@@ -1,4 +1,4 @@
-package at.fhv.musicshopfx;
+package sharedrmi.domain;
 
 import javafx.scene.image.ImageView;
 import sharedrmi.domain.enums.MediumType;
@@ -14,6 +14,7 @@ public class CartLineItem {
     private BigDecimal price;
     private ImageView image;
 
+
     public CartLineItem(String title, String artist, MediumType medium, int quantity, BigDecimal price, ImageView image) {
         this.title = title;
         this.artist = artist;
@@ -22,6 +23,7 @@ public class CartLineItem {
         this.price = price;
         this.image = image;
     }
+
 
     public String getTitle() {
         return title;

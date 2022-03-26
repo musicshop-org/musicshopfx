@@ -2,7 +2,6 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +28,7 @@ public class MusicSearchController {
     @FXML
     private TextField musicSearchTextField;
     @FXML
-    private TableView<AlbumDTO> musicSearchResultTableView;
+    private TableView<AlbumDTO> musicView;
     @FXML
     private TableColumn<AlbumDTO, String> albumTitleCol;
     @FXML
@@ -39,14 +38,13 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
 
-
     private Stage stage;
     private Scene scene;
     private Parent root;
 
 
     @FXML
-    protected void onMusicSearchButtonClick() {
+    protected void MusicSearchButtonClicked() {
 
         //TODO: only call Naming.lookup at startup and add error handling
         try {
@@ -60,20 +58,17 @@ public class MusicSearchController {
             releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
             mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
             priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-            musicSearchResultTableView.setItems(albumDTO);
+            musicView.setItems(albumDTO);
 
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @FXML
-    protected void musicSearchResultTableViewMouseClick(MouseEvent e) throws IOException {
-
+    protected void musicViewClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
-            AlbumDTO albumDTO = musicSearchResultTableView.getSelectionModel().getSelectedItem();
+            AlbumDTO albumDTO = musicView.getSelectionModel().getSelectedItem();
 
             switchSceneToProductOverview("productOverview-view.fxml", e, albumDTO);
         }
@@ -81,11 +76,13 @@ public class MusicSearchController {
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        switchScene("musicSearch-view.fxml", e);
+        if (e.isPrimaryButtonDown())
+            switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
             switchSceneToCartView("cart-view.fxml", e);
     }
 

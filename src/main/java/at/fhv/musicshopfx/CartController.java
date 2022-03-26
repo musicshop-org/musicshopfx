@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.domain.CartLineItem;
 import sharedrmi.domain.enums.MediumType;
 import sharedrmi.domain.valueobjects.AlbumId;
 import java.io.FileInputStream;
@@ -30,17 +31,17 @@ public class CartController {
     @FXML
     private TableView<CartLineItem> cartView;
     @FXML
-    private TableColumn<AlbumDTO, String> albumTitleCol;
+    private TableColumn<CartLineItem, String> albumTitleCol;
     @FXML
-    private TableColumn<AlbumDTO, String> artistCol;
+    private TableColumn<CartLineItem, String> artistCol;
     @FXML
-    private TableColumn<AlbumDTO, String> mediumTypeCol;
+    private TableColumn<CartLineItem, String> mediumTypeCol;
     @FXML
-    private TableColumn<AlbumDTO, String> quantityCol;
+    private TableColumn<CartLineItem, String> quantityCol;
     @FXML
-    private TableColumn<AlbumDTO, String> priceCol;
+    private TableColumn<CartLineItem, String> priceCol;
     @FXML
-    private TableColumn<AlbumDTO, Image> xCol;
+    private TableColumn<CartLineItem, Image> xCol;
     @FXML
     private Label totalLabel;
 
@@ -126,12 +127,14 @@ public class CartController {
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        switchScene("musicSearch-view.fxml", e);
+        if (e.isPrimaryButtonDown())
+            switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        switchSceneToCartView("cart-view.fxml", e);
+        if (e.isPrimaryButtonDown())
+            switchSceneToCartView("cart-view.fxml", e);
     }
 
     private void switchScene(String fxml, Event event) throws IOException {
