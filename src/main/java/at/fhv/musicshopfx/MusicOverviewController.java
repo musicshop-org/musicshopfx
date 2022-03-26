@@ -58,7 +58,6 @@ public class MusicOverviewController {
 //            List<ArtistDTO> artists = iter.next().getArtists();
 //            for(ArtistDTO a : artists)
 //            {
-//                if (null != a)
 //                System.out.println(a.getName());
 //            }
 //        }
