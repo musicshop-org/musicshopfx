@@ -71,10 +71,12 @@ public class CartController {
 //            e.printStackTrace();
 //        }
 
-        xCol.setCellValueFactory(new PropertyValueFactory<>("image"));
-
-        ImageView xImage = new ImageView(new Image(this.getClass().getResourceAsStream("cross.png")));
+        File file = new File("cross.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView xImage = new ImageView(image);
         ImageWrapper imageWrapper = new ImageWrapper(xImage);
+
+        xCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
         data.add(imageWrapper);
 
