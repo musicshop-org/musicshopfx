@@ -23,8 +23,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CartController {
@@ -46,7 +48,7 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> xCol;
     @FXML
-    private Label totalLabel;
+    private Label totalPriceLabel;
 
     private ObservableList<CartLineItem> data;
     private final int MINUS_COLUMN_POSITION = 2;
@@ -58,13 +60,14 @@ public class CartController {
     private final String PLUS_PATH = BASE_IMAGE_PATH + "plus.png";
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
+    private final String CURRENCY = "€";
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
     public void setData() throws IOException {
 
-        totalLabel.setText("15 €");
         System.out.println("Data set!");
 
         // TODO: Implement after adding to Shopping Cart is implemented!
@@ -87,11 +90,11 @@ public class CartController {
         lineItemDTOS.add(dto3);
 
         // translate List<LineItemDTO> to List<CartLineItem>
-        List<CartLineItem> cartLineItemList = new ArrayList<>();
+        List<CartLineItem> cartLineItems = new ArrayList<>();
 
         for (LineItemDTO lineItemDTO : lineItemDTOS)
         {
-            cartLineItemList.add(new CartLineItem(lineItemDTO.getName(),
+            cartLineItems.add(new CartLineItem(lineItemDTO.getName(),
                                                   lineItemDTO.getMediumType(),
                                                   lineItemDTO.getQuantity(),
                                                   lineItemDTO.getPrice(),
@@ -102,8 +105,13 @@ public class CartController {
             ));
         }
 
+        // calculate and set total price
+        double totalPrice = calculateTotalPrice(cartLineItems);
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+
         // prepare UI table
-        ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
+        ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItems);
 
         productCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
@@ -121,14 +129,43 @@ public class CartController {
     }
 
     // get ImageView for UI table
-    private ImageView getImageView(String imagePath, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(imagePath);
+    private ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
+        FileInputStream inpStr = new FileInputStream(pathToImage);
         Image image = new Image(inpStr);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(height);
         imageView.setFitWidth(width);
 
         return imageView;
+    }
+
+    private double calculateTotalPrice(List<CartLineItem> cartLineItems)
+    {
+        double totalPrice = 0;
+
+        for (CartLineItem cartLineItem : cartLineItems)
+        {
+            double price = cartLineItem.getPrice().doubleValue();
+            int quantity = cartLineItem.getQuantity();
+            totalPrice += Double.valueOf(price) * quantity;
+        }
+
+        return totalPrice;
+    }
+
+    private double calculateTotalPrice(Iterator<CartLineItem> iter)
+    {
+        double totalPrice = 0;
+
+        while (iter.hasNext())
+        {
+            CartLineItem cartLineItem = iter.next();
+            double price = cartLineItem.getPrice().doubleValue();
+            int quantity = cartLineItem.getQuantity();
+            totalPrice += price * quantity;
+        }
+
+        return totalPrice;
     }
 
     @FXML
@@ -152,25 +189,20 @@ public class CartController {
 
             // minus clicked
             if (selectedColIdx == MINUS_COLUMN_POSITION){
-
                 if (cartLineItem.getQuantity() == 1)
-                {
                     data.remove(selectedRowIdx);
-                    cartView.getSelectionModel().clearSelection();
-                    System.out.println("row removed!");
-                    return;
+                else
+                {
+                    data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                            cartLineItem.getMedium(),
+                            cartLineItem.getQuantity() - 1,
+                            cartLineItem.getPrice(),
+                            cartLineItem.getMinus_image(),
+                            cartLineItem.getPlus_image(),
+                            cartLineItem.getX_image(),
+                            cartLineItem.getLineItemDTO()
+                    ));
                 }
-
-                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
-                                                          cartLineItem.getMedium(),
-                                                   cartLineItem.getQuantity() - 1,
-                                                          cartLineItem.getPrice(),
-                                                          cartLineItem.getMinus_image(),
-                                                          cartLineItem.getPlus_image(),
-                                                          cartLineItem.getX_image(),
-                                                          cartLineItem.getLineItemDTO()
-                                                   ));
-                System.out.println("quantity decremented!");
             }
 
             // plus clicked
@@ -193,7 +225,11 @@ public class CartController {
                 System.out.println("row removed!");
             }
 
-           cartView.getSelectionModel().clearSelection();
+            double totalPrice = calculateTotalPrice(data.iterator());
+            DecimalFormat df = new DecimalFormat("#.00");
+            totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+
+            cartView.getSelectionModel().clearSelection();
         }
     }
 
