@@ -24,12 +24,14 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" editable="true" layoutX="103.0" layoutY="73.0" onMousePressed="#cartViewClicked" prefHeight="337.0" prefWidth="561.0">
+        <TableView fx:id="cartView" editable="true" layoutX="103.0" layoutY="73.0" onMousePressed="#cartViewClicked" prefHeight="337.0" prefWidth="620.0">
             <columns>
                 <TableColumn fx:id="albumTitleCol" editable="false" prefWidth="130.66663360595703" text="Album Title" />
                 <TableColumn fx:id="artistCol" editable="false" prefWidth="134.6666717529297" text="Artist" />
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="92.666748046875" text="Medium" />
+            <TableColumn fx:id="minusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                 <TableColumn fx:id="quantityCol" prefWidth="88.66677856445312" text="Quanitity" />
+            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
             <TableColumn fx:id="priceCol" editable="false" prefWidth="80.00006103515625" text="Price" />
             <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" fx:id="xCol" />
             </columns>

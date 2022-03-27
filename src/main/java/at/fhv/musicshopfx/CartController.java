@@ -41,6 +41,10 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> priceCol;
     @FXML
+    private TableColumn<CartLineItem, String> plusCol;
+    @FXML
+    private TableColumn<CartLineItem, String> minusCol;
+    @FXML
     private TableColumn<CartLineItem, String> xCol;
     @FXML
     private Label totalLabel;
@@ -75,23 +79,30 @@ public class CartController {
         albumDTOs.add(dto3);
 
 
+        final String minusImagePath = "src/main/resources/at/fhv/musicshopfx/images/minus.png";
+        final String plusImagePath = "src/main/resources/at/fhv/musicshopfx/images/plus.png";
+        final String crossImagePath = "src/main/resources/at/fhv/musicshopfx/images/cross.png";
+
         List<CartLineItem> cartLineItemList = new ArrayList<>();
-        String imagePath = "src/main/resources/at/fhv/musicshopfx/images/cross.png";
 
         for (AlbumDTO singleDTO : albumDTOs)
         {
             cartLineItemList.add(new CartLineItem(singleDTO.getTitle(),
                                                   "Artist",
                                                   singleDTO.getMediumType(),
+                                                  getImageView(minusImagePath, 15, 15),
                                                   1,
+                                                  getImageView(plusImagePath, 15, 15),
                                                   singleDTO.getPrice(),
-                                                  getImageView(imagePath, 20, 20)
+                                                  getImageView(crossImagePath, 20, 20)
             ));
         }
 
         ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
 
-        xCol.setCellValueFactory(new PropertyValueFactory<>("image"));
+        xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
+        plusCol.setCellValueFactory(new PropertyValueFactory<>("plus_image"));
+        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
         albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
@@ -117,7 +128,7 @@ public class CartController {
     }
 
     @FXML
-    protected void cartViewClicked(MouseEvent e) throws FileNotFoundException {
+    protected void cartViewClicked(MouseEvent e) {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 1) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
 
@@ -134,20 +145,45 @@ public class CartController {
                 colIdx = po.getColumn();
             }
 
-            // 5 == X-Symbol
+            // 3 == minus-Symbol
+            if (colIdx == 3){
+
+                if (cartLineItem.getQuantity() == 1)
+                {
+                    data.remove(rowIdx);
+                    System.out.println("row removed!");
+                    return;
+                }
+
+                data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
+                        cartLineItem.getArtist(),
+                        cartLineItem.getMedium(),
+                        cartLineItem.getMinus_image(),
+                        cartLineItem.getQuantity() - 1,
+                        cartLineItem.getPlus_image(),
+                        cartLineItem.getPrice(),
+                        cartLineItem.getX_image()));
+                System.out.println("quantity decremented!");
+            }
+
+            // 5 == plus-Symbol
             if (colIdx == 5){
+                data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
+                        cartLineItem.getArtist(),
+                        cartLineItem.getMedium(),
+                        cartLineItem.getMinus_image(),
+                        cartLineItem.getQuantity() + 1,
+                        cartLineItem.getPlus_image(),
+                        cartLineItem.getPrice(),
+                        cartLineItem.getX_image()));
+                System.out.println("quantity incremented!");
+            }
+
+            // 7 == X-Symbol
+            if (colIdx == 7){
                 data.remove(rowIdx);
                 System.out.println("row removed!");
             }
-
-            // for editing
-//            data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
-//                    cartLineItem.getArtist(),
-//                    cartLineItem.getMedium(),
-//                    cartLineItem.getQuantity()+1,
-//                    cartLineItem.getPrice(),
-//                    cartLineItem.getImage()));
-
         }
     }
 
