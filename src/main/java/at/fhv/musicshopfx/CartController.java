@@ -77,16 +77,7 @@ public class CartController {
 //            e.printStackTrace();
 //        }
 
-        // test data
-//        List<AlbumDTO> albumDTOs = new ArrayList<>();
-//        AlbumDTO dto = new AlbumDTO("song1", BigDecimal.ONE, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str", null);
-//        AlbumDTO dto2 = new AlbumDTO("song2", BigDecimal.TEN, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str2", null);
-//        AlbumDTO dto3 = new AlbumDTO("song3", BigDecimal.valueOf(20), 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str3", null);
-//        albumDTOs.add(dto);
-//        albumDTOs.add(dto2);
-//        albumDTOs.add(dto3);
-
-        // test data
+        // example data
         List<LineItemDTO> lineItemDTOS = new ArrayList<>();
         LineItemDTO dto = new LineItemDTO(MediumType.VINYL, "Bad", 3, BigDecimal.valueOf(18.99));
         LineItemDTO dto2 = new LineItemDTO(MediumType.CD, "Bad", 2, BigDecimal.valueOf(15.99));
@@ -95,6 +86,7 @@ public class CartController {
         lineItemDTOS.add(dto2);
         lineItemDTOS.add(dto3);
 
+        // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItemList = new ArrayList<>();
 
         for (LineItemDTO lineItemDTO : lineItemDTOS)
@@ -110,6 +102,7 @@ public class CartController {
             ));
         }
 
+        // prepare UI table
         ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
 
         productCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -127,6 +120,7 @@ public class CartController {
         cartView.getSelectionModel().clearSelection();
     }
 
+    // get ImageView for UI table
     private ImageView getImageView(String imagePath, int height, int width) throws FileNotFoundException {
         FileInputStream inpStr = new FileInputStream(imagePath);
         Image image = new Image(inpStr);
@@ -143,10 +137,10 @@ public class CartController {
         if (e.isPrimaryButtonDown()) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
 
-            // row index
+            // get selected row-index
             int selectedRowIdx = cartView.getSelectionModel().getSelectedIndex();
 
-            // col index
+            // get selected column-index
             ObservableList<TablePosition> pos = cartView.getSelectionModel().getSelectedCells();
 
             int selectedColIdx = -1;
@@ -156,6 +150,7 @@ public class CartController {
                 selectedColIdx = po.getColumn();
             }
 
+            // minus clicked
             if (selectedColIdx == MINUS_COLUMN_POSITION){
 
                 if (cartLineItem.getQuantity() == 1)
@@ -178,6 +173,7 @@ public class CartController {
                 System.out.println("quantity decremented!");
             }
 
+            // plus clicked
             else if (selectedColIdx == PLUS_COLUMN_POSITION){
                 data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                         cartLineItem.getMedium(),
@@ -191,6 +187,7 @@ public class CartController {
                 System.out.println("quantity incremented!");
             }
 
+            // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION){
                 data.remove(selectedRowIdx);
                 System.out.println("row removed!");
