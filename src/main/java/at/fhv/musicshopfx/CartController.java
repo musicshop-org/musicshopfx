@@ -41,7 +41,7 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> priceCol;
     @FXML
-    private TableColumn<CartLineItem, Image> xCol;
+    private TableColumn<CartLineItem, String> xCol;
     @FXML
     private Label totalLabel;
 
@@ -96,6 +96,8 @@ public class CartController {
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
 
+        cartView.getSelectionModel().setCellSelectionEnabled(true);
+
         cartView.setItems(obsDTOs);
     }
 
@@ -111,12 +113,25 @@ public class CartController {
 
     @FXML
     protected void cartViewClicked(MouseEvent e) {
-
-        if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+        if (e.isPrimaryButtonDown() && e.getClickCount() == 1) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
-            int idx = cartView.getSelectionModel().getSelectedIndex();
 
-            System.out.println(cartLineItem.getTitle() + " " + idx);
+            // row index
+            int rowIdx = cartView.getSelectionModel().getSelectedIndex();
+
+            // col index
+            ObservableList<TablePosition> pos = cartView.getSelectionModel().getSelectedCells();
+
+            int colIdx = -1;
+
+            for (TablePosition po : pos)
+            {
+                colIdx = po.getColumn();
+            }
+
+            // 5 == X-Symbol
+            if (colIdx == 5)
+                System.out.println("row removed!");
         }
     }
 
