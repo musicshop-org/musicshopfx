@@ -45,6 +45,8 @@ public class CartController {
     @FXML
     private Label totalLabel;
 
+    private ObservableList<CartLineItem> data;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -96,9 +98,12 @@ public class CartController {
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
 
-        cartView.getSelectionModel().setCellSelectionEnabled(true);
+        data = obsDTOs;
 
-        cartView.setItems(obsDTOs);
+        cartView.getSelectionModel().setCellSelectionEnabled(true);
+        cartView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        cartView.setItems(data);
     }
 
     private ImageView getImageView(String imagePath, int height, int width) throws FileNotFoundException {
@@ -112,7 +117,7 @@ public class CartController {
     }
 
     @FXML
-    protected void cartViewClicked(MouseEvent e) {
+    protected void cartViewClicked(MouseEvent e) throws FileNotFoundException {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 1) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
 
@@ -130,8 +135,19 @@ public class CartController {
             }
 
             // 5 == X-Symbol
-            if (colIdx == 5)
+            if (colIdx == 5){
+                data.remove(rowIdx);
                 System.out.println("row removed!");
+            }
+
+            // for editing
+//            data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
+//                    cartLineItem.getArtist(),
+//                    cartLineItem.getMedium(),
+//                    cartLineItem.getQuantity()+1,
+//                    cartLineItem.getPrice(),
+//                    cartLineItem.getImage()));
+
         }
     }
 
