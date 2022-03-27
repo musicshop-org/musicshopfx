@@ -68,8 +68,6 @@ public class CartController {
 
     public void setData() throws IOException {
 
-        System.out.println("Data set!");
-
         // TODO: Implement after adding to Shopping Cart is implemented!
 //        try {
 //            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
@@ -105,11 +103,6 @@ public class CartController {
             ));
         }
 
-        // calculate and set total price
-        double totalPrice = calculateTotalPrice(cartLineItems);
-        DecimalFormat df = new DecimalFormat("#.00");
-        totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
-
         // prepare UI table
         ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItems);
 
@@ -126,6 +119,11 @@ public class CartController {
         cartView.setItems(data);
 
         cartView.getSelectionModel().clearSelection();
+
+        // calculate and set total price
+        double totalPrice = calculateTotalPrice(data.iterator());
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
     }
 
     // get ImageView for UI table
@@ -137,20 +135,6 @@ public class CartController {
         imageView.setFitWidth(width);
 
         return imageView;
-    }
-
-    private double calculateTotalPrice(List<CartLineItem> cartLineItems)
-    {
-        double totalPrice = 0;
-
-        for (CartLineItem cartLineItem : cartLineItems)
-        {
-            double price = cartLineItem.getPrice().doubleValue();
-            int quantity = cartLineItem.getQuantity();
-            totalPrice += Double.valueOf(price) * quantity;
-        }
-
-        return totalPrice;
     }
 
     private double calculateTotalPrice(Iterator<CartLineItem> iter)
@@ -216,13 +200,11 @@ public class CartController {
                         cartLineItem.getX_image(),
                         cartLineItem.getLineItemDTO()
                 ));
-                System.out.println("quantity incremented!");
             }
 
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION){
                 data.remove(selectedRowIdx);
-                System.out.println("row removed!");
             }
 
             double totalPrice = calculateTotalPrice(data.iterator());
