@@ -1,61 +1,62 @@
 package sharedrmi.domain;
 
 import javafx.scene.image.ImageView;
+import sharedrmi.application.dto.LineItemDTO;
 import sharedrmi.domain.enums.MediumType;
 
 import java.math.BigDecimal;
 
 public class CartLineItem {
 
-    private String title;
-    private String artist;
+    private String name;
     private MediumType medium;
-    private ImageView minus_image;
     private int quantity;
-    private ImageView plus_image;
     private BigDecimal price;
+    private ImageView minus_image;
+    private ImageView plus_image;
     private ImageView x_image;
+    private LineItemDTO lineItemDTO;
 
-    public CartLineItem(String title, String artist, MediumType medium, ImageView minus_image, int quantity, ImageView plus_image, BigDecimal price, ImageView x_image) {
-        this.title = title;
-        this.artist = artist;
+    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, ImageView plus_image, ImageView x_image, LineItemDTO lineItemDTO) {
+        this.name = name;
         this.medium = medium;
-        this.minus_image = minus_image;
         this.quantity = quantity;
-        this.plus_image = plus_image;
         this.price = price;
+        this.minus_image = minus_image;
+        this.plus_image = plus_image;
         this.x_image = x_image;
+        this.lineItemDTO = lineItemDTO;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getArtist() {
-        return artist;
+    public String getName() {
+        return name;
     }
 
     public MediumType getMedium() {
         return medium;
     }
 
-    public ImageView getMinus_image() {
-        return minus_image;
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public ImageView getPlus_image() {
-        return plus_image;
     }
 
     public BigDecimal getPrice() {
         return price;
     }
 
+    public ImageView getMinus_image() {
+        return minus_image;
+    }
+
+    public ImageView getPlus_image() {
+        return plus_image;
+    }
+
     public ImageView getX_image() {
         return x_image;
+    }
+
+    public LineItemDTO getLineItemDTO() {
+        return lineItemDTO;
     }
 }

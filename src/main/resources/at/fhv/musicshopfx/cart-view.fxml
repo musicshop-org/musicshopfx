@@ -24,16 +24,15 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" editable="true" layoutX="103.0" layoutY="73.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="337.0" prefWidth="620.0">
+        <TableView fx:id="cartView" editable="true" layoutX="103.0" layoutY="73.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="331.0" prefWidth="484.0">
             <columns>
-                <TableColumn fx:id="albumTitleCol" editable="false" prefWidth="130.66663360595703" sortable="false" text="Album Title" />
-                <TableColumn fx:id="artistCol" editable="false" prefWidth="134.6666717529297" sortable="false" text="Artist" />
-                <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="92.666748046875" sortable="false" text="Medium" />
-            <TableColumn fx:id="minusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" />
-                <TableColumn fx:id="quantityCol" prefWidth="88.66677856445312" sortable="false" text="Quanitity" />
-            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" />
-            <TableColumn fx:id="priceCol" editable="false" prefWidth="80.00006103515625" sortable="false" text="Price" />
-            <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" fx:id="xCol" />
+                <TableColumn fx:id="productCol" editable="false" prefWidth="130.66663360595703" sortable="false" style="-fx-alignment: CENTER;" text="Product" />
+                <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="106.00004577636719" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />
+            <TableColumn fx:id="minusCol" editable="false" maxWidth="22.0" minWidth="22.0" prefWidth="22.0" sortable="false" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="quantityCol" prefWidth="84.00006103515625" sortable="false" style="-fx-alignment: CENTER;" text="Quanitity" />
+            <TableColumn fx:id="plusCol" editable="false" maxWidth="22.0" minWidth="22.0" prefWidth="22.0" sortable="false" style="-fx-alignment: CENTER;" />
+            <TableColumn fx:id="priceCol" editable="false" prefWidth="86.00003051757812" sortable="false" style="-fx-alignment: CENTER;" text="Price" />
+            <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: CENTER;" fx:id="xCol" />
             </columns>
         </TableView>
         <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
@@ -67,15 +66,15 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Label fx:id="totalLabel" layoutX="599.0" layoutY="420.0" prefHeight="18.0" prefWidth="60.0" text="0 €">
+      <Label fx:id="totalLabel" layoutX="529.0" layoutY="417.0" prefHeight="18.0" prefWidth="60.0" text="0 €">
          <font>
             <Font size="13.0" />
          </font></Label>
-      <Label layoutX="543.0" layoutY="420.0" prefHeight="18.0" prefWidth="38.0" text="Total:">
+      <Label layoutX="473.0" layoutY="417.0" prefHeight="18.0" prefWidth="38.0" text="Total:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="buyButton" layoutX="540.0" layoutY="445.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" />
+      <Button fx:id="buyButton" layoutX="470.0" layoutY="442.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" />
     </children>
 </AnchorPane>

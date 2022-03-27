@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.application.dto.LineItemDTO;
 import sharedrmi.domain.CartLineItem;
 import sharedrmi.domain.enums.MediumType;
 import sharedrmi.domain.valueobjects.AlbumId;
@@ -31,9 +32,7 @@ public class CartController {
     @FXML
     private TableView<CartLineItem> cartView;
     @FXML
-    private TableColumn<CartLineItem, String> albumTitleCol;
-    @FXML
-    private TableColumn<CartLineItem, String> artistCol;
+    private TableColumn<CartLineItem, String> productCol;
     @FXML
     private TableColumn<CartLineItem, String> mediumTypeCol;
     @FXML
@@ -41,18 +40,18 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> priceCol;
     @FXML
-    private TableColumn<CartLineItem, String> plusCol;
-    @FXML
     private TableColumn<CartLineItem, String> minusCol;
+    @FXML
+    private TableColumn<CartLineItem, String> plusCol;
     @FXML
     private TableColumn<CartLineItem, String> xCol;
     @FXML
     private Label totalLabel;
 
     private ObservableList<CartLineItem> data;
-    private final int MINUS_COLUMN_POSITION = 3;
-    private final int PLUS_COLUMN_POSITION = 5;
-    private final int CROSS_COLUMN_POSITION = 7;
+    private final int MINUS_COLUMN_POSITION = 2;
+    private final int PLUS_COLUMN_POSITION = 4;
+    private final int CROSS_COLUMN_POSITION = 6;
 
     private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
     private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
@@ -79,37 +78,44 @@ public class CartController {
 //        }
 
         // test data
-        List<AlbumDTO> albumDTOs = new ArrayList<>();
-        AlbumDTO dto = new AlbumDTO("song1", BigDecimal.ONE, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str", null);
-        AlbumDTO dto2 = new AlbumDTO("song2", BigDecimal.TEN, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str2", null);
-        AlbumDTO dto3 = new AlbumDTO("song3", BigDecimal.valueOf(20), 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str3", null);
-        albumDTOs.add(dto);
-        albumDTOs.add(dto2);
-        albumDTOs.add(dto3);
+//        List<AlbumDTO> albumDTOs = new ArrayList<>();
+//        AlbumDTO dto = new AlbumDTO("song1", BigDecimal.ONE, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str", null);
+//        AlbumDTO dto2 = new AlbumDTO("song2", BigDecimal.TEN, 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str2", null);
+//        AlbumDTO dto3 = new AlbumDTO("song3", BigDecimal.valueOf(20), 3, MediumType.VINYL, LocalDate.now(), new AlbumId(), "str3", null);
+//        albumDTOs.add(dto);
+//        albumDTOs.add(dto2);
+//        albumDTOs.add(dto3);
 
+        // test data
+        List<LineItemDTO> lineItemDTOS = new ArrayList<>();
+        LineItemDTO dto = new LineItemDTO(MediumType.VINYL, "Bad", 3, BigDecimal.valueOf(18.99));
+        LineItemDTO dto2 = new LineItemDTO(MediumType.CD, "Bad", 2, BigDecimal.valueOf(15.99));
+        LineItemDTO dto3 = new LineItemDTO(MediumType.CD, "24K Magic", 10, BigDecimal.valueOf(20.99));
+        lineItemDTOS.add(dto);
+        lineItemDTOS.add(dto2);
+        lineItemDTOS.add(dto3);
 
         List<CartLineItem> cartLineItemList = new ArrayList<>();
 
-        for (AlbumDTO albumDTO : albumDTOs)
+        for (LineItemDTO lineItemDTO : lineItemDTOS)
         {
-            cartLineItemList.add(new CartLineItem(albumDTO.getTitle(),
-                                                  "Artist",
-                                                  albumDTO.getMediumType(),
-                                                  getImageView(MINUS_PATH, 15, 15),
-                                                  1,
-                                                  getImageView(PLUS_PATH, 15, 15),
-                                                  albumDTO.getPrice(),
-                                                  getImageView(CROSS_PATH, 20, 20)
+            cartLineItemList.add(new CartLineItem(lineItemDTO.getName(),
+                                                  lineItemDTO.getMediumType(),
+                                                  lineItemDTO.getQuantity(),
+                                                  lineItemDTO.getPrice(),
+                                                  getImageView(MINUS_PATH, 12, 12),
+                                                  getImageView(PLUS_PATH, 12, 12),
+                                                  getImageView(CROSS_PATH, 18, 18),
+                                                  lineItemDTO
             ));
         }
 
         ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
 
-        albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        productCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
         plusCol.setCellValueFactory(new PropertyValueFactory<>("plus_image"));
         xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
@@ -160,26 +166,28 @@ public class CartController {
                     return;
                 }
 
-                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getTitle(),
-                        cartLineItem.getArtist(),
-                        cartLineItem.getMedium(),
-                        cartLineItem.getMinus_image(),
-                        cartLineItem.getQuantity() - 1,
-                        cartLineItem.getPlus_image(),
-                        cartLineItem.getPrice(),
-                        cartLineItem.getX_image()));
+                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                                                          cartLineItem.getMedium(),
+                                                   cartLineItem.getQuantity() - 1,
+                                                          cartLineItem.getPrice(),
+                                                          cartLineItem.getMinus_image(),
+                                                          cartLineItem.getPlus_image(),
+                                                          cartLineItem.getX_image(),
+                                                          cartLineItem.getLineItemDTO()
+                                                   ));
                 System.out.println("quantity decremented!");
             }
 
             else if (selectedColIdx == PLUS_COLUMN_POSITION){
-                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getTitle(),
-                        cartLineItem.getArtist(),
+                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                         cartLineItem.getMedium(),
-                        cartLineItem.getMinus_image(),
                         cartLineItem.getQuantity() + 1,
-                        cartLineItem.getPlus_image(),
                         cartLineItem.getPrice(),
-                        cartLineItem.getX_image()));
+                        cartLineItem.getMinus_image(),
+                        cartLineItem.getPlus_image(),
+                        cartLineItem.getX_image(),
+                        cartLineItem.getLineItemDTO()
+                ));
                 System.out.println("quantity incremented!");
             }
 
