@@ -9,21 +9,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import sharedrmi.application.api.ProductService;
+import sharedrmi.application.api.ShoppingCartService;
+import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class MusicOverviewController {
     @FXML
@@ -46,6 +52,12 @@ public class MusicOverviewController {
     private TableColumn genreCol;
     @FXML
     private TableColumn artistCol;
+    @FXML
+    private Button addToCartButton;
+    @FXML
+    private TextField quantityTextField;
+
+    private AlbumDTO currentAlbumDTO;
 
     private Stage stage;
     private Scene scene;
@@ -53,6 +65,7 @@ public class MusicOverviewController {
 
 
     public void setData(AlbumDTO albumDTO){
+        currentAlbumDTO = albumDTO;
         Set<SongDTO> songs = albumDTO.getSongs();
         albumTitleTextField.setText(albumDTO.getTitle());
         mediumTypeTextField.setText(albumDTO.getMediumType().toString());
@@ -93,6 +106,21 @@ public class MusicOverviewController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    private void addToCartButtonClicked(){
+
+        try {
+            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
+
+            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(UUID.randomUUID());
+
+            shoppingCartService.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+
+        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void switchSceneToCartView(String fxml, Event event) throws IOException {

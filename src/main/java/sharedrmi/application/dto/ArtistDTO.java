@@ -10,16 +10,39 @@ import java.io.Serializable;
 public class ArtistDTO implements Serializable {
     private final String name;
 
-    public ArtistDTO(String var1) {
-        this.name = var1;
+    public ArtistDTO(String name) {
+        this.name = name;
+    }
+
+    public String toString() {
+        return this.name;
+    }
+
+    public static ArtistDTO.ArtistDTOBuilder builder() {
+        return new ArtistDTO.ArtistDTOBuilder();
     }
 
     public String getName() {
         return this.name;
     }
 
-    @Override
-    public String toString() {
-        return name;
+    public static class ArtistDTOBuilder {
+        private String name;
+
+        ArtistDTOBuilder() {
+        }
+
+        public ArtistDTO.ArtistDTOBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ArtistDTO build() {
+            return new ArtistDTO(this.name);
+        }
+
+        public String toString() {
+            return "ArtistDTO.ArtistDTOBuilder(name=" + this.name + ")";
+        }
     }
 }
