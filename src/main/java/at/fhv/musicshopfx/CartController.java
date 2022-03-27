@@ -50,12 +50,21 @@ public class CartController {
     private Label totalLabel;
 
     private ObservableList<CartLineItem> data;
+    private final int MINUS_COLUMN_POSITION = 3;
+    private final int PLUS_COLUMN_POSITION = 5;
+    private final int CROSS_COLUMN_POSITION = 7;
+
+    private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
+    private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
+    private final String PLUS_PATH = BASE_IMAGE_PATH + "plus.png";
+    private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
     public void setData() throws IOException {
+
         totalLabel.setText("15 €");
         System.out.println("Data set!");
 
@@ -79,42 +88,37 @@ public class CartController {
         albumDTOs.add(dto3);
 
 
-        final String minusImagePath = "src/main/resources/at/fhv/musicshopfx/images/minus.png";
-        final String plusImagePath = "src/main/resources/at/fhv/musicshopfx/images/plus.png";
-        final String crossImagePath = "src/main/resources/at/fhv/musicshopfx/images/cross.png";
-
         List<CartLineItem> cartLineItemList = new ArrayList<>();
 
-        for (AlbumDTO singleDTO : albumDTOs)
+        for (AlbumDTO albumDTO : albumDTOs)
         {
-            cartLineItemList.add(new CartLineItem(singleDTO.getTitle(),
+            cartLineItemList.add(new CartLineItem(albumDTO.getTitle(),
                                                   "Artist",
-                                                  singleDTO.getMediumType(),
-                                                  getImageView(minusImagePath, 15, 15),
+                                                  albumDTO.getMediumType(),
+                                                  getImageView(MINUS_PATH, 15, 15),
                                                   1,
-                                                  getImageView(plusImagePath, 15, 15),
-                                                  singleDTO.getPrice(),
-                                                  getImageView(crossImagePath, 20, 20)
+                                                  getImageView(PLUS_PATH, 15, 15),
+                                                  albumDTO.getPrice(),
+                                                  getImageView(CROSS_PATH, 20, 20)
             ));
         }
 
         ObservableList<CartLineItem> obsDTOs = FXCollections.observableArrayList(cartLineItemList);
 
-        xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
-        plusCol.setCellValueFactory(new PropertyValueFactory<>("plus_image"));
-        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
         albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
+        plusCol.setCellValueFactory(new PropertyValueFactory<>("plus_image"));
+        xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
 
         data = obsDTOs;
 
-        cartView.getSelectionModel().setCellSelectionEnabled(true);
-        cartView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         cartView.setItems(data);
+
+        cartView.getSelectionModel().clearSelection();
     }
 
     private ImageView getImageView(String imagePath, int height, int width) throws FileNotFoundException {
@@ -128,34 +132,35 @@ public class CartController {
     }
 
     @FXML
-    protected void cartViewClicked(MouseEvent e) {
-        if (e.isPrimaryButtonDown() && e.getClickCount() == 1) {
+    protected void cartLineItemEdited (MouseEvent e) {
+
+        if (e.isPrimaryButtonDown()) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
 
             // row index
-            int rowIdx = cartView.getSelectionModel().getSelectedIndex();
+            int selectedRowIdx = cartView.getSelectionModel().getSelectedIndex();
 
             // col index
             ObservableList<TablePosition> pos = cartView.getSelectionModel().getSelectedCells();
 
-            int colIdx = -1;
+            int selectedColIdx = -1;
 
             for (TablePosition po : pos)
             {
-                colIdx = po.getColumn();
+                selectedColIdx = po.getColumn();
             }
 
-            // 3 == minus-Symbol
-            if (colIdx == 3){
+            if (selectedColIdx == MINUS_COLUMN_POSITION){
 
                 if (cartLineItem.getQuantity() == 1)
                 {
-                    data.remove(rowIdx);
+                    data.remove(selectedRowIdx);
+                    cartView.getSelectionModel().clearSelection();
                     System.out.println("row removed!");
                     return;
                 }
 
-                data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
+                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getTitle(),
                         cartLineItem.getArtist(),
                         cartLineItem.getMedium(),
                         cartLineItem.getMinus_image(),
@@ -166,9 +171,8 @@ public class CartController {
                 System.out.println("quantity decremented!");
             }
 
-            // 5 == plus-Symbol
-            if (colIdx == 5){
-                data.set(rowIdx, new CartLineItem(cartLineItem.getTitle(),
+            else if (selectedColIdx == PLUS_COLUMN_POSITION){
+                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getTitle(),
                         cartLineItem.getArtist(),
                         cartLineItem.getMedium(),
                         cartLineItem.getMinus_image(),
@@ -179,11 +183,12 @@ public class CartController {
                 System.out.println("quantity incremented!");
             }
 
-            // 7 == X-Symbol
-            if (colIdx == 7){
-                data.remove(rowIdx);
+            else if (selectedColIdx == CROSS_COLUMN_POSITION){
+                data.remove(selectedRowIdx);
                 System.out.println("row removed!");
             }
+
+           cartView.getSelectionModel().clearSelection();
         }
     }
 
