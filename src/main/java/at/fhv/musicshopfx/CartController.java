@@ -69,6 +69,7 @@ public class CartController {
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
+    // needs to be the same UUID as in the MusicOverviewController
     private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
     private ShoppingCartService shoppingCartService;
 
@@ -78,7 +79,6 @@ public class CartController {
 
     public void setData() throws IOException {
 
-        // TODO: Implement after adding to Shopping Cart is implemented!
         try {
             ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
             shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
@@ -86,23 +86,6 @@ public class CartController {
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
-//        try {
-//            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
-//            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(UUID.randomUUID());
-//            ShoppingCartDTO shoppingCart = shoppingCartService.displayCart();
-//
-//        } catch (NotBoundException | MalformedURLException | RemoteException e) {
-//            e.printStackTrace();
-//        }
-
-        // example data
-//        List<LineItemDTO> lineItemDTOS = new ArrayList<>();
-//        LineItemDTO dto = new LineItemDTO(MediumType.VINYL, "Bad", 3, BigDecimal.valueOf(18.99));
-//        LineItemDTO dto2 = new LineItemDTO(MediumType.CD, "Bad", 2, BigDecimal.valueOf(15.99));
-//        LineItemDTO dto3 = new LineItemDTO(MediumType.CD, "24K Magic", 10, BigDecimal.valueOf(20.99));
-//        lineItemDTOS.add(dto);
-//        lineItemDTOS.add(dto2);
-//        lineItemDTOS.add(dto3);
 
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();

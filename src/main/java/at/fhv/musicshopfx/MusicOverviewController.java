@@ -58,6 +58,7 @@ public class MusicOverviewController {
     private TextField quantityTextField;
 
     private AlbumDTO currentAlbumDTO;
+    // needs to be the same UUID as in the CartController
     private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
 
     private Stage stage;
