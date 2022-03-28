@@ -5,10 +5,11 @@
 
 package sharedrmi.application.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import sharedrmi.domain.enums.MediumType;
 
-public class LineItemDTO {
+public class LineItemDTO implements Serializable {
     private final MediumType mediumType;
     private final String name;
     private final int quantity;

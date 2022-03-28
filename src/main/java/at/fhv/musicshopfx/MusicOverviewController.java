@@ -58,6 +58,7 @@ public class MusicOverviewController {
     private TextField quantityTextField;
 
     private AlbumDTO currentAlbumDTO;
+    private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
 
     private Stage stage;
     private Scene scene;
@@ -113,9 +114,7 @@ public class MusicOverviewController {
 
         try {
             ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
-
-            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(UUID.randomUUID());
-
+            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
             shoppingCartService.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
         } catch (NotBoundException | MalformedURLException | RemoteException e) {

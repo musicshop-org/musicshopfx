@@ -5,10 +5,11 @@
 
 package sharedrmi.application.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-public class ShoppingCartDTO {
+public class ShoppingCartDTO implements Serializable {
     private final UUID ownerId;
     private final List<LineItemDTO> lineItems;
 

@@ -14,8 +14,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sharedrmi.application.api.ShoppingCartService;
+import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.LineItemDTO;
+import sharedrmi.application.dto.ShoppingCartDTO;
 import sharedrmi.domain.CartLineItem;
 import sharedrmi.domain.enums.MediumType;
 import sharedrmi.domain.valueobjects.AlbumId;
@@ -23,11 +26,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public class CartController {
 
@@ -61,6 +69,8 @@ public class CartController {
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
+    private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
+    private ShoppingCartService shoppingCartService;
 
     private Stage stage;
     private Scene scene;
@@ -69,6 +79,13 @@ public class CartController {
     public void setData() throws IOException {
 
         // TODO: Implement after adding to Shopping Cart is implemented!
+        try {
+            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
+            shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
+
+        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
+        }
 //        try {
 //            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
 //            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(UUID.randomUUID());
@@ -79,18 +96,18 @@ public class CartController {
 //        }
 
         // example data
-        List<LineItemDTO> lineItemDTOS = new ArrayList<>();
-        LineItemDTO dto = new LineItemDTO(MediumType.VINYL, "Bad", 3, BigDecimal.valueOf(18.99));
-        LineItemDTO dto2 = new LineItemDTO(MediumType.CD, "Bad", 2, BigDecimal.valueOf(15.99));
-        LineItemDTO dto3 = new LineItemDTO(MediumType.CD, "24K Magic", 10, BigDecimal.valueOf(20.99));
-        lineItemDTOS.add(dto);
-        lineItemDTOS.add(dto2);
-        lineItemDTOS.add(dto3);
+//        List<LineItemDTO> lineItemDTOS = new ArrayList<>();
+//        LineItemDTO dto = new LineItemDTO(MediumType.VINYL, "Bad", 3, BigDecimal.valueOf(18.99));
+//        LineItemDTO dto2 = new LineItemDTO(MediumType.CD, "Bad", 2, BigDecimal.valueOf(15.99));
+//        LineItemDTO dto3 = new LineItemDTO(MediumType.CD, "24K Magic", 10, BigDecimal.valueOf(20.99));
+//        lineItemDTOS.add(dto);
+//        lineItemDTOS.add(dto2);
+//        lineItemDTOS.add(dto3);
 
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
-        for (LineItemDTO lineItemDTO : lineItemDTOS)
+        for (LineItemDTO lineItemDTO : shoppingCartService.getCart().getLineItems())
         {
             cartLineItems.add(new CartLineItem(lineItemDTO.getName(),
                                                   lineItemDTO.getMediumType(),
@@ -153,10 +170,11 @@ public class CartController {
     }
 
     @FXML
-    protected void cartLineItemEdited (MouseEvent e) {
+    protected void cartLineItemEdited (MouseEvent e) throws RemoteException {
 
         if (e.isPrimaryButtonDown()) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
+            LineItemDTO lineItemDTO = cartLineItem.getLineItemDTO();
 
             // get selected row-index
             int selectedRowIdx = cartView.getSelectionModel().getSelectedIndex();
@@ -173,8 +191,10 @@ public class CartController {
 
             // minus clicked
             if (selectedColIdx == MINUS_COLUMN_POSITION){
-                if (cartLineItem.getQuantity() == 1)
+                if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
+                    shoppingCartService.removeProductFromCart(lineItemDTO);
+                }
                 else
                 {
                     data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
@@ -186,6 +206,8 @@ public class CartController {
                             cartLineItem.getX_image(),
                             cartLineItem.getLineItemDTO()
                     ));
+
+                    shoppingCartService.changeQuantity(lineItemDTO, cartLineItem.getQuantity() - 1);
                 }
             }
 
@@ -200,11 +222,14 @@ public class CartController {
                         cartLineItem.getX_image(),
                         cartLineItem.getLineItemDTO()
                 ));
+
+                shoppingCartService.changeQuantity(lineItemDTO, cartLineItem.getQuantity() + 1);
             }
 
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION){
                 data.remove(selectedRowIdx);
+                shoppingCartService.removeProductFromCart(lineItemDTO);
             }
 
             double totalPrice = calculateTotalPrice(data.iterator());
