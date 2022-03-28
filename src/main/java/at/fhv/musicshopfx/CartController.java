@@ -121,9 +121,13 @@ public class CartController {
         cartView.getSelectionModel().clearSelection();
 
         // calculate and set total price
-        double totalPrice = calculateTotalPrice(data.iterator());
-        DecimalFormat df = new DecimalFormat("#.00");
-        totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+        if (shoppingCartService.getCart().getLineItems().size() == 0)
+            totalPriceLabel.setText("0 " + CURRENCY);
+        else {
+            double totalPrice = calculateTotalPrice(data.iterator());
+            DecimalFormat df = new DecimalFormat("#.00");
+            totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+        }
     }
 
     // get ImageView for UI table
@@ -215,9 +219,13 @@ public class CartController {
                 shoppingCartService.removeProductFromCart(lineItemDTO);
             }
 
-            double totalPrice = calculateTotalPrice(data.iterator());
-            DecimalFormat df = new DecimalFormat("#.00");
-            totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+            if (shoppingCartService.getCart().getLineItems().size() == 0)
+                totalPriceLabel.setText("0 " + CURRENCY);
+            else {
+                double totalPrice = calculateTotalPrice(data.iterator());
+                DecimalFormat df = new DecimalFormat("#.00");
+                totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
+            }
 
             cartView.getSelectionModel().clearSelection();
         }

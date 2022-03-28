@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import sharedrmi.application.api.ProductService;
@@ -56,6 +57,8 @@ public class MusicOverviewController {
     private Button addToCartButton;
     @FXML
     private TextField quantityTextField;
+    @FXML
+    private Label addToCartLabel;
 
     private AlbumDTO currentAlbumDTO;
     // needs to be the same UUID as in the CartController
@@ -118,7 +121,18 @@ public class MusicOverviewController {
             ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
             shoppingCartService.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
-        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            if (Integer.parseInt(quantityTextField.getText()) < 1)
+                throw new NumberFormatException();
+
+            quantityTextField.setText("");
+            addToCartLabel.setTextFill(Paint.valueOf("green"));
+            addToCartLabel.setText("added to cart");
+
+        } catch(NumberFormatException e) {
+            addToCartLabel.setTextFill(Paint.valueOf("red"));
+            addToCartLabel.setText("no valid value");
+        }
+        catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
     }
