@@ -2,6 +2,7 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -111,7 +112,7 @@ public class MusicOverviewController {
     }
 
     @FXML
-    private void addToCartButtonClicked(){
+    private void addToCartButtonClicked(ActionEvent event){
 
         try {
             ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
@@ -121,15 +122,19 @@ public class MusicOverviewController {
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-            quantityTextField.setText("");
-            addToCartLabel.setTextFill(Paint.valueOf("green"));
-            addToCartLabel.setText("added to cart");
+//            quantityTextField.setText("");
+//            addToCartLabel.setTextFill(Paint.valueOf("green"));
+//            addToCartLabel.setText("added to cart");
+
+              switchScene("musicSearch-view.fxml", event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
             addToCartLabel.setText("no valid value");
         }
         catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
