@@ -2,6 +2,7 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sharedrmi.application.api.ProductService;
 import sharedrmi.application.api.ShoppingCartService;
 import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
@@ -268,5 +270,10 @@ public class CartController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    protected void clearCartButtonClicked(ActionEvent actionEvent) {
+        cartView.getItems().clear();
     }
 }
