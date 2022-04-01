@@ -48,6 +48,7 @@ public class MusicSearchController {
 
         //TODO: only call Naming.lookup at startup and add error handling
         try {
+            // RMIControllerFactory RMIControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
             ProductService productService = (ProductService) Naming.lookup("rmi://localhost/ProductService");
 
             List<AlbumDTO> albums = productService.findAlbumsBySongTitle(musicSearchTextField.getText());
