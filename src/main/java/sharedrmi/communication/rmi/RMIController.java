@@ -1,4 +1,4 @@
-package sharedrmi.communication.rmi.api;
+package sharedrmi.communication.rmi;
 
 import sharedrmi.application.api.ProductService;
 import sharedrmi.application.api.ShoppingCartService;

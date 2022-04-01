@@ -1,4 +1,4 @@
-package sharedrmi.communication.rmi.api;
+package sharedrmi.communication.rmi;
 
 import javax.security.auth.login.FailedLoginException;
 import java.rmi.Remote;

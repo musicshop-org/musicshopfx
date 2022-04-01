@@ -12,10 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
-import sharedrmi.communication.rmi.api.RMIController;
-import sharedrmi.communication.rmi.api.RMIControllerFactory;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 
 
 import javax.security.auth.login.FailedLoginException;
@@ -43,6 +42,9 @@ public class MusicSearchController {
 
     private final String USERNAME = "essiga";
     private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;

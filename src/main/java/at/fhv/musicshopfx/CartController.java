@@ -14,32 +14,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
-import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.LineItemDTO;
-import sharedrmi.application.dto.ShoppingCartDTO;
-import sharedrmi.communication.rmi.api.RMIController;
-import sharedrmi.communication.rmi.api.RMIControllerFactory;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 import sharedrmi.domain.CartLineItem;
-import sharedrmi.domain.enums.MediumType;
-import sharedrmi.domain.valueobjects.AlbumId;
 
 import javax.security.auth.login.FailedLoginException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 public class CartController {
 
@@ -77,6 +68,9 @@ public class CartController {
 
     private final String USERNAME = "essiga";
     private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;

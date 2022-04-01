@@ -13,13 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
-import sharedrmi.communication.rmi.api.RMIController;
-import sharedrmi.communication.rmi.api.RMIControllerFactory;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 
 import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
@@ -30,7 +28,6 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class MusicOverviewController {
     @FXML
@@ -64,6 +61,9 @@ public class MusicOverviewController {
 
     private final String USERNAME = "essiga";
     private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;
