@@ -2,6 +2,7 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,9 +73,7 @@ public class CartController {
 //    private final String USERNAME = "prescherm";
 //    private final String PASSWORD = "password02";
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() throws IOException {
 
@@ -231,41 +230,27 @@ public class CartController {
     }
 
     @FXML
-    protected void buyButtonClicked() {
-        System.out.println("Buy Button clicked!");
+    protected void buyButtonClicked(ActionEvent event) {
+
+        try {
+            sceneSwitcher.switchScene("checkout-view.fxml", event);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
+            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
     }
 
-    private void switchScene(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 }

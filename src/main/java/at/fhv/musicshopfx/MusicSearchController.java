@@ -46,9 +46,7 @@ public class MusicSearchController {
 //    private final String USERNAME = "prescherm";
 //    private final String PASSWORD = "password02";
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
     @FXML
@@ -78,54 +76,19 @@ public class MusicSearchController {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
             AlbumDTO albumDTO = musicView.getSelectionModel().getSelectedItem();
 
-            switchSceneToProductOverview("productOverview-view.fxml", e, albumDTO);
+            sceneSwitcher.switchSceneToProductOverview("productOverview-view.fxml", e, albumDTO);
         }
     }
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
-    }
-
-    private void switchScene(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    private void switchSceneToProductOverview(String fxml, Event event, AlbumDTO albumDTO) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        MusicOverviewController musicOverviewController = loader.getController();
-        musicOverviewController.setData(albumDTO);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
     }
 }

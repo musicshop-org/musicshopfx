@@ -66,9 +66,9 @@ public class MusicOverviewController {
 //    private final String USERNAME = "prescherm";
 //    private final String PASSWORD = "password02";
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+
+
 
 
     public void setData(AlbumDTO albumDTO){
@@ -97,22 +97,13 @@ public class MusicOverviewController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
-    }
-
-    private void switchScene(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
     }
 
     @FXML
@@ -126,11 +117,7 @@ public class MusicOverviewController {
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-//            quantityTextField.setText("");
-//            addToCartLabel.setTextFill(Paint.valueOf("green"));
-//            addToCartLabel.setText("added to cart");
-
-              switchScene("musicSearch-view.fxml", event);
+            sceneSwitcher.switchScene("musicSearch-view.fxml", event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
@@ -143,18 +130,5 @@ public class MusicOverviewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 }
