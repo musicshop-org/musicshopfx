@@ -12,10 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ProductService;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 
 
+import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -38,6 +40,12 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
 
+    private final String USERNAME = "essiga";
+    private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -48,9 +56,9 @@ public class MusicSearchController {
 
         //TODO: only call Naming.lookup at startup and add error handling
         try {
-            ProductService productService = (ProductService) Naming.lookup("rmi://localhost/ProductService");
-
-            List<AlbumDTO> albums = productService.findAlbumsBySongTitle(musicSearchTextField.getText());
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
+            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
+            List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
 
             ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
 
@@ -60,7 +68,7 @@ public class MusicSearchController {
             priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
             musicView.setItems(albumDTO);
 
-        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
             e.printStackTrace();
         }
     }

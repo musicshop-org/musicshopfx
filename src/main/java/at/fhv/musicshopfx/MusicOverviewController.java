@@ -14,12 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 
+import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -28,7 +29,6 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class MusicOverviewController {
     @FXML
@@ -59,8 +59,12 @@ public class MusicOverviewController {
     private Label addToCartLabel;
 
     private AlbumDTO currentAlbumDTO;
-    // needs to be the same UUID as in the CartController
-    private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
+
+    private final String USERNAME = "essiga";
+    private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;
@@ -115,9 +119,9 @@ public class MusicOverviewController {
     private void addToCartButtonClicked(ActionEvent event){
 
         try {
-            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
-            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
-            shoppingCartService.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
+            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
+            rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
@@ -133,6 +137,8 @@ public class MusicOverviewController {
             addToCartLabel.setText("no valid value");
         }
         catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
+        } catch (FailedLoginException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

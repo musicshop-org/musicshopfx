@@ -7,13 +7,12 @@ package sharedrmi.application.dto;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 public class ShoppingCartDTO implements Serializable {
-    private final UUID ownerId;
+    private final String ownerId;
     private final List<LineItemDTO> lineItems;
 
-    public ShoppingCartDTO(UUID ownerId, List<LineItemDTO> lineItems) {
+    public ShoppingCartDTO(String ownerId, List<LineItemDTO> lineItems) {
         this.ownerId = ownerId;
         this.lineItems = lineItems;
     }
@@ -22,7 +21,7 @@ public class ShoppingCartDTO implements Serializable {
         return new ShoppingCartDTO.ShoppingCartDTOBuilder();
     }
 
-    public UUID getOwnerId() {
+    public String getOwnerId() {
         return this.ownerId;
     }
 
@@ -31,13 +30,13 @@ public class ShoppingCartDTO implements Serializable {
     }
 
     public static class ShoppingCartDTOBuilder {
-        private UUID ownerId;
+        private String ownerId;
         private List<LineItemDTO> lineItems;
 
         ShoppingCartDTOBuilder() {
         }
 
-        public ShoppingCartDTO.ShoppingCartDTOBuilder ownerId(UUID ownerId) {
+        public ShoppingCartDTO.ShoppingCartDTOBuilder ownerId(String ownerId) {
             this.ownerId = ownerId;
             return this;
         }
