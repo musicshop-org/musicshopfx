@@ -24,7 +24,7 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" editable="true" layoutX="103.0" layoutY="73.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="331.0" prefWidth="667.0" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="73.0">
+        <TableView fx:id="cartView" editable="true" layoutX="75.0" layoutY="58.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="371.0" prefWidth="707.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="58.0">
             <columns>
                 <TableColumn fx:id="productCol" editable="false" prefWidth="130.66663360595703" sortable="false" style="-fx-alignment: CENTER;" text="Product" />
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="106.00004577636719" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />
@@ -66,16 +66,16 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Label fx:id="totalPriceLabel" layoutX="709.0" layoutY="417.0" prefHeight="18.0" prefWidth="60.0" text="0 €" AnchorPane.bottomAnchor="64.0" AnchorPane.rightAnchor="31.0">
+      <Label fx:id="totalPriceLabel" layoutX="713.0" layoutY="442.0" prefHeight="18.0" prefWidth="60.0" text="0 €" AnchorPane.bottomAnchor="39.0" AnchorPane.rightAnchor="27.0">
          <font>
             <Font size="13.0" />
          </font></Label>
-      <Label layoutX="653.0" layoutY="417.0" prefHeight="18.0" prefWidth="38.0" text="Total:" AnchorPane.bottomAnchor="64.0" AnchorPane.rightAnchor="109.0">
+      <Label layoutX="657.0" layoutY="442.0" prefHeight="18.0" prefWidth="38.0" text="Total:" AnchorPane.bottomAnchor="39.0" AnchorPane.rightAnchor="105.0">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="buyButton" layoutX="652.0" layoutY="436.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" AnchorPane.bottomAnchor="39.0" AnchorPane.rightAnchor="30.0" />
+      <Button fx:id="buyButton" layoutX="656.0" layoutY="461.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="26.0" />
       <Button fx:id="clearCartButton" layoutX="103.0" layoutY="436.0" mnemonicParsing="false" onAction="#clearCartButtonClicked" prefHeight="25.0" prefWidth="118.0" text="Clear Cart" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="103.0" />
     </children>
 </AnchorPane>
