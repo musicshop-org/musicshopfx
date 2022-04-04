@@ -14,28 +14,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
-import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.LineItemDTO;
-import sharedrmi.application.dto.ShoppingCartDTO;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.communication.rmi.RMIControllerFactory;
 import sharedrmi.domain.CartLineItem;
-import sharedrmi.domain.enums.MediumType;
-import sharedrmi.domain.valueobjects.AlbumId;
+
+import javax.security.auth.login.FailedLoginException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 public class CartController {
 
@@ -69,9 +64,13 @@ public class CartController {
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
-    // needs to be the same UUID as in the MusicOverviewController
-    private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
-    private ShoppingCartService shoppingCartService;
+    private RMIController rmiController;
+
+    private final String USERNAME = "essiga";
+    private final String PASSWORD = "password01";
+
+//    private final String USERNAME = "prescherm";
+//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;
@@ -80,17 +79,17 @@ public class CartController {
     public void setData() throws IOException {
 
         try {
-            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
-            shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
+            this.rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
 
-        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
             e.printStackTrace();
         }
 
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
-        for (LineItemDTO lineItemDTO : shoppingCartService.getCart().getLineItems())
+        for (LineItemDTO lineItemDTO : rmiController.getCart().getLineItems())
         {
             cartLineItems.add(new CartLineItem(lineItemDTO.getName(),
                                                   lineItemDTO.getMediumType(),
@@ -121,7 +120,7 @@ public class CartController {
         cartView.getSelectionModel().clearSelection();
 
         // calculate and set total price
-        if (shoppingCartService.getCart().getLineItems().size() == 0)
+        if (rmiController.getCart().getLineItems().size() == 0)
             totalPriceLabel.setText("0 " + CURRENCY);
         else {
             double totalPrice = calculateTotalPrice(data.iterator());
@@ -180,7 +179,7 @@ public class CartController {
             if (selectedColIdx == MINUS_COLUMN_POSITION){
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
-                    shoppingCartService.removeProductFromCart(lineItemDTO);
+                    rmiController.removeProductFromCart(lineItemDTO);
                 }
                 else
                 {
@@ -194,7 +193,7 @@ public class CartController {
                             cartLineItem.getLineItemDTO()
                     ));
 
-                    shoppingCartService.changeQuantity(lineItemDTO, cartLineItem.getQuantity() - 1);
+                    rmiController.changeQuantity(lineItemDTO, cartLineItem.getQuantity() - 1);
                 }
             }
 
@@ -210,16 +209,16 @@ public class CartController {
                         cartLineItem.getLineItemDTO()
                 ));
 
-                shoppingCartService.changeQuantity(lineItemDTO, cartLineItem.getQuantity() + 1);
+                rmiController.changeQuantity(lineItemDTO, cartLineItem.getQuantity() + 1);
             }
 
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION){
                 data.remove(selectedRowIdx);
-                shoppingCartService.removeProductFromCart(lineItemDTO);
+                rmiController.removeProductFromCart(lineItemDTO);
             }
 
-            if (shoppingCartService.getCart().getLineItems().size() == 0)
+            if (rmiController.getCart().getLineItems().size() == 0)
                 totalPriceLabel.setText("0 " + CURRENCY);
             else {
                 double totalPrice = calculateTotalPrice(data.iterator());
