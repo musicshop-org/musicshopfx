@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MusicOverviewController {
+
     @FXML
     private Label albumTitleLabel;
     @FXML
@@ -59,7 +60,6 @@ public class MusicOverviewController {
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
 
-
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -74,7 +74,6 @@ public class MusicOverviewController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-
 
         currentAlbumDTO = albumDTO;
         Set<SongDTO> songs = albumDTO.getSongs();

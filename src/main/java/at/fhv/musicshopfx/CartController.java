@@ -64,8 +64,8 @@ public class CartController {
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
-    private RMIController rmiController;
 
+    private RMIController rmiController;
 
     private Stage stage;
     private Scene scene;
