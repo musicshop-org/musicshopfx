@@ -43,8 +43,6 @@ public class SessionManager {
 
         } catch (MalformedURLException | RemoteException | NotBoundException | FailedLoginException e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
-
             return false;
         }
     }
