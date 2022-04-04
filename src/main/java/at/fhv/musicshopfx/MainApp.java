@@ -17,17 +17,6 @@ public class MainApp extends Application {
         stage.setTitle("Music Shop");
         stage.setScene(scene);
         stage.show();
-
-//        final String USERNAME = "essiga";
-//        final String PASSWORD = "password01";
-
-//        final String USERNAME = "prescher";
-//        final String PASSWORD = "password02";
-
-//        System.out.println(SessionManager.login(USERNAME, PASSWORD));
-//        SessionManager sessionManager = SessionManager.getInstance();
-//        System.out.println(sessionManager.getRMIController().getUsername());
-//        System.out.println(sessionManager.getRMIController().getRoles());
     }
 
     public static void main(String[] args) {

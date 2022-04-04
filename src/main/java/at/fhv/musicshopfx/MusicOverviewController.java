@@ -52,19 +52,13 @@ public class MusicOverviewController {
     @FXML
     private TableColumn artistCol;
     @FXML
-    private Button addToCartButton;
-    @FXML
     private TextField quantityTextField;
     @FXML
     private Label addToCartLabel;
 
+    private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
-
-//    private final String USERNAME = "prescherm";
-//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;
@@ -72,6 +66,16 @@ public class MusicOverviewController {
 
 
     public void setData(AlbumDTO albumDTO){
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+
         currentAlbumDTO = albumDTO;
         Set<SongDTO> songs = albumDTO.getSongs();
         albumTitleLabel.setText(albumDTO.getTitle());
@@ -97,7 +101,7 @@ public class MusicOverviewController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            switchSceneToMusicSearchView ("musicSearch-view.fxml", e);
     }
 
     @FXML
@@ -106,43 +110,38 @@ public class MusicOverviewController {
             switchSceneToCartView("cart-view.fxml", e);
     }
 
-    private void switchScene(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     @FXML
     private void addToCartButtonClicked(ActionEvent event){
 
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
             rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-//            quantityTextField.setText("");
-//            addToCartLabel.setTextFill(Paint.valueOf("green"));
-//            addToCartLabel.setText("added to cart");
-
-              switchScene("musicSearch-view.fxml", event);
+            switchSceneToMusicSearchView ("musicSearch-view.fxml", event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
             addToCartLabel.setText("no valid value");
-        }
-        catch (NotBoundException | MalformedURLException | RemoteException e) {
-            e.printStackTrace();
-        } catch (FailedLoginException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+
+        MusicSearchController musicSearchController = loader.getController();
+        musicSearchController.setData();
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void switchSceneToCartView(String fxml, Event event) throws IOException {

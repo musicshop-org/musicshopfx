@@ -19,9 +19,6 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML
-    private Button loginButton;
-
-    @FXML
     private Label loginFailedLabel;
 
     @FXML
@@ -38,16 +35,20 @@ public class LoginController {
     @FXML
     protected void login(ActionEvent e) throws IOException {
         if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText())) {
-            switchScene("musicSearch-view.fxml", e);
+            switchSceneToMusicSearchView ("musicSearch-view.fxml", e);
         } else {
-            loginFailedLabel.setText("wrong username or password entered");
+            loginFailedLabel.setText("wrong username or password");
             passwordTextField.clear();
         }
     }
 
-    private void switchScene(String fxml, Event event) throws IOException {
+    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         root = loader.load();
+
+        MusicSearchController musicSearchController = loader.getController();
+        musicSearchController.setData();
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

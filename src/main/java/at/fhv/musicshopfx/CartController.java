@@ -66,11 +66,6 @@ public class CartController {
     private final String CURRENCY = "€";
     private RMIController rmiController;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
-
-//    private final String USERNAME = "prescherm";
-//    private final String PASSWORD = "password02";
 
     private Stage stage;
     private Scene scene;
@@ -79,10 +74,10 @@ public class CartController {
     public void setData() throws IOException {
 
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            this.rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
+            this.rmiController = SessionManager.getInstance().getRMIController();
 
-        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
@@ -238,7 +233,7 @@ public class CartController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            switchSceneToMusicSearchView ("musicSearch-view.fxml", e);
     }
 
     @FXML
@@ -247,9 +242,13 @@ public class CartController {
             switchSceneToCartView("cart-view.fxml", e);
     }
 
-    private void switchScene(String fxml, Event event) throws IOException {
+    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         root = loader.load();
+
+        MusicSearchController musicSearchController = loader.getController();
+        musicSearchController.setData();
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

@@ -40,44 +40,40 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
-
-//    private final String USERNAME = "prescherm";
-//    private final String PASSWORD = "password02";
+    private RMIController rmiController;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
+    public void setData() {
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @FXML
-    protected void MusicSearchButtonClicked() {
+    protected void MusicSearchButtonClicked() throws RemoteException {
 
-        //TODO: only call Naming.lookup at startup and add error handling
-        try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
-            List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
-
-            ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
+        List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
+        ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
 
             albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
             releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
             mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
             priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
             musicView.setItems(albumDTO);
-
-        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
     protected void musicViewClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
             AlbumDTO albumDTO = musicView.getSelectionModel().getSelectedItem();
-
             switchSceneToProductOverview("productOverview-view.fxml", e, albumDTO);
         }
     }
@@ -85,18 +81,22 @@ public class MusicSearchController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            switchSceneToMusicSearchView ("musicSearch-view.fxml", e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
+            switchSceneToCartView ("cart-view.fxml", e);
     }
 
-    private void switchScene(String fxml, Event event) throws IOException {
+    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         root = loader.load();
+
+        MusicSearchController musicSearchController = loader.getController();
+        musicSearchController.setData();
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
