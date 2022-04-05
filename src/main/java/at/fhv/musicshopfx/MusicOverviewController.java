@@ -3,35 +3,22 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
 
-import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class MusicOverviewController {
-
     @FXML
     private Label albumTitleLabel;
     @FXML
@@ -53,6 +40,8 @@ public class MusicOverviewController {
     @FXML
     private TableColumn artistCol;
     @FXML
+    private Button addToCartButton;
+    @FXML
     private TextField quantityTextField;
     @FXML
     private Label addToCartLabel;
@@ -60,9 +49,8 @@ public class MusicOverviewController {
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
     public void setData(AlbumDTO albumDTO){
@@ -100,13 +88,13 @@ public class MusicOverviewController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToMusicSearchView ("musicSearch-view.fxml", e);
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
+            sceneSwitcher.switchSceneToCartView(e);
     }
 
     @FXML
@@ -118,41 +106,14 @@ public class MusicOverviewController {
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-            switchSceneToMusicSearchView ("musicSearch-view.fxml", event);
+            sceneSwitcher.switchSceneToMusicSearchView(event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
             addToCartLabel.setText("no valid value");
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        MusicSearchController musicSearchController = loader.getController();
-        musicSearchController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 }

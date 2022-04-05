@@ -10,11 +10,11 @@ import java.util.List;
 
 public class ShoppingCartDTO implements Serializable {
     private final String ownerId;
-    private final List<LineItemDTO> lineItems;
+    private final List<CartLineItemDTO> cartLineItems;
 
-    public ShoppingCartDTO(String ownerId, List<LineItemDTO> lineItems) {
+    public ShoppingCartDTO(String ownerId, List<CartLineItemDTO> cartLineItems) {
         this.ownerId = ownerId;
-        this.lineItems = lineItems;
+        this.cartLineItems = cartLineItems;
     }
 
     public static ShoppingCartDTO.ShoppingCartDTOBuilder builder() {
@@ -25,13 +25,13 @@ public class ShoppingCartDTO implements Serializable {
         return this.ownerId;
     }
 
-    public List<LineItemDTO> getLineItems() {
-        return this.lineItems;
+    public List<CartLineItemDTO> getCartLineItems() {
+        return this.cartLineItems;
     }
 
     public static class ShoppingCartDTOBuilder {
         private String ownerId;
-        private List<LineItemDTO> lineItems;
+        private List<CartLineItemDTO> cartLineItems;
 
         ShoppingCartDTOBuilder() {
         }
@@ -41,17 +41,17 @@ public class ShoppingCartDTO implements Serializable {
             return this;
         }
 
-        public ShoppingCartDTO.ShoppingCartDTOBuilder lineItems(List<LineItemDTO> lineItems) {
-            this.lineItems = lineItems;
+        public ShoppingCartDTO.ShoppingCartDTOBuilder cartLineItems(List<CartLineItemDTO> cartLineItems) {
+            this.cartLineItems = cartLineItems;
             return this;
         }
 
         public ShoppingCartDTO build() {
-            return new ShoppingCartDTO(this.ownerId, this.lineItems);
+            return new ShoppingCartDTO(this.ownerId, this.cartLineItems);
         }
 
         public String toString() {
-            return "ShoppingCartDTO.ShoppingCartDTOBuilder(ownerId=" + this.ownerId + ", lineItems=" + this.lineItems + ")";
+            return "ShoppingCartDTO.ShoppingCartDTOBuilder(ownerId=" + this.ownerId + ", cartLineItems=" + this.cartLineItems + ")";
         }
     }
 }

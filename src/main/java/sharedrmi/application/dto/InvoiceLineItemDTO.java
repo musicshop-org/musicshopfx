@@ -1,29 +1,25 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package sharedrmi.application.dto;
+
+import sharedrmi.domain.enums.MediumType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import sharedrmi.domain.enums.MediumType;
 
-public class LineItemDTO implements Serializable {
+public class InvoiceLineItemDTO implements Serializable {
     private final MediumType mediumType;
     private final String name;
     private final int quantity;
     private final BigDecimal price;
 
-    public LineItemDTO(MediumType mediumType, String name, int quantity, BigDecimal price) {
+    public InvoiceLineItemDTO(MediumType mediumType, String name, int quantity, BigDecimal price) {
         this.mediumType = mediumType;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public static LineItemDTO.LineItemDTOBuilder builder() {
-        return new LineItemDTO.LineItemDTOBuilder();
+    public static InvoiceLineItemDTO.InvoiceLineItemDTOBuilder builder() {
+        return new InvoiceLineItemDTO.InvoiceLineItemDTOBuilder();
     }
 
     public MediumType getMediumType() {
@@ -42,41 +38,41 @@ public class LineItemDTO implements Serializable {
         return this.price;
     }
 
-    public static class LineItemDTOBuilder {
+    public static class InvoiceLineItemDTOBuilder {
         private MediumType mediumType;
         private String name;
         private int quantity;
         private BigDecimal price;
 
-        LineItemDTOBuilder() {
+        InvoiceLineItemDTOBuilder() {
         }
 
-        public LineItemDTO.LineItemDTOBuilder mediumType(MediumType mediumType) {
+        public InvoiceLineItemDTO.InvoiceLineItemDTOBuilder mediumType(MediumType mediumType) {
             this.mediumType = mediumType;
             return this;
         }
 
-        public LineItemDTO.LineItemDTOBuilder name(String name) {
+        public InvoiceLineItemDTO.InvoiceLineItemDTOBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public LineItemDTO.LineItemDTOBuilder quantity(int quantity) {
+        public InvoiceLineItemDTO.InvoiceLineItemDTOBuilder quantity(int quantity) {
             this.quantity = quantity;
             return this;
         }
 
-        public LineItemDTO.LineItemDTOBuilder price(BigDecimal price) {
+        public InvoiceLineItemDTO.InvoiceLineItemDTOBuilder price(BigDecimal price) {
             this.price = price;
             return this;
         }
 
-        public LineItemDTO build() {
-            return new LineItemDTO(this.mediumType, this.name, this.quantity, this.price);
+        public InvoiceLineItemDTO build() {
+            return new InvoiceLineItemDTO(this.mediumType, this.name, this.quantity, this.price);
         }
 
         public String toString() {
-            return "LineItemDTO.LineItemDTOBuilder(mediumType=" + this.mediumType + ", name=" + this.name + ", quantity=" + this.quantity + ", price=" + this.price + ")";
+            return "InvoiceLineItemDTO.InvoiceLineItemDTOBuilder(mediumType=" + this.mediumType + ", name=" + this.name + ", quantity=" + this.quantity + ", price=" + this.price + ")";
         }
     }
 }
