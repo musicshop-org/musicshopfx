@@ -28,12 +28,13 @@
       <AnchorPane layoutX="256.0" layoutY="145.0" prefHeight="210.0" prefWidth="288.0" style="-fx-border-color: #EaEaEa; -fx-border-width: 0.5px;" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="256.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="145.0">
          <children>
             <TextField fx:id="usernameTextField" layoutX="114.0" layoutY="60.0" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="60.0" />
+            <PasswordField fx:id="passwordTextField" layoutX="114.0" layoutY="99.0" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="99.0" />
+            <Button fx:id="loginButton" layoutX="114.0" layoutY="148.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
             <Label layoutX="23.0" layoutY="62.0" text="Username" textFill="WHITE" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="62.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="loginButton" layoutX="114.0" layoutY="148.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
             <Label layoutX="25.0" layoutY="101.0" text="Password" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="101.0">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -44,7 +45,6 @@
                   <Font name="System Bold" size="10.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordTextField" layoutX="114.0" layoutY="99.0" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="99.0" />
          </children>
       </AnchorPane>
     </children>
