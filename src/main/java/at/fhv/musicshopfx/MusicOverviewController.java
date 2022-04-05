@@ -3,29 +3,17 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
 
-import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -100,13 +88,13 @@ public class MusicOverviewController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
+            sceneSwitcher.switchSceneToCartView(e);
     }
 
     @FXML
@@ -118,7 +106,7 @@ public class MusicOverviewController {
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-            sceneSwitcher.switchScene("musicSearch-view.fxml", event);
+            sceneSwitcher.switchSceneToMusicSearchView(event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));

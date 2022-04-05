@@ -16,6 +16,10 @@ public class MainApp extends Application {
 
         stage.setTitle("Music Shop");
         stage.setScene(scene);
+        stage.setMaxHeight(535);
+        stage.setMinHeight(535);
+        stage.setMaxWidth(815);
+        stage.setMinWidth(815);
         stage.show();
     }
 

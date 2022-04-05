@@ -3,30 +3,19 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import sharedrmi.application.dto.LineItemDTO;
+import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
 import sharedrmi.domain.CartLineItem;
 
-import javax.security.auth.login.FailedLoginException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -82,16 +71,16 @@ public class CartController {
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
-        for (LineItemDTO lineItemDTO : rmiController.getCart().getLineItems())
+        for (CartLineItemDTO cartLineItemDTO : rmiController.getCart().getCartLineItems())
         {
-            cartLineItems.add(new CartLineItem(lineItemDTO.getName(),
-                                                  lineItemDTO.getMediumType(),
-                                                  lineItemDTO.getQuantity(),
-                                                  lineItemDTO.getPrice(),
+            cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
+                                                  cartLineItemDTO.getMediumType(),
+                                                  cartLineItemDTO.getQuantity(),
+                                                  cartLineItemDTO.getPrice(),
                                                   getImageView(MINUS_PATH, 12, 12),
                                                   getImageView(PLUS_PATH, 12, 12),
                                                   getImageView(CROSS_PATH, 18, 18),
-                                                  lineItemDTO
+                    cartLineItemDTO
             ));
         }
 
@@ -113,7 +102,7 @@ public class CartController {
         cartView.getSelectionModel().clearSelection();
 
         // calculate and set total price
-        if (rmiController.getCart().getLineItems().size() == 0)
+        if (rmiController.getCart().getCartLineItems().size() == 0)
             totalPriceLabel.setText("0 " + CURRENCY);
         else {
             double totalPrice = calculateTotalPrice(data.iterator());
@@ -153,7 +142,7 @@ public class CartController {
 
         if (e.isPrimaryButtonDown()) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
-            LineItemDTO lineItemDTO = cartLineItem.getLineItemDTO();
+            CartLineItemDTO cartLineItemDTO = cartLineItem.getLineItemDTO();
 
             // get selected row-index
             int selectedRowIdx = cartView.getSelectionModel().getSelectedIndex();
@@ -172,7 +161,7 @@ public class CartController {
             if (selectedColIdx == MINUS_COLUMN_POSITION){
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
-                    rmiController.removeProductFromCart(lineItemDTO);
+                    rmiController.removeProductFromCart(cartLineItemDTO);
                 }
                 else
                 {
@@ -186,7 +175,7 @@ public class CartController {
                             cartLineItem.getLineItemDTO()
                     ));
 
-                    rmiController.changeQuantity(lineItemDTO, cartLineItem.getQuantity() - 1);
+                    rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() - 1);
                 }
             }
 
@@ -202,16 +191,16 @@ public class CartController {
                         cartLineItem.getLineItemDTO()
                 ));
 
-                rmiController.changeQuantity(lineItemDTO, cartLineItem.getQuantity() + 1);
+                rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() + 1);
             }
 
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION){
                 data.remove(selectedRowIdx);
-                rmiController.removeProductFromCart(lineItemDTO);
+                rmiController.removeProductFromCart(cartLineItemDTO);
             }
 
-            if (rmiController.getCart().getLineItems().size() == 0)
+            if (rmiController.getCart().getCartLineItems().size() == 0)
                 totalPriceLabel.setText("0 " + CURRENCY);
             else {
                 double totalPrice = calculateTotalPrice(data.iterator());
@@ -227,7 +216,7 @@ public class CartController {
     protected void buyButtonClicked(ActionEvent event) {
 
         try {
-            sceneSwitcher.switchScene("checkout-view.fxml", event);
+            sceneSwitcher.switchSceneToCheckoutView(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -238,39 +227,14 @@ public class CartController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
-            switchSceneToCartView("cart-view.fxml", e);
+            sceneSwitcher.switchSceneToCartView(e);
     }
 
-    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
 
-        MusicSearchController musicSearchController = loader.getController();
-        musicSearchController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 }

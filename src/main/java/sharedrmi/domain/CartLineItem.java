@@ -1,7 +1,7 @@
 package sharedrmi.domain;
 
 import javafx.scene.image.ImageView;
-import sharedrmi.application.dto.LineItemDTO;
+import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.domain.enums.MediumType;
 
 import java.math.BigDecimal;
@@ -15,9 +15,9 @@ public class CartLineItem {
     private ImageView minus_image;
     private ImageView plus_image;
     private ImageView x_image;
-    private LineItemDTO lineItemDTO;
+    private CartLineItemDTO cartLineItemDTO;
 
-    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, ImageView plus_image, ImageView x_image, LineItemDTO lineItemDTO) {
+    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, ImageView plus_image, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
         this.name = name;
         this.medium = medium;
         this.quantity = quantity;
@@ -25,7 +25,7 @@ public class CartLineItem {
         this.minus_image = minus_image;
         this.plus_image = plus_image;
         this.x_image = x_image;
-        this.lineItemDTO = lineItemDTO;
+        this.cartLineItemDTO = cartLineItemDTO;
     }
 
     public String getName() {
@@ -56,7 +56,7 @@ public class CartLineItem {
         return x_image;
     }
 
-    public LineItemDTO getLineItemDTO() {
-        return lineItemDTO;
+    public CartLineItemDTO getLineItemDTO() {
+        return cartLineItemDTO;
     }
 }

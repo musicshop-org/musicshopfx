@@ -6,16 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CustomerDTO;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
 
-import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -45,28 +39,39 @@ public class CheckoutController {
     private TableColumn emailAddressCol;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private RMIController rmiController;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
+    public void setData() throws IOException {
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        }
+
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
+            sceneSwitcher.switchSceneToCartView(e);
     }
 
 
     @FXML
     protected void customerSearchButtonClicked(){
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
+
             List<CustomerDTO> customers = rmiController.findCustomersByName(customerSearchTextField.getText());
 
             ObservableList<CustomerDTO> customerDTOs = FXCollections.observableArrayList(customers);
@@ -76,7 +81,7 @@ public class CheckoutController {
             emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("emailAddress"));
             customerTableView.setItems(customerDTOs);
 
-        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
