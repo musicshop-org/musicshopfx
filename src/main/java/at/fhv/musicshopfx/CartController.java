@@ -67,21 +67,15 @@ public class CartController {
     private final String CURRENCY = "€";
     private RMIController rmiController;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
-
-//    private final String USERNAME = "prescherm";
-//    private final String PASSWORD = "password02";
-
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() throws IOException {
 
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            this.rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
+            this.rmiController = SessionManager.getInstance().getRMIController();
 
-        } catch (NotBoundException | MalformedURLException | RemoteException | FailedLoginException e) {
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
@@ -251,6 +245,32 @@ public class CartController {
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToCartView("cart-view.fxml", e);
+            switchSceneToCartView("cart-view.fxml", e);
     }
 
+    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+
+        MusicSearchController musicSearchController = loader.getController();
+        musicSearchController.setData();
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void switchSceneToCartView(String fxml, Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        root = loader.load();
+
+        CartController cartController = loader.getController();
+        cartController.setData();
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

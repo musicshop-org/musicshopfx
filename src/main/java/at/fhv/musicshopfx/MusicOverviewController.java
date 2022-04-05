@@ -58,20 +58,23 @@ public class MusicOverviewController {
     @FXML
     private Label addToCartLabel;
 
+    private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
 
-    private final String USERNAME = "essiga";
-    private final String PASSWORD = "password01";
-
-//    private final String USERNAME = "prescherm";
-//    private final String PASSWORD = "password02";
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
-
-
     public void setData(AlbumDTO albumDTO){
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+
+        } catch (NotLoggedInException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
         currentAlbumDTO = albumDTO;
         Set<SongDTO> songs = albumDTO.getSongs();
         albumTitleLabel.setText(albumDTO.getTitle());
@@ -110,8 +113,6 @@ public class MusicOverviewController {
     private void addToCartButtonClicked(ActionEvent event){
 
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
-            RMIController rmiController = rmiControllerFactory.createRMIController(USERNAME, PASSWORD);
             rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
             if (Integer.parseInt(quantityTextField.getText()) < 1)
@@ -122,11 +123,7 @@ public class MusicOverviewController {
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
             addToCartLabel.setText("no valid value");
-        }
-        catch (NotBoundException | MalformedURLException | RemoteException e) {
-            e.printStackTrace();
-        } catch (FailedLoginException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
