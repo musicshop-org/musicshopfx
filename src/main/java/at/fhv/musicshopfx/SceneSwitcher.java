@@ -7,8 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.application.dto.CartLineItemDTO;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SceneSwitcher {
     private Stage stage;
@@ -52,12 +54,12 @@ public class SceneSwitcher {
         displayScene(e);
     }
 
-    public void switchSceneToCheckoutView(Event e) throws IOException {
+    public void switchSceneToCheckoutView(Event e, List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(checkoutViewFxml));
         root = loader.load();
 
         CheckoutController checkoutController = loader.getController();
-        checkoutController.setData();
+        checkoutController.setData(cartLineItemDTOs);
         displayScene(e);
     }
 

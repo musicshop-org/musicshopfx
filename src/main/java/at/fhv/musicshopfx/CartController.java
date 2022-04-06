@@ -42,8 +42,12 @@ public class CartController {
     private TableColumn<CartLineItem, String> xCol;
     @FXML
     private Label totalPriceLabel;
+    @FXML
+    private Button buyButton;
 
     private ObservableList<CartLineItem> data;
+    private List<CartLineItemDTO> cartLineItemDTOs;
+
     private final int MINUS_COLUMN_POSITION = 2;
     private final int PLUS_COLUMN_POSITION = 4;
     private final int CROSS_COLUMN_POSITION = 6;
@@ -71,7 +75,8 @@ public class CartController {
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
-        for (CartLineItemDTO cartLineItemDTO : rmiController.getCart().getCartLineItems())
+        cartLineItemDTOs = rmiController.getCart().getCartLineItems();
+        for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs)
         {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
                                                   cartLineItemDTO.getMediumType(),
@@ -109,6 +114,7 @@ public class CartController {
             DecimalFormat df = new DecimalFormat("#.00");
             totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
         }
+        determineBuyButtonState();
     }
 
     // get ImageView for UI table
@@ -140,7 +146,7 @@ public class CartController {
     @FXML
     protected void cartLineItemEdited (MouseEvent e) throws RemoteException {
 
-        if (e.isPrimaryButtonDown()) {
+        if (e.isPrimaryButtonDown() && cartView.getItems().isEmpty() == false) {
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
             CartLineItemDTO cartLineItemDTO = cartLineItem.getLineItemDTO();
 
@@ -210,13 +216,14 @@ public class CartController {
 
             cartView.getSelectionModel().clearSelection();
         }
+        determineBuyButtonState();
     }
 
     @FXML
     protected void buyButtonClicked(ActionEvent event) {
 
         try {
-            sceneSwitcher.switchSceneToCheckoutView(event);
+            sceneSwitcher.switchSceneToCheckoutView(event, cartLineItemDTOs);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -236,5 +243,11 @@ public class CartController {
             sceneSwitcher.switchSceneToCartView(e);
     }
 
-
+    private void determineBuyButtonState(){
+        if (cartView.getItems().isEmpty()){
+            buyButton.setDisable(true);
+        }else{
+            buyButton.setDisable(false);
+        }
+    }
 }
