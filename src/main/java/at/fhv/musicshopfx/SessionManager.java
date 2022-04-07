@@ -21,7 +21,7 @@ public class SessionManager {
         SessionManager.instance = this;
         this.rmiController = rmiController;
     }
-
+//
 
     public static SessionManager getInstance() throws NotLoggedInException {
         if (!SessionManager.isLoggedIn) {
