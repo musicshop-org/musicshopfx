@@ -72,7 +72,6 @@ public class MusicOverviewController {
             e.printStackTrace();
         }
 
-        // permissions
         for (Role role : this.roles)
         {
             if (role.equals(Role.SALESPERSON)) {
