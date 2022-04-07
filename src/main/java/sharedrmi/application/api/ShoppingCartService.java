@@ -19,4 +19,6 @@ public interface ShoppingCartService extends Remote {
     void changeQuantity(CartLineItemDTO var1, int var2) throws RemoteException;
 
     void removeProductFromCart(CartLineItemDTO var1) throws RemoteException;
+
+    void clearCart() throws RemoteException;
 }

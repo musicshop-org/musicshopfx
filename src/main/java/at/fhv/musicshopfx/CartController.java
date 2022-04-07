@@ -44,6 +44,8 @@ public class CartController {
     private Label totalPriceLabel;
     @FXML
     private Button buyButton;
+    @FXML
+    private Button clearCartButton;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
@@ -76,15 +78,14 @@ public class CartController {
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
         cartLineItemDTOs = rmiController.getCart().getCartLineItems();
-        for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs)
-        {
+        for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
-                                                  cartLineItemDTO.getMediumType(),
-                                                  cartLineItemDTO.getQuantity(),
-                                                  cartLineItemDTO.getPrice(),
-                                                  getImageView(MINUS_PATH, 12, 12),
-                                                  getImageView(PLUS_PATH, 12, 12),
-                                                  getImageView(CROSS_PATH, 18, 18),
+                    cartLineItemDTO.getMediumType(),
+                    cartLineItemDTO.getQuantity(),
+                    cartLineItemDTO.getPrice(),
+                    getImageView(MINUS_PATH, 12, 12),
+                    getImageView(PLUS_PATH, 12, 12),
+                    getImageView(CROSS_PATH, 18, 18),
                     cartLineItemDTO
             ));
         }
@@ -107,19 +108,21 @@ public class CartController {
         cartView.getSelectionModel().clearSelection();
 
         // calculate and set total price
-        if (rmiController.getCart().getCartLineItems().size() == 0)
+        if (rmiController.getCart().getCartLineItems().size() == 0) {
             totalPriceLabel.setText("0 " + CURRENCY);
-        else {
+        } else {
             double totalPrice = calculateTotalPrice(data.iterator());
             DecimalFormat df = new DecimalFormat("#.00");
             totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
         }
-        determineBuyButtonState();
+
+        determineButtonStates();
     }
 
     // get ImageView for UI table
     private ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
         FileInputStream inpStr = new FileInputStream(pathToImage);
+
         Image image = new Image(inpStr);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(height);
@@ -128,12 +131,10 @@ public class CartController {
         return imageView;
     }
 
-    private double calculateTotalPrice(Iterator<CartLineItem> iter)
-    {
+    private double calculateTotalPrice(Iterator<CartLineItem> iter) {
         double totalPrice = 0;
 
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             CartLineItem cartLineItem = iter.next();
             double price = cartLineItem.getPrice().doubleValue();
             int quantity = cartLineItem.getQuantity();
@@ -144,9 +145,10 @@ public class CartController {
     }
 
     @FXML
-    protected void cartLineItemEdited (MouseEvent e) throws RemoteException {
+    protected void cartLineItemEdited(MouseEvent e) throws RemoteException {
 
-        if (e.isPrimaryButtonDown() && cartView.getItems().isEmpty() == false) {
+        if (e.isPrimaryButtonDown() && !cartView.getItems().isEmpty()) {
+
             CartLineItem cartLineItem = cartView.getSelectionModel().getSelectedItem();
             CartLineItemDTO cartLineItemDTO = cartLineItem.getLineItemDTO();
 
@@ -158,19 +160,16 @@ public class CartController {
 
             int selectedColIdx = -1;
 
-            for (TablePosition po : pos)
-            {
+            for (TablePosition po : pos) {
                 selectedColIdx = po.getColumn();
             }
 
             // minus clicked
-            if (selectedColIdx == MINUS_COLUMN_POSITION){
+            if (selectedColIdx == MINUS_COLUMN_POSITION) {
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
                     rmiController.removeProductFromCart(cartLineItemDTO);
-                }
-                else
-                {
+                } else {
                     data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                             cartLineItem.getMedium(),
                             cartLineItem.getQuantity() - 1,
@@ -186,7 +185,7 @@ public class CartController {
             }
 
             // plus clicked
-            else if (selectedColIdx == PLUS_COLUMN_POSITION){
+            else if (selectedColIdx == PLUS_COLUMN_POSITION) {
                 data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                         cartLineItem.getMedium(),
                         cartLineItem.getQuantity() + 1,
@@ -201,14 +200,14 @@ public class CartController {
             }
 
             // x clicked
-            else if (selectedColIdx == CROSS_COLUMN_POSITION){
+            else if (selectedColIdx == CROSS_COLUMN_POSITION) {
                 data.remove(selectedRowIdx);
                 rmiController.removeProductFromCart(cartLineItemDTO);
             }
 
-            if (rmiController.getCart().getCartLineItems().size() == 0)
+            if (rmiController.getCart().getCartLineItems().size() == 0) {
                 totalPriceLabel.setText("0 " + CURRENCY);
-            else {
+            } else {
                 double totalPrice = calculateTotalPrice(data.iterator());
                 DecimalFormat df = new DecimalFormat("#.00");
                 totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
@@ -216,7 +215,8 @@ public class CartController {
 
             cartView.getSelectionModel().clearSelection();
         }
-        determineBuyButtonState();
+
+        determineButtonStates();
     }
 
     @FXML
@@ -228,26 +228,42 @@ public class CartController {
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    protected void clearCartButtonClicked(ActionEvent actionEvent) {
+
+        try {
+            rmiController.clearCart();
+            cartView.getItems().clear();
+
+            determineButtonStates();
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMusicSearchView(e);
+        }
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToCartView(e);
-    }
-
-    private void determineBuyButtonState(){
-        if (cartView.getItems().isEmpty()){
-            buyButton.setDisable(true);
-        }else{
-            buyButton.setDisable(false);
         }
     }
+
+    private void determineButtonStates() {
+        boolean isCartEmpty = cartView.getItems().isEmpty();
+
+        buyButton.setDisable(isCartEmpty);
+        clearCartButton.setDisable(isCartEmpty);
+    }
+
 }

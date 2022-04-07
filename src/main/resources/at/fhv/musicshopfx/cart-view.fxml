@@ -71,5 +71,6 @@
          </font>
       </Label>
       <Button fx:id="buyButton" layoutX="656.0" layoutY="461.0" mnemonicParsing="false" onAction="#buyButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Buy" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="26.0" />
+      <Button fx:id="clearCartButton" layoutX="76.0" layoutY="461.0" mnemonicParsing="false" onAction="#clearCartButtonClicked" prefHeight="25.0" prefWidth="118.0" text=" Clear Cart" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="76.0" />
     </children>
 </AnchorPane>
