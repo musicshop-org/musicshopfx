@@ -37,7 +37,6 @@ public class SessionManager {
         try {
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
-
             new SessionManager(rmiController);
             SessionManager.isLoggedIn = true;
 
