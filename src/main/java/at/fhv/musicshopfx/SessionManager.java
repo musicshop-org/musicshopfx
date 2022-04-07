@@ -5,6 +5,7 @@ import sharedrmi.communication.rmi.RMIControllerFactory;
 
 import javax.security.auth.login.FailedLoginException;
 import java.net.MalformedURLException;
+import java.nio.file.AccessDeniedException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,6 +14,7 @@ public class SessionManager {
 
     private static SessionManager instance;
     private static boolean isLoggedIn;
+    private static String errorMessage;
 
     private RMIController rmiController;
 
@@ -41,10 +43,14 @@ public class SessionManager {
 
             return true;
 
-        } catch (MalformedURLException | RemoteException | NotBoundException | FailedLoginException e) {
-            System.out.println(e.getMessage());
+        } catch (MalformedURLException | RemoteException | NotBoundException | FailedLoginException | AccessDeniedException e) {
+            SessionManager.errorMessage = e.getMessage();
             return false;
         }
+    }
+
+    public static String getErrorMessage() {
+        return SessionManager.errorMessage;
     }
 
     public RMIController getRMIController() {
