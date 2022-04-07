@@ -41,7 +41,7 @@ public class CheckoutController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
 
-    public void setData() throws IOException {
+    public void setData() {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -50,9 +50,7 @@ public class CheckoutController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-
-
-        }
+    }
 
 
     @FXML

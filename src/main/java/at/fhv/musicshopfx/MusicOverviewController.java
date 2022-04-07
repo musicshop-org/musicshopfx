@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.AlbumDTO;
@@ -49,6 +50,8 @@ public class MusicOverviewController {
     private Label addToCartLabel;
     @FXML
     private Label quantityLabel;
+    @FXML
+    private ImageView cartIconImage;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
@@ -76,6 +79,7 @@ public class MusicOverviewController {
                 this.quantityLabel.setVisible(true);
                 this.quantityTextField.setVisible(true);
                 this.addToCartButton.setVisible(true);
+                this.cartIconImage.setVisible(true);
             }
         }
 

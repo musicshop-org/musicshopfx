@@ -40,7 +40,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>

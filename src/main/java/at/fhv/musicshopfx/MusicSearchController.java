@@ -5,9 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.valueobjects.Role;
 
 
 import java.io.IOException;
@@ -28,18 +30,30 @@ public class MusicSearchController {
     private TableColumn<AlbumDTO, String> mediumTypeCol;
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
+    @FXML
+    private ImageView cartIconImage;
 
     private RMIController rmiController;
+    private List<Role> roles;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
-        } catch (NotLoggedInException e) {
+        } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+        }
+
+        // permissions
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+            }
         }
     }
 
