@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.CartLineItem;
+import sharedrmi.domain.valueobjects.Role;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
