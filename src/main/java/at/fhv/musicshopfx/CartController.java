@@ -79,12 +79,12 @@ public class CartController {
         cartLineItemDTOs = rmiController.getCart().getCartLineItems();
         for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
-cartLineItemDTO.getMediumType(),
-                                                  cartLineItemDTO.getQuantity(),
-                                                  cartLineItemDTO.getPrice(),
-                                                  getImageView(MINUS_PATH, 12, 12),
-                                                  "+",
-                                                  getImageView(CROSS_PATH, 18, 18),                    cartLineItemDTO
+                    cartLineItemDTO.getMediumType(),
+                    cartLineItemDTO.getQuantity(),
+                    cartLineItemDTO.getPrice(),
+                    getImageView(MINUS_PATH, 12, 12),
+                    "+",
+                    getImageView(CROSS_PATH, 18, 18), cartLineItemDTO
             ));
         }
 
