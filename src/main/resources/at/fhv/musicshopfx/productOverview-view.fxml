@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MusicOverviewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MusicOverviewController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -34,7 +40,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>
@@ -94,10 +100,10 @@
                         <TableColumn fx:id="artistCol" prefWidth="163.0" text="Artist" />
                     </columns>
                 </TableView>
-                <Button fx:id="addToCartButton" layoutX="595.0" layoutY="251.0" mnemonicParsing="false" onAction="#addToCartButtonClicked" text="Add to Cart" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="27.0" />
-                <TextField fx:id="quantityTextField" layoutX="427.0" layoutY="251.0" prefHeight="25.0" prefWidth="73.0" text="1" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="124.0" />
+                <Button fx:id="addToCartButton" layoutX="595.0" layoutY="251.0" mnemonicParsing="false" onAction="#addToCartButtonClicked" text="Add to Cart" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="27.0" />
+                <TextField fx:id="quantityTextField" layoutX="427.0" layoutY="251.0" prefHeight="25.0" prefWidth="73.0" text="1" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="124.0" />
                 <Label fx:id="addToCartLabel" layoutX="346.0" layoutY="255.0" textFill="#0fa314" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="215.0" />
-            <Label layoutX="502.0" layoutY="239.0" text="Quantity" AnchorPane.bottomAnchor="36.0" AnchorPane.rightAnchor="158.0">
+            <Label fx:id="quantityLabel" layoutX="502.0" layoutY="239.0" text="Quantity" visible="false" AnchorPane.bottomAnchor="36.0" AnchorPane.rightAnchor="158.0">
                <font>
                   <Font size="10.0" />
                </font>

@@ -22,27 +22,13 @@ public class LoginController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
-
     @FXML
     protected void login(ActionEvent e) throws IOException {
         if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText())) {
             sceneSwitcher.switchSceneToMusicSearchView(e);
         } else {
-            loginFailedLabel.setText("wrong username or password");
+            loginFailedLabel.setText(SessionManager.getErrorMessage());
             passwordTextField.clear();
         }
     }
-
-//    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicSearchController musicSearchController = loader.getController();
-//        musicSearchController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
 }

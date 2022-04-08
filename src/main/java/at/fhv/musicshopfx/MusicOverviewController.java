@@ -6,14 +6,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.valueobjects.Role;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -45,9 +48,14 @@ public class MusicOverviewController {
     private TextField quantityTextField;
     @FXML
     private Label addToCartLabel;
+    @FXML
+    private Label quantityLabel;
+    @FXML
+    private ImageView cartIconImage;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
+    private List<Role> roles;
 
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -57,10 +65,21 @@ public class MusicOverviewController {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
-        } catch (NotLoggedInException e) {
+        } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.quantityLabel.setVisible(true);
+                this.quantityTextField.setVisible(true);
+                this.addToCartButton.setVisible(true);
+                this.cartIconImage.setVisible(true);
+            }
         }
 
         currentAlbumDTO = albumDTO;
