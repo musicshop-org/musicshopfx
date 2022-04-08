@@ -60,20 +60,23 @@ public class CheckoutController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
         this.cartLineItemDTOs = cartLineItemDTOs;
     }
 
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMusicSearchView(e);
+        }
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToCartView(e);
+        }
     }
 
 
@@ -98,6 +101,7 @@ public class CheckoutController {
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) {
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
+
         switch (((RadioButton) paymentMethod.getSelectedToggle()).getText()) {
             case "Cash":
                 selectedPaymentMethod = PaymentMethod.CASH;
@@ -108,20 +112,18 @@ public class CheckoutController {
                 break;
         }
 
-
         InvoiceDTO invoiceDTO = InvoiceDTO.builder()
                 .invoiceId(new InvoiceId())
                 .date(LocalDate.now())
                 .paymentMethod(selectedPaymentMethod)
-                .invoiceLineItems(InvoiceLineItemDTO.createFromCartLineItemDTOs(cartLineItemDTOs)).build();
+                .invoiceLineItems(InvoiceLineItemDTO.createFromCartLineItemDTOs(cartLineItemDTOs))
+                .build();
 
         try {
             rmiController.createInvoice(invoiceDTO);
             rmiController.clearCart();
 
             sceneSwitcher.switchSceneToMusicSearchView(event);
-        } catch (RemoteException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
