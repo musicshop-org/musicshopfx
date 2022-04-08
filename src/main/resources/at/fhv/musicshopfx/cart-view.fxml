@@ -30,7 +30,7 @@
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="106.00004577636719" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />
             <TableColumn fx:id="minusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-alignment: CENTER;" />
                 <TableColumn fx:id="quantityCol" prefWidth="84.00006103515625" sortable="false" style="-fx-alignment: CENTER;" text="Quanitity" />
-            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-alignment: CENTER;" />
+            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-font-size: 20px; -fx-alignment: CENTER; -fx-font-weight: bold;" />
             <TableColumn fx:id="priceCol" editable="false" minWidth="0.0" prefWidth="83.99996948242188" sortable="false" style="-fx-alignment: CENTER;" text="Price" />
             <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: CENTER;" fx:id="xCol" />
             </columns>

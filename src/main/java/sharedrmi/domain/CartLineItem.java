@@ -13,17 +13,17 @@ public class CartLineItem {
     private int quantity;
     private BigDecimal price;
     private ImageView minus_image;
-    private ImageView plus_image;
+    private String plus;
     private ImageView x_image;
     private CartLineItemDTO cartLineItemDTO;
 
-    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, ImageView plus_image, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
+    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, String plus, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
         this.name = name;
         this.medium = medium;
         this.quantity = quantity;
         this.price = price;
         this.minus_image = minus_image;
-        this.plus_image = plus_image;
+        this.plus = plus;
         this.x_image = x_image;
         this.cartLineItemDTO = cartLineItemDTO;
     }
@@ -48,8 +48,8 @@ public class CartLineItem {
         return minus_image;
     }
 
-    public ImageView getPlus_image() {
-        return plus_image;
+    public String getPlus() {
+        return plus;
     }
 
     public ImageView getX_image() {

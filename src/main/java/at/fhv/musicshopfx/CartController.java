@@ -51,7 +51,6 @@ public class CartController {
 
     private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
     private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
-    private final String PLUS_PATH = BASE_IMAGE_PATH + "plus.png";
     private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
@@ -79,7 +78,7 @@ public class CartController {
                                                   cartLineItemDTO.getQuantity(),
                                                   cartLineItemDTO.getPrice(),
                                                   getImageView(MINUS_PATH, 12, 12),
-                                                  getImageView(PLUS_PATH, 12, 12),
+                                                  "+",
                                                   getImageView(CROSS_PATH, 18, 18),
                     cartLineItemDTO
             ));
@@ -93,7 +92,7 @@ public class CartController {
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
-        plusCol.setCellValueFactory(new PropertyValueFactory<>("plus_image"));
+        plusCol.setCellValueFactory(new PropertyValueFactory<>("plus"));
         xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
 
         data = obsDTOs;
@@ -171,7 +170,7 @@ public class CartController {
                             cartLineItem.getQuantity() - 1,
                             cartLineItem.getPrice(),
                             cartLineItem.getMinus_image(),
-                            cartLineItem.getPlus_image(),
+                            cartLineItem.getPlus(),
                             cartLineItem.getX_image(),
                             cartLineItem.getLineItemDTO()
                     ));
@@ -187,7 +186,7 @@ public class CartController {
                         cartLineItem.getQuantity() + 1,
                         cartLineItem.getPrice(),
                         cartLineItem.getMinus_image(),
-                        cartLineItem.getPlus_image(),
+                        cartLineItem.getPlus(),
                         cartLineItem.getX_image(),
                         cartLineItem.getLineItemDTO()
                 ));
