@@ -91,6 +91,9 @@ public class InvoiceSearchController {
             invoiceView.setItems(invoiceLineItemDTO);
 
         } catch (Exception e) {
+
+            // TODO: clear table
+
             e.printStackTrace();
         }
     }
