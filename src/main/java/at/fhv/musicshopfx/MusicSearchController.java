@@ -99,6 +99,12 @@ public class MusicSearchController {
             sceneSwitcher.switchSceneToCartView (e);
     }
 
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceView (e);
+    }
+
 //    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 //        root = loader.load();

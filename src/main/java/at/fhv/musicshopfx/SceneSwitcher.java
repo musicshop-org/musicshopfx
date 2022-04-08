@@ -21,9 +21,10 @@ public class SceneSwitcher {
     private final String checkoutViewFxml = "checkout-view.fxml";
     private final String musicSearchViewFxml = "musicSearch-view.fxml";
     private final String productOverviewViewFxml = "productOverview-view.fxml";
+    private final String invoiceSearchViewFxml = "invoiceSearch-view.fxml";
 
 
-    private void displayScene(Event event){
+    private void displayScene(Event event) {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         double sceneWidth = ((Node) event.getSource()).getScene().getWidth();
         double sceneHeight = ((Node) event.getSource()).getScene().getHeight();
@@ -70,6 +71,14 @@ public class SceneSwitcher {
         MusicOverviewController musicOverviewController = loader.getController();
         musicOverviewController.setData(albumDTO);
         displayScene(event);
+    }
 
+    public void switchSceneToInvoiceView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(invoiceSearchViewFxml));
+        root = loader.load();
+
+        InvoiceSearchController invoiceSearchController = loader.getController();
+        invoiceSearchController.setData();
+        displayScene(e);
     }
 }
