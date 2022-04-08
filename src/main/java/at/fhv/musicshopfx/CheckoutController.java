@@ -78,7 +78,7 @@ public class CheckoutController {
 
 
     @FXML
-    protected void customerSearchButtonClicked(){
+    protected void customerSearchButtonClicked() {
         try {
 
             List<CustomerDTO> customers = rmiController.findCustomersByName(customerSearchTextField.getText());
@@ -96,9 +96,9 @@ public class CheckoutController {
     }
 
     @FXML
-    protected void checkoutButtonClicked(ActionEvent event){
+    protected void checkoutButtonClicked(ActionEvent event) {
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
-        switch (((RadioButton) paymentMethod.getSelectedToggle()).getText()){
+        switch (((RadioButton) paymentMethod.getSelectedToggle()).getText()) {
             case "Cash":
                 selectedPaymentMethod = PaymentMethod.CASH;
                 break;
@@ -109,7 +109,6 @@ public class CheckoutController {
         }
 
 
-
         InvoiceDTO invoiceDTO = InvoiceDTO.builder()
                 .invoiceId(new InvoiceId())
                 .date(LocalDate.now())
@@ -118,6 +117,8 @@ public class CheckoutController {
 
         try {
             rmiController.createInvoice(invoiceDTO);
+            rmiController.clearCart();
+
             sceneSwitcher.switchSceneToMusicSearchView(event);
         } catch (RemoteException e) {
             e.printStackTrace();
