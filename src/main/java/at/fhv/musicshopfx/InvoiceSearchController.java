@@ -74,8 +74,13 @@ public class InvoiceSearchController {
 
         try {
 
-            Optional<InvoiceDTO> invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
-            List<InvoiceLineItemDTO> invoiceLineItems = invoiceDTO.get().getInvoiceLineItems();
+            InvoiceDTO invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
+
+            if (invoiceDTO == null) {
+                throw new Exception("invoice not found");
+            }
+
+            List<InvoiceLineItemDTO> invoiceLineItems = invoiceDTO.getInvoiceLineItems();
 
             ObservableList<InvoiceLineItemDTO> invoiceLineItemDTO = FXCollections.observableArrayList(invoiceLineItems);
 
@@ -85,7 +90,7 @@ public class InvoiceSearchController {
             quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             invoiceView.setItems(invoiceLineItemDTO);
 
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -109,10 +114,7 @@ public class InvoiceSearchController {
     }
 
     @FXML
-    public void invoiceViewClicked(MouseEvent e) {
-    }
-
-    @FXML
     public void returnButtonClicked(ActionEvent e) {
+        // TODO: implement
     }
 }
