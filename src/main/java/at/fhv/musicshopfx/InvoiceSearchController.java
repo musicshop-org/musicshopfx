@@ -30,13 +30,13 @@ public class InvoiceSearchController {
     @FXML
     private TableView<InvoiceLineItemDTO> invoiceView;
     @FXML
-    private TableColumn<AlbumDTO, String> albumTitleCol;
+    private TableColumn<InvoiceLineItemDTO, String> albumTitleCol;
     @FXML
-    private TableColumn<AlbumDTO, String> mediumTypeCol;
+    private TableColumn<InvoiceLineItemDTO, String> mediumTypeCol;
     @FXML
-    private TableColumn<AlbumDTO, String> priceCol;
+    private TableColumn<InvoiceLineItemDTO, String> priceCol;
     @FXML
-    private TableColumn<AlbumDTO, String> quantityCol;
+    private TableColumn<InvoiceLineItemDTO, String> quantityCol;
     @FXML
     private TableColumn<AlbumDTO, String> returnQuantityCol;
     @FXML
@@ -105,7 +105,7 @@ public class InvoiceSearchController {
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceView (e);
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
     }
 
     @FXML

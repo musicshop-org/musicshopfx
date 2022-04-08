@@ -102,7 +102,7 @@ public class MusicSearchController {
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceView (e);
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
     }
 
 //    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {

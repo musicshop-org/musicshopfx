@@ -73,7 +73,7 @@ public class SceneSwitcher {
         displayScene(event);
     }
 
-    public void switchSceneToInvoiceView(Event e) throws IOException {
+    public void switchSceneToInvoiceSearchView(Event e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(invoiceSearchViewFxml));
         root = loader.load();
 

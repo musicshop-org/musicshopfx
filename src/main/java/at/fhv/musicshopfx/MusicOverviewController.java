@@ -117,6 +117,12 @@ public class MusicOverviewController {
     }
 
     @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
     private void addToCartButtonClicked(ActionEvent event){
 
         try {
