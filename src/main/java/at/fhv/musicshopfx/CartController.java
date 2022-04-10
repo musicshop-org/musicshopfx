@@ -212,6 +212,7 @@ public class CartController {
                 totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
             }
 
+            // prevents table row selection highlighting
             cartView.getSelectionModel().clearSelection();
         }
 

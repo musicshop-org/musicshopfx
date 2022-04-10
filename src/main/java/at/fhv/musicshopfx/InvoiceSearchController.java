@@ -193,6 +193,9 @@ public class InvoiceSearchController {
 
             }
 
+            // prevents table row selection highlighting
+            invoiceView.getSelectionModel().clearSelection();
+
             returnButton.setDisable(returnQty <= 0);
         }
     }
@@ -219,14 +222,14 @@ public class InvoiceSearchController {
     }
 
     @FXML
-    public void returnButtonClicked(MouseEvent e) throws InvoiceNotFoundException, RemoteException {
+    public void returnButtonClicked(MouseEvent e) throws InvoiceNotFoundException, IOException {
         if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
 
             for (InvoiceLineItem invoiceLineItem : data) {
                 rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), invoiceLineItem.getReturnQuantity());
             }
 
-
+            sceneSwitcher.switchSceneToMusicSearchView(e);
 
         }
     }
