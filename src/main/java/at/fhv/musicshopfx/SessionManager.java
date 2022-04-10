@@ -46,6 +46,15 @@ public class SessionManager {
         }
     }
 
+    public static void logout() throws NotLoggedInException {
+        if (isLoggedIn) {
+            SessionManager.instance = null;
+            isLoggedIn = false;
+        } else {
+            throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
+        }
+    }
+
     public RMIController getRMIController() {
         return rmiController;
     }

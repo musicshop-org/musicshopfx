@@ -66,5 +66,6 @@
                 </VBox>
             </children>
         </AnchorPane>
+      <Button fx:id="logoutButton" layoutX="723.0" layoutY="67.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Logout" />
     </children>
 </AnchorPane>
