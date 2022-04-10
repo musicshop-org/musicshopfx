@@ -14,6 +14,7 @@ public class SessionManager {
 
     private static SessionManager instance;
     private static boolean isLoggedIn;
+    private static String lastSearch = "";
 
     private RMIController rmiController;
 
@@ -50,6 +51,7 @@ public class SessionManager {
         if (isLoggedIn) {
             SessionManager.instance = null;
             isLoggedIn = false;
+            lastSearch = "";
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
         }
@@ -57,5 +59,11 @@ public class SessionManager {
 
     public RMIController getRMIController() {
         return rmiController;
+    }
+
+    public static String getLastSearch() { return SessionManager.lastSearch; }
+
+    public static void setLastSearch(String lastSearch) {
+        SessionManager.lastSearch = lastSearch;
     }
 }

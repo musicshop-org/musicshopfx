@@ -40,6 +40,7 @@ public class MusicSearchController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
+
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
@@ -49,20 +50,28 @@ public class MusicSearchController {
             e.printStackTrace();
         }
 
+        String lastSearch = SessionManager.getLastSearch();
+
+        if (!lastSearch.isBlank()) {
+            musicSearchTextField.setText(lastSearch);
+            musicSearchButtonClicked();
+        }
+
         for (Role role : this.roles)
         {
             if (role.equals(Role.SALESPERSON)) {
                 this.cartIconImage.setVisible(true);
             }
         }
+
+
     }
 
-
     @FXML
-    protected void MusicSearchButtonClicked() {
+    protected void musicSearchButtonClicked() {
 
         try {
-
+            SessionManager.setLastSearch(musicSearchTextField.getText());
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
 
             ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
