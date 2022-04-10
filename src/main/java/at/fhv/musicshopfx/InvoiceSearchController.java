@@ -219,11 +219,15 @@ public class InvoiceSearchController {
     }
 
     @FXML
-    public void returnButtonClicked(MouseEvent e) throws Exception {
+    public void returnButtonClicked(MouseEvent e) throws InvoiceNotFoundException, RemoteException {
         if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
-            InvoiceLineItem invoiceLineItem = invoiceView.getSelectionModel().getSelectedItem();
 
-            rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), invoiceLineItem.getReturnQuantity());
+            for (InvoiceLineItem invoiceLineItem : data) {
+                rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), invoiceLineItem.getReturnQuantity());
+            }
+
+
+
         }
     }
 

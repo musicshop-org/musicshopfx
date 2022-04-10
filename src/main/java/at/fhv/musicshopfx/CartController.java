@@ -267,8 +267,9 @@ public class CartController {
 
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+        }
     }
 
 }

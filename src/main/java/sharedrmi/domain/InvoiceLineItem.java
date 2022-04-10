@@ -6,15 +6,16 @@ import sharedrmi.domain.enums.MediumType;
 import java.math.BigDecimal;
 
 public class InvoiceLineItem {
-    private String albumTitle;
-    private MediumType mediumType;
-    private BigDecimal price;
-    private int quantity;
-    private String minus;
-    private int returnQuantity;
-    private String plus;
-    private int returnedQuantity;
-    private InvoiceLineItemDTO invoiceLineItemDTO;
+
+    private final String albumTitle;
+    private final MediumType mediumType;
+    private final BigDecimal price;
+    private final int quantity;
+    private final String minus;
+    private final int returnQuantity;
+    private final String plus;
+    private final int returnedQuantity;
+    private final InvoiceLineItemDTO invoiceLineItemDTO;
 
     public InvoiceLineItem(String albumTitle, MediumType mediumType, BigDecimal price, int quantity, int returnQuantity, int returnedQuantity, InvoiceLineItemDTO invoiceLineItemDTO) {
         this.albumTitle = albumTitle;
