@@ -75,6 +75,6 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Button fx:id="returnButton" layoutX="657.0" layoutY="461.0" mnemonicParsing="false" onAction="#returnButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Return" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="26.0" />
+      <Button fx:id="returnButton" layoutX="657.0" layoutY="461.0" mnemonicParsing="false" onMouseClicked="#returnButtonClicked" onMousePressed="#returnButtonClicked" prefHeight="19.0" prefWidth="118.0" text="Return" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="26.0" />
     </children>
 </AnchorPane>

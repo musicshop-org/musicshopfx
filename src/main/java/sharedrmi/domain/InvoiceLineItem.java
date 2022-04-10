@@ -1,7 +1,6 @@
 package sharedrmi.domain;
 
-import javafx.scene.image.ImageView;
-import sharedrmi.application.dto.CartLineItemDTO;
+import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.domain.enums.MediumType;
 
 import java.math.BigDecimal;
@@ -15,8 +14,9 @@ public class InvoiceLineItem {
     private int returnQuantity;
     private String plus;
     private int returnedQuantity;
+    private InvoiceLineItemDTO invoiceLineItemDTO;
 
-    public InvoiceLineItem(String albumTitle, MediumType mediumType, BigDecimal price, int quantity, int returnQuantity, int returnedQuantity) {
+    public InvoiceLineItem(String albumTitle, MediumType mediumType, BigDecimal price, int quantity, int returnQuantity, int returnedQuantity, InvoiceLineItemDTO invoiceLineItemDTO) {
         this.albumTitle = albumTitle;
         this.mediumType = mediumType;
         this.price = price;
@@ -25,6 +25,7 @@ public class InvoiceLineItem {
         this.returnQuantity = returnQuantity;
         this.plus = "+";
         this.returnedQuantity = returnedQuantity;
+        this.invoiceLineItemDTO = invoiceLineItemDTO;
     }
 
     public String getAlbumTitle() {
@@ -57,5 +58,9 @@ public class InvoiceLineItem {
 
     public int getReturnedQuantity() {
         return returnedQuantity;
+    }
+
+    public InvoiceLineItemDTO getInvoiceLineItemDTO() {
+        return invoiceLineItemDTO;
     }
 }

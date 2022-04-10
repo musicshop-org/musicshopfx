@@ -2,7 +2,6 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -50,6 +49,7 @@ public class InvoiceSearchController {
     private ImageView invoiceIconImage;
 
     private ObservableList<InvoiceLineItem> data;
+    private InvoiceDTO invoiceDTO;
 
     private final int MINUS_COLUMN_POSITION = 4;
     private final int PLUS_COLUMN_POSITION = 6;
@@ -83,7 +83,7 @@ public class InvoiceSearchController {
 
         try {
 
-            InvoiceDTO invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
+            invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
 
             if (invoiceDTO == null) {
                 throw new Exception("invoice not found");
@@ -100,7 +100,8 @@ public class InvoiceSearchController {
                             item.getPrice(),
                             item.getQuantity(),
                             0,
-                            item.getReturnedQuantity()
+                            item.getReturnedQuantity(),
+                            item
                     ))
                     .collect(Collectors.toList());
 
@@ -161,7 +162,8 @@ public class InvoiceSearchController {
                             invoiceLineItem.getPrice(),
                             invoiceLineItem.getQuantity(),
                             newReturnQty,
-                            invoiceLineItem.getReturnedQuantity()
+                            invoiceLineItem.getReturnedQuantity(),
+                            invoiceLineItem.getInvoiceLineItemDTO()
                     ));
 
                     returnQty = newReturnQty;
@@ -181,7 +183,8 @@ public class InvoiceSearchController {
                             invoiceLineItem.getPrice(),
                             invoiceLineItem.getQuantity(),
                             newReturnQty,
-                            invoiceLineItem.getReturnedQuantity()
+                            invoiceLineItem.getReturnedQuantity(),
+                            invoiceLineItem.getInvoiceLineItemDTO()
                     ));
 
                     returnQty = newReturnQty;
@@ -215,8 +218,12 @@ public class InvoiceSearchController {
     }
 
     @FXML
-    public void returnButtonClicked(ActionEvent e) {
-        // TODO: implement
+    public void returnButtonClicked(MouseEvent e) throws Exception {
+        if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
+            InvoiceLineItem invoiceLineItem = invoiceView.getSelectionModel().getSelectedItem();
+
+            rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), invoiceLineItem.getReturnQuantity());
+        }
     }
 
     private void determineButtonStates() {
