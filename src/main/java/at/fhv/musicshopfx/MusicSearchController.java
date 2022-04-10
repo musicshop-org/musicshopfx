@@ -2,12 +2,15 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.valueobjects.Role;
 
 
 import java.io.IOException;
@@ -28,28 +31,45 @@ public class MusicSearchController {
     private TableColumn<AlbumDTO, String> mediumTypeCol;
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
+    @FXML
+    private ImageView cartIconImage;
 
     private RMIController rmiController;
+    private List<Role> roles;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
+
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
-        } catch (NotLoggedInException e) {
+        } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
+        String lastSearch = SessionManager.getLastSearch();
+
+        if (!lastSearch.isBlank()) {
+            musicSearchTextField.setText(lastSearch);
+            musicSearchButtonClicked();
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+            }
+        }
     }
 
-
     @FXML
-    protected void MusicSearchButtonClicked() {
+    protected void musicSearchButtonClicked() {
 
-        //TODO: only call Naming.lookup at startup and add error handling
         try {
-
+            SessionManager.setLastSearch(musicSearchTextField.getText());
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
 
             ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
@@ -84,6 +104,24 @@ public class MusicSearchController {
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToCartView (e);
+    }
+
+    @FXML
+    protected void logoutButtonClicked(ActionEvent e) throws IOException {
+        try {
+            SessionManager.logout();
+        } catch (NotLoggedInException ex) {
+            ex.printStackTrace();
+            return;
+        }
+
+        sceneSwitcher.switchSceneToLoginView(e);
+    }
+
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
     }
 
 //    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {

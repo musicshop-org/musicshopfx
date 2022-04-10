@@ -7,8 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.application.dto.CartLineItemDTO;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SceneSwitcher {
     private Stage stage;
@@ -19,9 +21,11 @@ public class SceneSwitcher {
     private final String checkoutViewFxml = "checkout-view.fxml";
     private final String musicSearchViewFxml = "musicSearch-view.fxml";
     private final String productOverviewViewFxml = "productOverview-view.fxml";
+    private final String invoiceSearchViewFxml = "invoiceSearch-view.fxml";
+    private final String loginViewFxml = "login-view.fxml";
 
 
-    private void displayScene(Event event){
+    private void displayScene(Event event) {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         double sceneWidth = ((Node) event.getSource()).getScene().getWidth();
         double sceneHeight = ((Node) event.getSource()).getScene().getHeight();
@@ -52,12 +56,12 @@ public class SceneSwitcher {
         displayScene(e);
     }
 
-    public void switchSceneToCheckoutView(Event e) throws IOException {
+    public void switchSceneToCheckoutView(Event e, List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(checkoutViewFxml));
         root = loader.load();
 
         CheckoutController checkoutController = loader.getController();
-        checkoutController.setData();
+        checkoutController.setData(cartLineItemDTOs);
         displayScene(e);
     }
 
@@ -68,6 +72,20 @@ public class SceneSwitcher {
         MusicOverviewController musicOverviewController = loader.getController();
         musicOverviewController.setData(albumDTO);
         displayScene(event);
+    }
 
+    public void switchSceneToLoginView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(loginViewFxml));
+        root = loader.load();
+        displayScene(e);
+    }
+
+    public void switchSceneToInvoiceSearchView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(invoiceSearchViewFxml));
+        root = loader.load();
+
+        InvoiceSearchController invoiceSearchController = loader.getController();
+        invoiceSearchController.setData();
+        displayScene(e);
     }
 }
