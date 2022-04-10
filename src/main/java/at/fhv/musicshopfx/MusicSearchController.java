@@ -2,6 +2,7 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -60,7 +61,6 @@ public class MusicSearchController {
     @FXML
     protected void MusicSearchButtonClicked() {
 
-        //TODO: only call Naming.lookup at startup and add error handling
         try {
 
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
@@ -99,42 +99,15 @@ public class MusicSearchController {
             sceneSwitcher.switchSceneToCartView (e);
     }
 
-//    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicSearchController musicSearchController = loader.getController();
-//        musicSearchController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        CartController cartController = loader.getController();
-//        cartController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    private void switchSceneToProductOverview(String fxml, Event event, AlbumDTO albumDTO) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicOverviewController musicOverviewController = loader.getController();
-//        musicOverviewController.setData(albumDTO);
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
+    @FXML
+    protected void logoutButtonClicked(ActionEvent e) throws IOException {
+        try {
+            SessionManager.logout();
+        } catch (NotLoggedInException ex) {
+            ex.printStackTrace();
+            return;
+        }
+
+        sceneSwitcher.switchSceneToLoginView(e);
+    }
 }
