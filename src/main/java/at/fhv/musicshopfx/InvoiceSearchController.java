@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.InvoiceDTO;
 import sharedrmi.application.dto.InvoiceLineItemDTO;
+import sharedrmi.application.exceptions.InvoiceNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.InvoiceLineItem;
 import sharedrmi.domain.valueobjects.InvoiceId;
@@ -86,7 +87,7 @@ public class InvoiceSearchController {
             invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
 
             if (invoiceDTO == null) {
-                throw new Exception("invoice not found");
+                throw new InvoiceNotFoundException("invoice not found");
             }
 
             List<InvoiceLineItemDTO> invoiceLineItemsDTO = invoiceDTO.getInvoiceLineItems();
