@@ -27,9 +27,9 @@
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="78.0" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />
                 <TableColumn fx:id="priceCol" editable="false" prefWidth="57.0" sortable="false" style="-fx-alignment: CENTER;" text="Price" />
                 <TableColumn fx:id="quantityCol" editable="false" prefWidth="57.0" sortable="false" style="-fx-alignment: CENTER;" text="Qty." />
-            <TableColumn fx:id="minusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-font-size: 14px; -fx-alignment: CENTER; -fx-font-weight: bold;" />
+            <TableColumn fx:id="minusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-font-size: 16px; -fx-alignment: CENTER; -fx-font-weight: bold;" />
                 <TableColumn fx:id="returnQuantityCol" prefWidth="100.0" sortable="false" style="-fx-alignment: CENTER;" text="Return Qty." />
-            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-font-size: 14px; -fx-alignment: CENTER; -fx-font-weight: bold;" />
+            <TableColumn fx:id="plusCol" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" sortable="false" style="-fx-font-size: 16px; -fx-alignment: CENTER; -fx-font-weight: bold;" />
                 <TableColumn fx:id="returnedQuantityCol" editable="false" prefWidth="100.0" sortable="false" style="-fx-alignment: CENTER;" text="Returned Qty." />
             </columns>
         </TableView>
