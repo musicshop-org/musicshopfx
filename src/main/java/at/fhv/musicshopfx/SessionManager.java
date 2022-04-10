@@ -14,7 +14,6 @@ public class SessionManager {
 
     private static SessionManager instance;
     private static boolean isLoggedIn;
-    private static String errorMessage;
 
     private RMIController rmiController;
 
@@ -33,7 +32,7 @@ public class SessionManager {
         return SessionManager.instance;
     }
 
-    public static boolean login(String username, String password) {
+    public static boolean login(String username, String password) throws FailedLoginException, AccessDeniedException{
         try {
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
@@ -42,14 +41,9 @@ public class SessionManager {
 
             return true;
 
-        } catch (MalformedURLException | RemoteException | NotBoundException | FailedLoginException | AccessDeniedException e) {
-            SessionManager.errorMessage = e.getMessage();
+        } catch (MalformedURLException | RemoteException | NotBoundException e) {
             return false;
         }
-    }
-
-    public static String getErrorMessage() {
-        return SessionManager.errorMessage;
     }
 
     public RMIController getRMIController() {
