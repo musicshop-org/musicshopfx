@@ -64,6 +64,7 @@ public class InvoiceSearchController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
+
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
@@ -71,12 +72,6 @@ public class InvoiceSearchController {
         } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }
-
-        for (Role role : this.roles) {
-            if (role.equals(Role.SALESPERSON)) {
-                this.invoiceIconImage.setVisible(true);
-            }
         }
 
         determineButtonStates();
