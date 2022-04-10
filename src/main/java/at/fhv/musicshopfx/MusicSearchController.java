@@ -61,7 +61,6 @@ public class MusicSearchController {
     @FXML
     protected void MusicSearchButtonClicked() {
 
-        //TODO: only call Naming.lookup at startup and add error handling
         try {
 
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
