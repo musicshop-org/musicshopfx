@@ -54,7 +54,7 @@ public class MusicSearchController {
 
         if (!lastSearch.isBlank()) {
             musicSearchTextField.setText(lastSearch);
-            musicSearchButtonClicked();
+            populateTable(SessionManager.getLastAlbums());
         }
 
         for (Role role : this.roles)
@@ -65,20 +65,23 @@ public class MusicSearchController {
         }
     }
 
+    private void populateTable(List<AlbumDTO> albums) {
+        ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
+        albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+        mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        musicView.setItems(albumDTO);
+    }
+
     @FXML
     protected void musicSearchButtonClicked() {
 
         try {
-            SessionManager.setLastSearch(musicSearchTextField.getText());
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
-
-            ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
-
-            albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-            mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
-            priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-            musicView.setItems(albumDTO);
+            SessionManager.setLastSearch(musicSearchTextField.getText());
+            SessionManager.setLastAlbums(albums);
+            populateTable(albums);
 
         } catch (RemoteException e) {
             e.printStackTrace();
