@@ -131,7 +131,7 @@ public class InvoiceSearchController {
     }
 
     @FXML
-    protected void cartLineItemEdited(MouseEvent e) {
+    protected void invoiceLineItemEdited(MouseEvent e) {
 
         if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
 
