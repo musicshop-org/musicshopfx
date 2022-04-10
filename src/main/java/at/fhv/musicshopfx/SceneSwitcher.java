@@ -22,6 +22,7 @@ public class SceneSwitcher {
     private final String musicSearchViewFxml = "musicSearch-view.fxml";
     private final String productOverviewViewFxml = "productOverview-view.fxml";
     private final String invoiceSearchViewFxml = "invoiceSearch-view.fxml";
+    private final String loginViewFxml = "login-view.fxml";
 
 
     private void displayScene(Event event) {
@@ -71,6 +72,12 @@ public class SceneSwitcher {
         MusicOverviewController musicOverviewController = loader.getController();
         musicOverviewController.setData(albumDTO);
         displayScene(event);
+    }
+
+    public void switchSceneToLoginView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(loginViewFxml));
+        root = loader.load();
+        displayScene(e);
     }
 
     public void switchSceneToInvoiceSearchView(Event e) throws IOException {

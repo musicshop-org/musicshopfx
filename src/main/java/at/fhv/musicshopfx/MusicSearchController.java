@@ -2,6 +2,7 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,6 +40,7 @@ public class MusicSearchController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
+
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
@@ -46,6 +48,13 @@ public class MusicSearchController {
         } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+        }
+
+        String lastSearch = SessionManager.getLastSearch();
+
+        if (!lastSearch.isBlank()) {
+            musicSearchTextField.setText(lastSearch);
+            musicSearchButtonClicked();
         }
 
         for (Role role : this.roles)
@@ -56,13 +65,11 @@ public class MusicSearchController {
         }
     }
 
-
     @FXML
-    protected void MusicSearchButtonClicked() {
+    protected void musicSearchButtonClicked() {
 
-        //TODO: only call Naming.lookup at startup and add error handling
         try {
-
+            SessionManager.setLastSearch(musicSearchTextField.getText());
             List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
 
             ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
@@ -97,6 +104,18 @@ public class MusicSearchController {
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToCartView (e);
+    }
+
+    @FXML
+    protected void logoutButtonClicked(ActionEvent e) throws IOException {
+        try {
+            SessionManager.logout();
+        } catch (NotLoggedInException ex) {
+            ex.printStackTrace();
+            return;
+        }
+
+        sceneSwitcher.switchSceneToLoginView(e);
     }
 
     @FXML
