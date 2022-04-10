@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.InvoiceDTO;
 import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.application.exceptions.InvoiceNotFoundException;
@@ -24,6 +25,8 @@ public class InvoiceSearchController {
 
     @FXML
     private TextField invoiceSearchTextField;
+    @FXML
+    private Label invoiceErrorLabel;
 
     @FXML
     private TableView<InvoiceLineItem> invoiceView;
@@ -84,11 +87,12 @@ public class InvoiceSearchController {
 
         try {
 
-            invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
-
-            if (invoiceDTO == null) {
-                throw new InvoiceNotFoundException("invoice not found");
+            if (Integer.parseInt(invoiceSearchTextField.getText()) < 1) {
+                throw new NumberFormatException("no valid value");
             }
+
+            invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
+            invoiceErrorLabel.setText("");
 
             List<InvoiceLineItemDTO> invoiceLineItemsDTO = invoiceDTO.getInvoiceLineItems();
 
@@ -121,11 +125,19 @@ public class InvoiceSearchController {
 
             invoiceView.setItems(obsDTOs);
 
-        } catch (Exception e) {
-
+        } catch (InvoiceNotFoundException | NumberFormatException e) {
             invoiceView.getItems().clear();
             determineButtonStates();
 
+            invoiceErrorLabel.setTextFill(Paint.valueOf("red"));
+
+            if (e instanceof InvoiceNotFoundException) {
+                invoiceErrorLabel.setText("invoice not found");
+            } else {
+                invoiceErrorLabel.setText("no valid value");
+            }
+
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
