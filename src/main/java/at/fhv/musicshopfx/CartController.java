@@ -212,6 +212,7 @@ public class CartController {
                 totalPriceLabel.setText(df.format(totalPrice) + " " + CURRENCY);
             }
 
+            // prevents table row selection highlighting
             cartView.getSelectionModel().clearSelection();
         }
 
@@ -263,6 +264,13 @@ public class CartController {
 
         buyButton.setDisable(isCartEmpty);
         clearCartButton.setDisable(isCartEmpty);
+    }
+
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+        }
     }
 
 }

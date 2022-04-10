@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 
 public class CartLineItem {
 
-    private String name;
-    private MediumType medium;
-    private int quantity;
-    private BigDecimal price;
-    private ImageView minus_image;
-    private String plus;
-    private ImageView x_image;
-    private CartLineItemDTO cartLineItemDTO;
+    private final String name;
+    private final MediumType medium;
+    private final int quantity;
+    private final BigDecimal price;
+    private final ImageView minus_image;
+    private final String plus;
+    private final ImageView x_image;
+    private final CartLineItemDTO cartLineItemDTO;
 
     public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, String plus, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
         this.name = name;

@@ -53,6 +53,17 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
+                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/invoice.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="15.0" top="15.0" />
+                     </VBox.margin>
+                  </ImageView>
                     </children>
                 </VBox>
             </children>

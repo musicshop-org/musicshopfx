@@ -63,8 +63,6 @@ public class MusicSearchController {
                 this.cartIconImage.setVisible(true);
             }
         }
-
-
     }
 
     @FXML
@@ -119,4 +117,49 @@ public class MusicSearchController {
 
         sceneSwitcher.switchSceneToLoginView(e);
     }
+
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+//    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+//        root = loader.load();
+//
+//        MusicSearchController musicSearchController = loader.getController();
+//        musicSearchController.setData();
+//
+//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
+//
+//    private void switchSceneToCartView(String fxml, Event event) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+//        root = loader.load();
+//
+//        CartController cartController = loader.getController();
+//        cartController.setData();
+//
+//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
+//
+//    private void switchSceneToProductOverview(String fxml, Event event, AlbumDTO albumDTO) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+//        root = loader.load();
+//
+//        MusicOverviewController musicOverviewController = loader.getController();
+//        musicOverviewController.setData(albumDTO);
+//
+//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 }
