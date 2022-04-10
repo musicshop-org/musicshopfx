@@ -67,7 +67,6 @@ public class MusicSearchController {
 
     }
 
-
     @FXML
     protected void musicSearchButtonClicked() {
 
