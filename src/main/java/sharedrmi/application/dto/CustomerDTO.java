@@ -10,10 +10,12 @@ import java.io.Serializable;
 public class CustomerDTO implements Serializable {
     private final String firstName;
     private final String lastName;
+    private final String email;
 
-    public CustomerDTO(String firstName, String lastName) {
+    public CustomerDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
     public static CustomerDTO.CustomerDTOBuilder builder() {
@@ -28,9 +30,14 @@ public class CustomerDTO implements Serializable {
         return this.lastName;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
     public static class CustomerDTOBuilder {
         private String firstName;
         private String lastName;
+        private String email;
 
         CustomerDTOBuilder() {
         }
@@ -45,12 +52,17 @@ public class CustomerDTO implements Serializable {
             return this;
         }
 
+        public CustomerDTO.CustomerDTOBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
         public CustomerDTO build() {
-            return new CustomerDTO(this.firstName, this.lastName);
+            return new CustomerDTO(this.firstName, this.lastName, this.email);
         }
 
         public String toString() {
-            return "CustomerDTO.CustomerDTOBuilder(firstName=" + this.firstName + ", lastName=" + this.lastName + ")";
+            return "CustomerDTO.CustomerDTOBuilder(firstName=" + this.firstName + ", lastName=" + this.lastName + ", email=" + this.email + ")";
         }
     }
 }

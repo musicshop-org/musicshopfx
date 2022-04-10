@@ -78,7 +78,7 @@ public class CheckoutController {
 
             firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             familyNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-            emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("emailAddress"));
+            emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("email"));
             customerTableView.setItems(customerDTOs);
 
         } catch (RemoteException e) {
