@@ -1,5 +1,7 @@
 package at.fhv.musicshopfx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +48,8 @@ public class CheckoutController {
     private TableColumn emailAddressCol;
     @FXML
     private ToggleGroup paymentMethod;
+    @FXML
+    private ToggleGroup customerSettingsToggleGroup;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
@@ -60,6 +64,24 @@ public class CheckoutController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
+        customerSettingsToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> changed,
+                                Toggle oldVal, Toggle newVal) {
+                switch (((RadioButton) customerSettingsToggleGroup.getSelectedToggle()).getText()){
+                    case "Anonymous Customer":
+                        searchButton.setDisable(true);
+                        customerSearchTextField.setDisable(true);
+                        customerTableView.setDisable(true);
+                        break;
+
+                    case "Existing Customer":
+                        searchButton.setDisable(false);
+                        customerSearchTextField.setDisable(false);
+                        customerTableView.setDisable(false);
+                }
+            }
+        });
 
         this.cartLineItemDTOs = cartLineItemDTOs;
     }
