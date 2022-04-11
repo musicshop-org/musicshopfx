@@ -129,6 +129,13 @@ public class CheckoutController {
             }
         }
 
+//        for (int i = 0; i < albums.size(); i++) {
+//            AlbumDTO album = albums.get(i);
+//            int currentStock = album.getStock();
+//            int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
+//            rmiController.decreaseStockOfAlbum(albums.get(i).getTitle(), albums.get(i).getMediumType(), currentStock - boughtQuantity);
+//        }
+
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
 
         switch (((RadioButton) paymentMethod.getSelectedToggle()).getText()) {

@@ -1,4 +1,7 @@
-
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
 
 package sharedrmi.application.api;
 
@@ -19,4 +22,6 @@ public interface ProductService extends Remote {
     List<SongDTO> findSongsByTitle(String var1) throws RemoteException;
 
     List<ArtistDTO> findArtistsByName(String var1) throws RemoteException;
+
+    void decreaseStockOfAlbum(String var1, MediumType var2, int var3);
 }
