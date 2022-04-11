@@ -13,13 +13,8 @@ public class MainApp extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 790, 480);
-
         stage.setTitle("Music Shop");
         stage.setScene(scene);
-//        stage.setMaxHeight(520);
-//        stage.setMinHeight(520);
-//        stage.setMaxWidth(810);
-//        stage.setMinWidth(810);
         stage.show();
         stage.setResizable(false);
     }
@@ -27,5 +22,4 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

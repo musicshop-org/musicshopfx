@@ -38,14 +38,8 @@ public class SceneSwitcher {
 
     private void displaySceneForLogin(Event event) {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        double sceneWidth = ((Node) event.getSource()).getScene().getWidth();
-        double sceneHeight = ((Node) event.getSource()).getScene().getHeight();
         scene = new Scene(root, 790, 480);
         stage.setResizable(false);
-//        stage.setMaxHeight(535);
-//        stage.setMinHeight(535);
-//        stage.setMaxWidth(810);
-//        stage.setMinWidth(810);
         stage.setScene(scene);
         stage.show();
     }
