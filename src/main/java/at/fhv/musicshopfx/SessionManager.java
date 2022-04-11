@@ -10,6 +10,8 @@ import java.nio.file.AccessDeniedException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SessionManager {
@@ -17,7 +19,7 @@ public class SessionManager {
     private static SessionManager instance;
     private static boolean isLoggedIn;
     private static String lastSearch = "";
-    private static List<AlbumDTO> lastAlbums;
+    private static List<AlbumDTO> lastAlbums = new ArrayList<>();
 
     private RMIController rmiController;
 
@@ -55,7 +57,7 @@ public class SessionManager {
             SessionManager.instance = null;
             isLoggedIn = false;
             lastSearch = "";
-            lastAlbums = null;
+            lastAlbums = new ArrayList<>();
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
         }
