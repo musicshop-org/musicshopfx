@@ -107,9 +107,6 @@ public class CheckoutController {
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) {
 
-        // update stock
-        // 3. updateAmountOfAlbum(<album>)
-
         List<AlbumDTO> albums = new ArrayList<>();
         for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {
             try {
