@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CartController {
-//
+
     @FXML
     private TableView<CartLineItem> cartView;
     @FXML
@@ -223,11 +223,11 @@ public class CartController {
     protected void buyButtonClicked(ActionEvent event) {
 
         try {
+            cartLineItemDTOs = rmiController.getCart().getCartLineItems();
             sceneSwitcher.switchSceneToCheckoutView(event, cartLineItemDTOs);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML

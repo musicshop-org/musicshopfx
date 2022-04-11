@@ -102,5 +102,6 @@
             </children>
         </AnchorPane>
       <Button fx:id="checkoutButton" layoutX="716.0" layoutY="461.0" mnemonicParsing="false" onAction="#checkoutButtonClicked" text="Checkout" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="18.0" />
+      <Label fx:id="checkoutErrorLabel" layoutX="82.0" layoutY="445.0" prefHeight="17.0" prefWidth="627.0" textFill="#d91b1b" />
     </children>
 </AnchorPane>
