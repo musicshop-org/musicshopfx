@@ -128,10 +128,12 @@ public class CheckoutController {
 
         for (int i = 0; i < albums.size(); i++) {
             AlbumDTO album = albums.get(i);
-            int currentStock = album.getStock();
             int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
-            rmiController.decreaseStockOfAlbum(albums.get(i).getTitle(), albums.get(i).getMediumType(), currentStock - boughtQuantity);
+            rmiController.decreaseStockOfAlbum(album.getTitle(), album.getMediumType(), boughtQuantity);
         }
+
+        SessionManager.setLastAlbums(null);
+        SessionManager.setLastSearch("");
 
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
 
