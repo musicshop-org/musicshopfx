@@ -56,7 +56,7 @@ public class MusicSearchController {
 
         if (!lastSearch.isBlank()) {
             musicSearchTextField.setText(lastSearch);
-            musicSearchButtonClicked();
+            populateTable(SessionManager.getLastAlbums());
         }
 
         for (Role role : this.roles)
@@ -68,20 +68,24 @@ public class MusicSearchController {
         }
     }
 
+    private void populateTable(List<AlbumDTO> albums) {
+        ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
+        albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
+        mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        musicView.setItems(albumDTO);
+    }
+
     @FXML
     protected void musicSearchButtonClicked() {
 
         try {
-            SessionManager.setLastSearch(musicSearchTextField.getText());
-            List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(musicSearchTextField.getText());
-
-            ObservableList<AlbumDTO> albumDTO = FXCollections.observableArrayList(albums);
-
-            albumTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
-            mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
-            priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-            musicView.setItems(albumDTO);
+            String search = musicSearchTextField.getText();
+            List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(search);
+            SessionManager.setLastSearch(search);
+            SessionManager.setLastAlbums(albums);
+            populateTable(albums);
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -126,43 +130,4 @@ public class MusicSearchController {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
     }
-
-//    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicSearchController musicSearchController = loader.getController();
-//        musicSearchController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        CartController cartController = loader.getController();
-//        cartController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-//
-//    private void switchSceneToProductOverview(String fxml, Event event, AlbumDTO albumDTO) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicOverviewController musicOverviewController = loader.getController();
-//        musicOverviewController.setData(albumDTO);
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
 }

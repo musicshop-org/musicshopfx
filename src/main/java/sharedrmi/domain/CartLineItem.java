@@ -15,7 +15,7 @@ public class CartLineItem {
     private final ImageView minus_image;
     private final String plus;
     private final ImageView x_image;
-    private final CartLineItemDTO cartLineItemDTO;
+    private CartLineItemDTO cartLineItemDTO;
 
     public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, String plus, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
         this.name = name;

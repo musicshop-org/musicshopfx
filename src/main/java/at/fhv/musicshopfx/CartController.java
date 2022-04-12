@@ -223,11 +223,11 @@ public class CartController {
     protected void buyButtonClicked(ActionEvent event) {
 
         try {
+            cartLineItemDTOs = rmiController.getCart().getCartLineItems();
             sceneSwitcher.switchSceneToCheckoutView(event, cartLineItemDTOs);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
