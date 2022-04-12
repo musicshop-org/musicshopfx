@@ -28,7 +28,7 @@
                                 <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="15.0" top="15.0" />
+                                <Insets bottom="15.0" left="16.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
@@ -53,7 +53,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" top="15.0" />
+                        <Insets bottom="15.0" left="17.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
                     </children>
@@ -94,6 +94,6 @@
             </children>
         </AnchorPane>
       <Button fx:id="checkoutButton" layoutX="716.0" layoutY="461.0" mnemonicParsing="false" onAction="#checkoutButtonClicked" text="Checkout" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="18.0" />
-      <Label fx:id="checkoutErrorLabel" layoutX="82.0" layoutY="445.0" prefHeight="17.0" prefWidth="627.0" textFill="#d91b1b" />
+      <Label fx:id="checkoutErrorLabel" layoutX="87.0" layoutY="465.0" prefHeight="17.0" prefWidth="627.0" textFill="#d91b1b" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="87.0" />
     </children>
 </AnchorPane>
