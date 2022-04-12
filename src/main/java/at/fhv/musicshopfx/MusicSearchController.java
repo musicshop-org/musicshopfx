@@ -33,6 +33,8 @@ public class MusicSearchController {
     private TableColumn<AlbumDTO, String> priceCol;
     @FXML
     private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -61,6 +63,7 @@ public class MusicSearchController {
         {
             if (role.equals(Role.SALESPERSON)) {
                 this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
             }
         }
     }

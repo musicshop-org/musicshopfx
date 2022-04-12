@@ -52,6 +52,8 @@ public class MusicOverviewController {
     private Label quantityLabel;
     @FXML
     private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
@@ -79,6 +81,7 @@ public class MusicOverviewController {
                 this.quantityTextField.setVisible(true);
                 this.addToCartButton.setVisible(true);
                 this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
             }
         }
 
