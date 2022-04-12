@@ -9,10 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import sharedrmi.application.dto.CartLineItemDTO;
-import sharedrmi.application.dto.CustomerDTO;
-import sharedrmi.application.dto.InvoiceDTO;
-import sharedrmi.application.dto.InvoiceLineItemDTO;
+import sharedrmi.application.dto.*;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.enums.PaymentMethod;
 import sharedrmi.domain.valueobjects.InvoiceId;
@@ -20,6 +18,7 @@ import sharedrmi.domain.valueobjects.InvoiceId;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutController {
@@ -48,6 +47,8 @@ public class CheckoutController {
     private TableColumn emailAddressCol;
     @FXML
     private ToggleGroup paymentMethod;
+    @FXML
+    private Label checkoutErrorLabel;
     @FXML
     private ToggleGroup customerSettingsToggleGroup;
 
@@ -127,6 +128,35 @@ public class CheckoutController {
 
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) {
+
+        List<AlbumDTO> albums = new ArrayList<>();
+        for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {
+            try {
+                AlbumDTO album = rmiController.findAlbumByAlbumTitleAndMedium(cartLineItem.getName(), cartLineItem.getMediumType());
+                int inStock = album.getStock();
+                int boughtQuantity = cartLineItem.getQuantity();
+
+                if (boughtQuantity > inStock) {
+                    checkoutErrorLabel.setText("not enough " + album.getTitle() + " available ... in stock: " + inStock + ", in cart: " + boughtQuantity);
+                    return;
+                }
+
+                albums.add(album);
+
+            } catch (RemoteException | AlbumNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < albums.size(); i++) {
+            AlbumDTO album = albums.get(i);
+            int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
+            rmiController.decreaseStockOfAlbum(album.getTitle(), album.getMediumType(), boughtQuantity);
+        }
+
+        SessionManager.setLastAlbums(null);
+        SessionManager.setLastSearch("");
+
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
 
         switch (((RadioButton) paymentMethod.getSelectedToggle()).getText()) {

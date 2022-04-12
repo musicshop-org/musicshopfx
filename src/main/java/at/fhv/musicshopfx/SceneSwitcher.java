@@ -32,6 +32,16 @@ public class SceneSwitcher {
         scene = new Scene(root, sceneWidth, sceneHeight);
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(true);
+        stage.sizeToScene();
+    }
+
+    private void displaySceneForLogin(Event event) {
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root, 790, 480);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void switchSceneToCartView(Event event) throws IOException {
@@ -77,7 +87,7 @@ public class SceneSwitcher {
     public void switchSceneToLoginView(Event e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(loginViewFxml));
         root = loader.load();
-        displayScene(e);
+        displaySceneForLogin(e);
     }
 
     public void switchSceneToInvoiceSearchView(Event e) throws IOException {

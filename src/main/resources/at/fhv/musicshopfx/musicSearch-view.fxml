@@ -56,7 +56,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@images/invoice.png" />
                      </image>
@@ -71,6 +71,6 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <Button fx:id="logoutButton" layoutX="723.0" layoutY="67.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Logout" />
+      <Button fx:id="logoutButton" layoutX="723.0" layoutY="67.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Logout" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="67.0" />
     </children>
 </AnchorPane>
