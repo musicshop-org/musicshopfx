@@ -1,5 +1,7 @@
 package at.fhv.musicshopfx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,13 +49,15 @@ public class CheckoutController {
     private ToggleGroup paymentMethod;
     @FXML
     private Label checkoutErrorLabel;
+    @FXML
+    private ToggleGroup customerSettingsToggleGroup;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
     private List<CartLineItemDTO> cartLineItemDTOs;
 
 
-    public void setData(List<CartLineItemDTO> cartLineItemDTOs) {
+    public void setData(List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
 
@@ -61,6 +65,24 @@ public class CheckoutController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
+        customerSettingsToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> changed,
+                                Toggle oldVal, Toggle newVal) {
+                switch (((RadioButton) customerSettingsToggleGroup.getSelectedToggle()).getText()){
+                    case "Anonymous Customer":
+                        searchButton.setDisable(true);
+                        customerSearchTextField.setDisable(true);
+                        customerTableView.setDisable(true);
+                        break;
+
+                    case "Existing Customer":
+                        searchButton.setDisable(false);
+                        customerSearchTextField.setDisable(false);
+                        customerTableView.setDisable(false);
+                }
+            }
+        });
 
         this.cartLineItemDTOs = cartLineItemDTOs;
     }
@@ -96,7 +118,7 @@ public class CheckoutController {
 
             firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             familyNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-            emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("emailAddress"));
+            emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("email"));
             customerTableView.setItems(customerDTOs);
 
         } catch (RemoteException e) {
