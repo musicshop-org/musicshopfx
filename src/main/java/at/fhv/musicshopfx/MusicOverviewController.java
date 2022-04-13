@@ -1,50 +1,39 @@
 package at.fhv.musicshopfx;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import sharedrmi.application.api.ProductService;
-import sharedrmi.application.api.ShoppingCartService;
-import sharedrmi.application.api.ShoppingCartServiceFactory;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.valueobjects.Role;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class MusicOverviewController {
     @FXML
-    private TextField albumTitleTextField;
+    private Label albumTitleLabel;
     @FXML
-    private TextField artistTextField;
+    private Label artistLabel;
     @FXML
-    private TextField mediumTypeTextField;
+    private Label mediumTypeLabel;
     @FXML
-    private TextField releaseDateTextField;
+    private Label releaseDateLabel;
     @FXML
-    private TextField stockTextField;
+    private Label stockLabel;
     @FXML
-    private TextField priceTextField;
+    private Label priceLabel;
     @FXML
     private TableView songsTableView;
     @FXML
@@ -59,29 +48,55 @@ public class MusicOverviewController {
     private TextField quantityTextField;
     @FXML
     private Label addToCartLabel;
+    @FXML
+    private Label quantityLabel;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
 
+    private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
-    // needs to be the same UUID as in the CartController
-    private final UUID exampleEmployeeUUID = UUID.fromString("bb76c5ef-0c59-41ca-997f-2ba398631c7a");
+    private List<Role> roles;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
     public void setData(AlbumDTO albumDTO){
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
+
+        } catch (NotLoggedInException | RemoteException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.quantityLabel.setVisible(true);
+                this.quantityTextField.setVisible(true);
+                this.addToCartButton.setVisible(true);
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
         currentAlbumDTO = albumDTO;
         Set<SongDTO> songs = albumDTO.getSongs();
-        albumTitleTextField.setText(albumDTO.getTitle());
-        mediumTypeTextField.setText(albumDTO.getMediumType().toString());
-        releaseDateTextField.setText(albumDTO.getReleaseDate().toString());
-        stockTextField.setText(Integer.toString(albumDTO.getStock()));
-        priceTextField.setText(albumDTO.getPrice().toString());
+        albumTitleLabel.setText(albumDTO.getTitle());
+        mediumTypeLabel.setText(albumDTO.getMediumType().toString());
+        releaseDateLabel.setText(albumDTO.getReleaseDate().toString());
+        stockLabel.setText(Integer.toString(albumDTO.getStock()));
+        priceLabel.setText(albumDTO.getPrice().toString());
 
         Iterator<SongDTO> iter = albumDTO.getSongs().iterator();
         List<ArtistDTO> artists = iter.next().getArtists();
         ArtistDTO artist = artists.get(0);
-        artistTextField.setText(artist.getName());
+        artistLabel.setText(artist.getName());
 
         ObservableList<SongDTO> songDTOs = FXCollections.observableArrayList(songs);
 
@@ -95,58 +110,38 @@ public class MusicOverviewController {
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchScene("musicSearch-view.fxml", e);
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
-            switchSceneToCartView("cart-view.fxml", e);
-    }
-
-    private void switchScene(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            sceneSwitcher.switchSceneToCartView(e);
     }
 
     @FXML
-    private void addToCartButtonClicked(){
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    private void addToCartButtonClicked(ActionEvent event){
 
         try {
-            ShoppingCartServiceFactory shoppingCartServiceFactory = (ShoppingCartServiceFactory) Naming.lookup("rmi://localhost/CartFactory");
-            ShoppingCartService shoppingCartService = shoppingCartServiceFactory.createShoppingCartService(exampleEmployeeUUID);
-            shoppingCartService.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+            rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
 
             if (Integer.parseInt(quantityTextField.getText()) < 1)
                 throw new NumberFormatException();
 
-            quantityTextField.setText("");
-            addToCartLabel.setTextFill(Paint.valueOf("green"));
-            addToCartLabel.setText("added to cart");
+            sceneSwitcher.switchSceneToMusicSearchView(event);
 
         } catch(NumberFormatException e) {
             addToCartLabel.setTextFill(Paint.valueOf("red"));
             addToCartLabel.setText("no valid value");
-        }
-        catch (NotBoundException | MalformedURLException | RemoteException e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void switchSceneToCartView(String fxml, Event event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        root = loader.load();
-
-        CartController cartController = loader.getController();
-        cartController.setData();
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 }

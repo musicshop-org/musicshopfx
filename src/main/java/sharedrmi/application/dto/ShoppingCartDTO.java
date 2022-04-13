@@ -7,52 +7,51 @@ package sharedrmi.application.dto;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 public class ShoppingCartDTO implements Serializable {
-    private final UUID ownerId;
-    private final List<LineItemDTO> lineItems;
+    private final String ownerId;
+    private final List<CartLineItemDTO> cartLineItems;
 
-    public ShoppingCartDTO(UUID ownerId, List<LineItemDTO> lineItems) {
+    public ShoppingCartDTO(String ownerId, List<CartLineItemDTO> cartLineItems) {
         this.ownerId = ownerId;
-        this.lineItems = lineItems;
+        this.cartLineItems = cartLineItems;
     }
 
     public static ShoppingCartDTO.ShoppingCartDTOBuilder builder() {
         return new ShoppingCartDTO.ShoppingCartDTOBuilder();
     }
 
-    public UUID getOwnerId() {
+    public String getOwnerId() {
         return this.ownerId;
     }
 
-    public List<LineItemDTO> getLineItems() {
-        return this.lineItems;
+    public List<CartLineItemDTO> getCartLineItems() {
+        return this.cartLineItems;
     }
 
     public static class ShoppingCartDTOBuilder {
-        private UUID ownerId;
-        private List<LineItemDTO> lineItems;
+        private String ownerId;
+        private List<CartLineItemDTO> cartLineItems;
 
         ShoppingCartDTOBuilder() {
         }
 
-        public ShoppingCartDTO.ShoppingCartDTOBuilder ownerId(UUID ownerId) {
+        public ShoppingCartDTO.ShoppingCartDTOBuilder ownerId(String ownerId) {
             this.ownerId = ownerId;
             return this;
         }
 
-        public ShoppingCartDTO.ShoppingCartDTOBuilder lineItems(List<LineItemDTO> lineItems) {
-            this.lineItems = lineItems;
+        public ShoppingCartDTO.ShoppingCartDTOBuilder cartLineItems(List<CartLineItemDTO> cartLineItems) {
+            this.cartLineItems = cartLineItems;
             return this;
         }
 
         public ShoppingCartDTO build() {
-            return new ShoppingCartDTO(this.ownerId, this.lineItems);
+            return new ShoppingCartDTO(this.ownerId, this.cartLineItems);
         }
 
         public String toString() {
-            return "ShoppingCartDTO.ShoppingCartDTOBuilder(ownerId=" + this.ownerId + ", lineItems=" + this.lineItems + ")";
+            return "ShoppingCartDTO.ShoppingCartDTOBuilder(ownerId=" + this.ownerId + ", cartLineItems=" + this.cartLineItems + ")";
         }
     }
 }
