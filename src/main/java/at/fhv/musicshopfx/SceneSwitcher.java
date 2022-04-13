@@ -30,6 +30,8 @@ public class SceneSwitcher {
         double sceneWidth = ((Node) event.getSource()).getScene().getWidth();
         double sceneHeight = ((Node) event.getSource()).getScene().getHeight();
         scene = new Scene(root, sceneWidth, sceneHeight);
+        stage.setMinWidth(790);
+        stage.setMinHeight(480);
         stage.setScene(scene);
         stage.show();
         stage.setResizable(true);
