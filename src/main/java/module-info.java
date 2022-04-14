@@ -3,8 +3,8 @@ module at.fhv.musicshopfx {
     requires javafx.fxml;
     requires java.rmi;
     requires java.desktop;
-    requires activemq.all;
     requires java.naming;
+    requires activemq.all;
     // requires sharedrmi;
 
     opens at.fhv.musicshopfx to javafx.fxml;
