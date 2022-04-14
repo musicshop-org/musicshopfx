@@ -93,6 +93,11 @@ public class MusicSearchController {
     }
 
     @FXML
+    protected void messageButtonClicked() {
+        System.out.println("YES!");
+    }
+
+    @FXML
     protected void musicViewClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
             AlbumDTO albumDTO = musicView.getSelectionModel().getSelectedItem();
