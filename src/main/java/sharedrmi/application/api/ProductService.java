@@ -14,6 +14,8 @@ import sharedrmi.application.dto.SongDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.domain.enums.MediumType;
 
+import javax.naming.NoPermissionException;
+
 public interface ProductService extends Remote {
     List<AlbumDTO> findAlbumsBySongTitle(String var1) throws RemoteException;
 

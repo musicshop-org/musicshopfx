@@ -36,7 +36,6 @@ javafx {
 
 dependencies {
 //    implementation fileTree(dir: 'lib', include: ['*.jar'])
-    implementation 'org.apache.activemq:activemq-all:5.17.0'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

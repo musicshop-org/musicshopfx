@@ -13,6 +13,7 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -93,8 +94,13 @@ public class MusicSearchController {
     }
 
     @FXML
-    protected void messageButtonClicked() {
-        System.out.println("YES!");
+    protected void messageButtonClicked() throws NoPermissionException, RemoteException {
+
+        String testTopic = "Test_Topic";
+        String testTopic2 = "Test_Topic2";
+        String testTitle = "Test_Title";
+        String testMessage = "This is a Test-Message :)";
+        this.rmiController.publish(List.of(testTopic, testTopic2), testTitle, testMessage);
     }
 
     @FXML
