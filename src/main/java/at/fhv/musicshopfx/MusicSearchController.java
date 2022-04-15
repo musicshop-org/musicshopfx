@@ -100,7 +100,8 @@ public class MusicSearchController {
         String testTopic2 = "Test_Topic2";
         String testTitle = "Test_Title";
         String testMessage = "This is a Test-Message :)";
-        this.rmiController.publish(List.of(testTopic, testTopic2), testTitle, testMessage);
+        long expirationDays = 14;
+        this.rmiController.publish(List.of(testTopic, testTopic2), testTitle, testMessage, expirationDays);
     }
 
     @FXML
