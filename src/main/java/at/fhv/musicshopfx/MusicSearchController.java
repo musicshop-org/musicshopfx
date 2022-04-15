@@ -94,7 +94,7 @@ public class MusicSearchController {
     }
 
     @FXML
-    protected void messageButtonClicked() throws NoPermissionException, RemoteException {
+    protected void messageButtonClicked() throws RemoteException {
 
         String testTopic = "Test_Topic";
         String testTopic2 = "Test_Topic2";
