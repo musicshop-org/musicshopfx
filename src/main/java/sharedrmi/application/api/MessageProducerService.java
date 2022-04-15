@@ -10,5 +10,5 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface MessageProducerService extends Remote {
-    void publish(List<String> var1, String var2, String var3) throws RemoteException;
+    void publish(List<String> topics, String messageTitle, String messageText) throws RemoteException;
 }
