@@ -49,7 +49,7 @@
                                 <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="16.0" top="15.0" />
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />

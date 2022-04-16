@@ -45,13 +45,13 @@
                                 <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="16.0" top="15.0" />
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>
@@ -62,7 +62,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@images/invoice.png" />
                      </image>
