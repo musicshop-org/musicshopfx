@@ -15,27 +15,34 @@ import java.util.List;
 public class MessageProducerController {
 
     @FXML
-    private TextField messageTitleTextField;
-    @FXML
     private ImageView searchIconImage;
     @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView messageIconImage;
     @FXML
+    private ImageView invoiceIconImage;
+    @FXML
     private TextField expirationTextField;
     @FXML
-    private ImageView invoiceIconImage;
+    private TextField messageTitleTextField;
     @FXML
     private TextArea messageTextField;
     @FXML
-    private Button publishButton;
+    private Label titleErrorLabel;
+    @FXML
+    private Label expirationErrorLabel;
+    @FXML
+    private Label messageErrorLabel;
+    @FXML
+    private TableView<TopicLine> topicView;
     @FXML
     private TableColumn<TopicLine, CheckBox> publishCol;
     @FXML
     private TableColumn<TopicLine, String> topicCol;
     @FXML
-    private TableView<TopicLine> topicView;
+    private Button publishButton;
+
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -105,6 +112,42 @@ public class MessageProducerController {
 
     @FXML
     protected void publishButtonClicked(ActionEvent e) {
-        System.out.println("PUBLISH CLICKED");
+        String messageTitle = messageTitleTextField.getText();
+        String messageText = messageTextField.getText();
+
+        if ("".equals(messageTitle)) {
+            titleErrorLabel.setText("must not be empty");
+            return;
+        } else {
+            titleErrorLabel.setText("");
+        }
+
+        int expirationDays;
+
+        try {
+            expirationDays = Integer.parseInt(expirationTextField.getText());
+
+            if (expirationDays < 0) {
+                expirationErrorLabel.setText("no valid value");
+                return;
+            }
+
+            expirationErrorLabel.setText("");
+
+        } catch (NumberFormatException ex) {
+            expirationErrorLabel.setText("no valid value");
+            return;
+        }
+
+        if ("".equals(messageText)) {
+            messageErrorLabel.setText("must not be empty");
+            return;
+        } else {
+            messageErrorLabel.setText("");
+        }
+
+        System.out.println(messageTitle);
+        System.out.println(messageText);
+        System.out.println(expirationDays);
     }
 }
