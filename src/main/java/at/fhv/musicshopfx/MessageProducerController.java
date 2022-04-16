@@ -64,11 +64,18 @@ public class MessageProducerController {
         for (Role role : this.roles)
         {
             if (role.equals(Role.OPERATOR)) {
-                this.messageIconImage.setVisible(true);
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
             }
         }
-
-        topicView.getSelectionModel().clearSelection();
     }
 
 
