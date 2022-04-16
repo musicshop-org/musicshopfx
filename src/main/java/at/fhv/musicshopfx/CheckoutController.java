@@ -54,6 +54,10 @@ public class CheckoutController {
     @FXML
     private ToggleGroup customerSettingsToggleGroup;
     @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
+    @FXML
     private ImageView messageIconImage;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -94,8 +98,25 @@ public class CheckoutController {
 
         for (Role role : this.roles)
         {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
             if (role.equals(Role.OPERATOR)) {
-                this.messageIconImage.setVisible(true);
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
             }
         }
     }
