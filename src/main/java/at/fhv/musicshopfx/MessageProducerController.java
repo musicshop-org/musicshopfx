@@ -31,13 +31,13 @@ public class MessageProducerController {
     private Button publishButton;
 
     @FXML
-    private TableColumn<String, CheckBox> publishCol;
+    private TableColumn<TopicLine, CheckBox> publishCol;
 
     @FXML
-    private TableColumn<String, String> topicCol;
+    private TableColumn<TopicLine, String> topicCol;
 
     @FXML
-    private TableView<?> topicView;
+    private TableView<TopicLine> topicView;
 
 
     @FXML
