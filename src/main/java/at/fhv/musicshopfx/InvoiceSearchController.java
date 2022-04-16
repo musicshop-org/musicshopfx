@@ -248,6 +248,12 @@ public class InvoiceSearchController {
     }
 
     @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
     public void returnButtonClicked(MouseEvent e) throws InvoiceNotFoundException, IOException {
         if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
 
