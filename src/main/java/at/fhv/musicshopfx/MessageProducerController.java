@@ -5,58 +5,98 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.valueobjects.Role;
+
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.List;
 
 public class MessageProducerController {
-
 
     @FXML
     private TextField MessageTitleTextField;
 
     @FXML
     private ImageView searchIconImage;
-
     @FXML
     private ImageView cartIconImage;
-
+    @FXML
+    private ImageView messageIconImage;
     @FXML
     private Label expirationTextField;
-
     @FXML
     private ImageView invoiceIconImage;
-
     @FXML
     private TextArea messageTextField;
-
     @FXML
     private Button publishButton;
-
     @FXML
     private TableColumn<TopicLine, CheckBox> publishCol;
-
     @FXML
     private TableColumn<TopicLine, String> topicCol;
-
     @FXML
     private TableView<TopicLine> topicView;
 
+    private RMIController rmiController;
+    private List<Role> roles;
+
+    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+
+    public void setData() {
+
+        try {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
+
+        } catch (NotLoggedInException | RemoteException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                this.messageIconImage.setVisible(true);
+            }
+        }
+    }
+
 
     @FXML
-    void searchSymbolClicked(MouseEvent event) {
-
+    protected void searchSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 
     @FXML
-    void cartSymbolClicked(MouseEvent event) {
-
+    protected void cartSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToCartView (e);
     }
 
     @FXML
-    void invoiceSymbolClicked(MouseEvent event) {
-
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
     }
 
     @FXML
-    void publishButtonClicked(ActionEvent event) {
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
 
+    @FXML
+    protected void publishButtonClicked(ActionEvent e) {
+        System.out.println("PUBLISH CLICKED");
     }
 }

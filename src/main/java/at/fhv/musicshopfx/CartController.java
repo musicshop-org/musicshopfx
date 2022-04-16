@@ -47,6 +47,8 @@ public class CartController {
     private Button buyButton;
     @FXML
     private Button clearCartButton;
+    @FXML
+    private ImageView messageIconImage;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
@@ -61,6 +63,7 @@ public class CartController {
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
+    private List<Role> roles;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -68,6 +71,7 @@ public class CartController {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -116,6 +120,13 @@ public class CartController {
         }
 
         determineButtonStates();
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                this.messageIconImage.setVisible(true);
+            }
+        }
     }
 
     // get ImageView for UI table
@@ -273,4 +284,9 @@ public class CartController {
         }
     }
 
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
 }
