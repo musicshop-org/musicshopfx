@@ -5,3 +5,4 @@ public class NotLoggedInException extends Exception{
         super(message);
     }
 }
+//
