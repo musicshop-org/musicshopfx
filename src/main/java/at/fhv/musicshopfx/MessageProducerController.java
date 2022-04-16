@@ -114,15 +114,14 @@ public class MessageProducerController {
     protected void publishButtonClicked(ActionEvent e) {
         String messageTitle = messageTitleTextField.getText();
         String messageText = messageTextField.getText();
+        int expirationDays;
 
-        if ("".equals(messageTitle)) {
+        if (messageTitle.isBlank()) {
             titleErrorLabel.setText("must not be empty");
             return;
         } else {
             titleErrorLabel.setText("");
         }
-
-        int expirationDays;
 
         try {
             expirationDays = Integer.parseInt(expirationTextField.getText());
@@ -139,7 +138,7 @@ public class MessageProducerController {
             return;
         }
 
-        if ("".equals(messageText)) {
+        if (messageText.isBlank()) {
             messageErrorLabel.setText("must not be empty");
             return;
         } else {
