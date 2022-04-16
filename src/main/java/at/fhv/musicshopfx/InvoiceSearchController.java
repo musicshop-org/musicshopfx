@@ -46,6 +46,10 @@ public class InvoiceSearchController {
     private TableColumn<InvoiceLineItem, String> plusCol;
     @FXML
     private TableColumn<InvoiceLineItem, String> returnedQuantityCol;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView messageIconImage;
 
     @FXML
     private Button returnButton;
@@ -75,6 +79,21 @@ public class InvoiceSearchController {
         }
 
         determineButtonStates();
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                this.messageIconImage.setVisible(true);
+            }
+        }
     }
 
     @FXML

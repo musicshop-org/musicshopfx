@@ -24,7 +24,7 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" editable="true" layoutX="75.0" layoutY="58.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="371.0" prefWidth="707.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="58.0">
+        <TableView fx:id="cartView" editable="true" focusTraversable="false" layoutX="75.0" layoutY="58.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="371.0" prefWidth="707.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="58.0">
             <columns>
                 <TableColumn fx:id="productCol" editable="false" prefWidth="130.66663360595703" sortable="false" style="-fx-alignment: CENTER;" text="Product" />
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="106.00004577636719" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />

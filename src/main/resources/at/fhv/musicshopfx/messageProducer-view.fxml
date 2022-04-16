@@ -84,7 +84,7 @@
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding></Label>
-            <TableView fx:id="topicView" layoutX="22.0" layoutY="14.0" prefHeight="146.0" prefWidth="300.0">
+            <TableView fx:id="topicView" focusTraversable="false" layoutX="22.0" layoutY="14.0" prefHeight="146.0" prefWidth="300.0">
                <columns>
                   <TableColumn fx:id="topicCol" maxWidth="200.0" minWidth="200.0" prefWidth="310.6666793823242" text="Topic" />
                   <TableColumn fx:id="publishCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Publish" />
@@ -107,7 +107,7 @@
                   <Insets left="3.0" />
                </padding>
             </Label>
-            <TextField fx:id="MessageTitleTextField" layoutX="22.0" layoutY="49.0" maxWidth="342.0" prefHeight="25.0" prefWidth="300.0" promptText="Message Title" />
+            <TextField fx:id="messageTitleTextField" layoutX="22.0" layoutY="49.0" maxWidth="342.0" prefHeight="25.0" prefWidth="300.0" promptText="Message Title" />
             <Label layoutX="350.0" layoutY="25.0" prefHeight="17.0" prefWidth="95.0" text="Expiration Days">
                <opaqueInsets>
                   <Insets />
@@ -117,7 +117,7 @@
                </padding>
             </Label>
             <TextField fx:id="expirationTextField" layoutX="348.0" layoutY="49.0" prefHeight="17.0" prefWidth="300.0" promptText="Expiration Days" AnchorPane.leftAnchor="348.0" AnchorPane.rightAnchor="51.0" />
-            <Label fx:id="expirationTextField" layoutX="23.0" layoutY="87.0" prefHeight="17.0" prefWidth="58.0" text="Message">
+            <Label layoutX="23.0" layoutY="87.0" prefHeight="17.0" prefWidth="58.0" text="Message">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

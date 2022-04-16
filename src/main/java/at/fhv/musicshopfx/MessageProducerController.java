@@ -15,8 +15,7 @@ import java.util.List;
 public class MessageProducerController {
 
     @FXML
-    private TextField MessageTitleTextField;
-
+    private TextField messageTitleTextField;
     @FXML
     private ImageView searchIconImage;
     @FXML
@@ -24,7 +23,7 @@ public class MessageProducerController {
     @FXML
     private ImageView messageIconImage;
     @FXML
-    private Label expirationTextField;
+    private TextField expirationTextField;
     @FXML
     private ImageView invoiceIconImage;
     @FXML
@@ -68,6 +67,8 @@ public class MessageProducerController {
                 this.messageIconImage.setVisible(true);
             }
         }
+
+        topicView.getSelectionModel().clearSelection();
     }
 
 
