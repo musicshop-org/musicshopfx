@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.communication.rmi.RMIController;
+import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
 import java.io.IOException;
