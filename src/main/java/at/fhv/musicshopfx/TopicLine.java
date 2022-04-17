@@ -1,22 +1,23 @@
 package at.fhv.musicshopfx;
 
-import java.awt.*;
+
+import javafx.scene.control.CheckBox;
 
 public class TopicLine {
 
     private final String topicName;
-    private final Checkbox publishCheckbox;
+    private final CheckBox publishCheckbox;
 
     public TopicLine(String topicName) {
         this.topicName = topicName;
-        this.publishCheckbox = new Checkbox();
+        this.publishCheckbox = new CheckBox();
     }
 
     public String getTopicName() {
         return topicName;
     }
 
-    public Checkbox getPublishCheckbox() {
+    public CheckBox getPublishCheckbox() {
         return publishCheckbox;
     }
 }

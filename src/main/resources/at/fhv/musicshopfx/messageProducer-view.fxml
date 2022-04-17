@@ -87,7 +87,7 @@
             <TableView fx:id="topicView" focusTraversable="false" layoutX="22.0" layoutY="14.0" prefHeight="146.0" prefWidth="300.0">
                <columns>
                   <TableColumn fx:id="topicCol" maxWidth="200.0" minWidth="200.0" prefWidth="310.6666793823242" text="Topic" />
-                  <TableColumn fx:id="publishCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Publish" />
+                  <TableColumn fx:id="publishCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Publish" />
                </columns>
             </TableView>
             </children>

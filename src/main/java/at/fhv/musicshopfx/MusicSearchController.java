@@ -114,12 +114,14 @@ public class MusicSearchController {
     @FXML
     protected void messageButtonClicked() throws RemoteException {
 
-        String testTopic = "Test_Topic";
-        String testTopic2 = "Test_Topic2";
-        String testTitle = "Test_Title";
-        String testMessage = "This is a Test-Message :)";
-        long expirationDays = 14;
-        this.rmiController.publish(List.of(testTopic, testTopic2), testTitle, testMessage, expirationDays);
+        System.out.println(this.rmiController.getAllTopics());
+
+//        String testTopic = "Test_Topic";
+//        String testTopic2 = "Test_Topic2";
+//        String testTitle = "Test_Title";
+//        String testMessage = "This is a Test-Message :)";
+//        long expirationDays = 14;
+//        this.rmiController.publish(List.of(testTopic, testTopic2), testTitle, testMessage, expirationDays);
     }
 
     @FXML

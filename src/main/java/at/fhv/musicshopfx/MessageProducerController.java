@@ -1,8 +1,11 @@
 package at.fhv.musicshopfx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.communication.rmi.RMIController;
@@ -10,6 +13,7 @@ import sharedrmi.domain.valueobjects.Role;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageProducerController {
@@ -46,10 +50,11 @@ public class MessageProducerController {
 
     private RMIController rmiController;
     private List<Role> roles;
+    private ObservableList<TopicLine> data;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    public void setData() {
+    public void setData() throws RemoteException {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -59,6 +64,22 @@ public class MessageProducerController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
+        List<String> topics = this.rmiController.getAllTopics();
+        List<TopicLine> topicLines = new ArrayList<>();
+
+        for (String topic : topics) {
+            topicLines.add(new TopicLine(topic));
+        }
+
+        ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLines);
+
+        topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
+        publishCol.setCellValueFactory(new PropertyValueFactory<>("publishCheckbox"));
+
+        data = obsTopicLines;
+        topicView.setItems(data);
+        topicView.getSelectionModel().clearSelection();
 
         for (Role role : this.roles)
         {
@@ -144,6 +165,22 @@ public class MessageProducerController {
         } else {
             messageErrorLabel.setText("");
         }
+
+//        List<String> topics = this.rmiController.getAllTopics();
+//        List<TopicLine> topicLines = new ArrayList<>();
+//
+//        for (String topic : topics) {
+//            topicLines.add(new TopicLine(topic));
+//        }
+//
+//        ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLines);
+//
+//        topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
+//        publishCol.setCellValueFactory(new PropertyValueFactory<>("publishCheckbox"));
+//
+//        data = obsTopicLines;
+//        topicView.setItems(data);
+//        topicView.getSelectionModel().clearSelection();
 
         System.out.println(messageTitle);
         System.out.println(messageText);
