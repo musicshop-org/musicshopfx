@@ -39,6 +39,8 @@ public class MessageProducerController {
     @FXML
     private Label messageErrorLabel;
     @FXML
+    private Label topicErrorLabel;
+    @FXML
     private TableView<TopicLine> topicView;
     @FXML
     private TableColumn<TopicLine, CheckBox> publishCol;
@@ -132,7 +134,7 @@ public class MessageProducerController {
     }
 
     @FXML
-    protected void publishButtonClicked(ActionEvent e) {
+    protected void publishButtonClicked(ActionEvent e) throws RemoteException {
         String messageTitle = messageTitleTextField.getText();
         String messageText = messageTextField.getText();
         int expirationDays;
@@ -166,24 +168,28 @@ public class MessageProducerController {
             messageErrorLabel.setText("");
         }
 
-//        List<String> topics = this.rmiController.getAllTopics();
-//        List<TopicLine> topicLines = new ArrayList<>();
-//
-//        for (String topic : topics) {
-//            topicLines.add(new TopicLine(topic));
-//        }
-//
-//        ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLines);
-//
-//        topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
-//        publishCol.setCellValueFactory(new PropertyValueFactory<>("publishCheckbox"));
-//
-//        data = obsTopicLines;
-//        topicView.setItems(data);
-//        topicView.getSelectionModel().clearSelection();
+        List<String> topicsToPublishMessage = new ArrayList<>();
 
+        for (TopicLine line : data)
+        {
+            if (line.getPublishCheckbox().isSelected()) {
+                topicsToPublishMessage.add(line.getTopicName());
+            }
+        }
+
+        if (topicsToPublishMessage.isEmpty()) {
+            topicErrorLabel.setText("at least one topic must be selected");
+            return;
+        } else {
+            topicErrorLabel.setText("");
+        }
+
+        System.out.println(topicsToPublishMessage);
         System.out.println(messageTitle);
         System.out.println(messageText);
         System.out.println(expirationDays);
+
+        this.rmiController.publish(topicsToPublishMessage, messageTitle, messageText, expirationDays);
+
     }
 }
