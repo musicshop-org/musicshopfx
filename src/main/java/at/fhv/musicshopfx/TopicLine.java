@@ -11,6 +11,7 @@ public class TopicLine {
     public TopicLine(String topicName) {
         this.topicName = topicName;
         this.publishCheckbox = new CheckBox();
+        this.publishCheckbox.setFocusTraversable(false);
     }
 
     public String getTopicName() {

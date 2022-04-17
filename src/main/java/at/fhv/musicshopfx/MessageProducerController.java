@@ -19,8 +19,6 @@ import java.util.List;
 public class MessageProducerController {
 
     @FXML
-    private ImageView searchIconImage;
-    @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView messageIconImage;
@@ -46,15 +44,13 @@ public class MessageProducerController {
     private TableColumn<TopicLine, CheckBox> publishCol;
     @FXML
     private TableColumn<TopicLine, String> topicCol;
-    @FXML
-    private Button publishButton;
 
 
     private RMIController rmiController;
     private List<Role> roles;
     private ObservableList<TopicLine> data;
-
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+
 
     public void setData() throws RemoteException {
 
@@ -63,7 +59,6 @@ public class MessageProducerController {
             this.roles = rmiController.getRoles();
 
         } catch (NotLoggedInException | RemoteException e) {
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
@@ -134,10 +129,9 @@ public class MessageProducerController {
     }
 
     @FXML
-    protected void publishButtonClicked(ActionEvent e) throws RemoteException {
+    protected void publishButtonClicked(ActionEvent e) throws IOException {
         String messageTitle = messageTitleTextField.getText();
         String messageText = messageTextField.getText();
-        int expirationDays;
 
         if (messageTitle.isBlank()) {
             titleErrorLabel.setText("must not be empty");
@@ -145,6 +139,8 @@ public class MessageProducerController {
         } else {
             titleErrorLabel.setText("");
         }
+
+        int expirationDays;
 
         try {
             expirationDays = Integer.parseInt(expirationTextField.getText());
@@ -184,12 +180,8 @@ public class MessageProducerController {
             topicErrorLabel.setText("");
         }
 
-        System.out.println(topicsToPublishMessage);
-        System.out.println(messageTitle);
-        System.out.println(messageText);
-        System.out.println(expirationDays);
-
         this.rmiController.publish(topicsToPublishMessage, messageTitle, messageText, expirationDays);
 
+        sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 }
