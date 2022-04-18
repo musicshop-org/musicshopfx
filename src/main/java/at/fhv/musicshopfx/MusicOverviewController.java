@@ -19,7 +19,9 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("rawtypes")
 public class MusicOverviewController {
     @FXML
     private Label albumTitleLabel;
@@ -65,9 +67,9 @@ public class MusicOverviewController {
     private List<Role> roles;
 
 
-    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-
+    @SuppressWarnings("unchecked")
     public void setData(AlbumDTO albumDTO) {
 
         try {
@@ -136,15 +138,20 @@ public class MusicOverviewController {
     @FXML
     protected void addToCartButtonClicked(ActionEvent event) throws IOException {
 
-        int qty = Integer.parseInt(quantityTextField.getText());
+        try {
+            int qty = Integer.parseInt(quantityTextField.getText());
 
-        if (qty < 1) {
+            if (qty < 1) {
+                this.showInvalidQtyErrorLabel();
+            } else if (qty > Integer.parseInt(stockLabel.getText())) {
+                this.showAddToCartErrorLabel();
+            } else {
+                rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+                sceneSwitcher.switchSceneToMusicSearchView(event);
+            }
+
+        } catch (NumberFormatException e) {
             this.showInvalidQtyErrorLabel();
-        } else if (qty > Integer.parseInt(stockLabel.getText())) {
-            this.showAddToCartErrorLabel();
-        } else {
-            rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
-            sceneSwitcher.switchSceneToMusicSearchView(event);
         }
 
     }
@@ -152,23 +159,57 @@ public class MusicOverviewController {
     @FXML
     protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException {
 
-        int qty = Integer.parseInt(quantityTextField.getText());
+        try {
+            int qty = Integer.parseInt(quantityTextField.getText());
 
-        if (qty < 1) {
+            if (qty < 1) {
+                this.showInvalidQtyErrorLabel();
+            } else {
+
+                // TODO :: publish message
+
+                // /
+
+                rmiController.increaseStockOfAlbum(
+                        currentAlbumDTO.getTitle(),
+                        currentAlbumDTO.getMediumType(),
+                        qty
+                );
+
+                int newQtyValue = currentAlbumDTO.getStock() + qty;
+                stockLabel.setText(String.valueOf(newQtyValue));
+
+                // update albumDTOs
+                currentAlbumDTO = AlbumDTO.builder()
+                        .albumId(currentAlbumDTO.getAlbumId())
+                        .label(currentAlbumDTO.getLabel())
+                        .mediumType(currentAlbumDTO.getMediumType())
+                        .price(currentAlbumDTO.getPrice())
+                        .releaseDate(currentAlbumDTO.getReleaseDate())
+                        .songs(currentAlbumDTO.getSongs())
+                        .stock(currentAlbumDTO.getStock() + qty)
+                        .title(currentAlbumDTO.getTitle())
+                        .build();
+
+                SessionManager.setLastAlbums(SessionManager.getLastAlbums()
+                        .stream()
+                        .map(item -> {
+                            if (item.getAlbumId().equals(currentAlbumDTO.getAlbumId())) {
+                                return currentAlbumDTO;
+                            }
+
+                            return item;
+                        })
+                        .collect(Collectors.toList())
+                );
+
+                // /update albumDTOs
+
+                this.showOrderSuccessLabel();
+            }
+
+        } catch (NumberFormatException e) {
             this.showInvalidQtyErrorLabel();
-        } else {
-
-            // TODO :: publish message
-
-            // /
-
-            rmiController.increaseStockOfAlbum(
-                    currentAlbumDTO.getTitle(),
-                    currentAlbumDTO.getMediumType(),
-                    qty
-            );
-
-            this.showOrderSuccessLabel();
         }
 
     }

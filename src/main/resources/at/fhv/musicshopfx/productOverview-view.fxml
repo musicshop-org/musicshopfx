@@ -115,7 +115,7 @@
             </Label>
             <Button fx:id="orderButton" layoutX="507.0" layoutY="243.0" mnemonicParsing="false" onAction="#orderButtonClicked" prefHeight="25.0" prefWidth="78.0" text="Order" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="115.0" />
             <Label fx:id="addToCartErrorLabel" layoutX="156.0" layoutY="242.0" style="-fx-max-width: 225px;" text="Not enough stock available, please reduce quantity or order additional itmes." textFill="#d91b1b" visible="false" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="319.0" />
-            <Label fx:id="invalidQtyErrorLabel" layoutX="199.0" layoutY="250.0" text="Please enter a valid quantity value." textFill="#d91b1b" />
+            <Label fx:id="invalidQtyErrorLabel" layoutX="199.0" layoutY="250.0" text="Please enter a valid quantity value." textFill="#d91b1b" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="318.0" />
             </children>
         </AnchorPane>
     </children>
