@@ -13,6 +13,7 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -35,6 +36,8 @@ public class MusicSearchController {
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -64,6 +67,22 @@ public class MusicSearchController {
             if (role.equals(Role.SALESPERSON)) {
                 this.cartIconImage.setVisible(true);
                 this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
             }
         }
     }
@@ -114,6 +133,18 @@ public class MusicSearchController {
     }
 
     @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
     protected void logoutButtonClicked(ActionEvent e) throws IOException {
         try {
             SessionManager.logout();
@@ -125,9 +156,4 @@ public class MusicSearchController {
         sceneSwitcher.switchSceneToLoginView(e);
     }
 
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-    }
 }

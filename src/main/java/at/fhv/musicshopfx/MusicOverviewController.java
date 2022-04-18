@@ -61,6 +61,8 @@ public class MusicOverviewController {
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
@@ -89,6 +91,22 @@ public class MusicOverviewController {
                 this.addToCartButton.setVisible(true);
                 this.cartIconImage.setVisible(true);
                 this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
             }
         }
 
@@ -136,8 +154,13 @@ public class MusicOverviewController {
     }
 
     @FXML
-    protected void addToCartButtonClicked(ActionEvent event) throws IOException {
+	protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
 
+    @FXML
+    private void addToCartButtonClicked(ActionEvent event){
         try {
             int qty = Integer.parseInt(quantityTextField.getText());
 

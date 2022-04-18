@@ -47,6 +47,12 @@ public class CartController {
     private Button buyButton;
     @FXML
     private Button clearCartButton;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
@@ -61,6 +67,7 @@ public class CartController {
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
+    private List<Role> roles;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -68,6 +75,7 @@ public class CartController {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -116,6 +124,30 @@ public class CartController {
         }
 
         determineButtonStates();
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
+            }
+        }
     }
 
     // get ImageView for UI table
@@ -273,4 +305,9 @@ public class CartController {
         }
     }
 
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
 }
