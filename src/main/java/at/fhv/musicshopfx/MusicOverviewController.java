@@ -156,8 +156,9 @@ public class MusicOverviewController {
 
     @FXML
 	protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageProducerView(e);
+        }
     }
 
     @FXML

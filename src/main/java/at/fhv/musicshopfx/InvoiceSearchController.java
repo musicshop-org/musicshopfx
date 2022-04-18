@@ -113,8 +113,8 @@ public class InvoiceSearchController {
 
         try {
 
-            if (Integer.parseInt(invoiceSearchTextField.getText()) < 1) {
-                throw new NumberFormatException("no valid value");
+            if (Long.parseLong(invoiceSearchTextField.getText()) < 1) {
+                throw new NumberFormatException("Invalid invoice ID");
             }
 
             invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
@@ -261,8 +261,9 @@ public class InvoiceSearchController {
 
     @FXML
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageProducerView(e);
+        }
     }
 
     @FXML
