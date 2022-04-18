@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.AlbumDTO;
@@ -35,6 +36,8 @@ public class MusicSearchController {
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageBoardIconImage;
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -65,6 +68,10 @@ public class MusicSearchController {
                 this.cartIconImage.setVisible(true);
                 this.invoiceIconImage.setVisible(true);
             }
+        }
+
+        if (!this.roles.isEmpty()) {
+            this.messageBoardIconImage.setVisible(true);
         }
     }
 
@@ -129,5 +136,12 @@ public class MusicSearchController {
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
     }
 }

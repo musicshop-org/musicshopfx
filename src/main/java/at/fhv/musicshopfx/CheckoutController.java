@@ -109,6 +109,13 @@ public class CheckoutController {
     }
 
     @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
     protected void customerSearchButtonClicked() {
         try {
 
