@@ -2,9 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -83,11 +82,6 @@
          </content>
       </ScrollPane>
       <Label layoutX="76.0" layoutY="69.0" text="Filter Topics:" AnchorPane.leftAnchor="76.0" AnchorPane.topAnchor="69.0" />
-      <MenuButton fx:id="topicSelection" layoutX="177.0" layoutY="65.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="All Topics" AnchorPane.leftAnchor="177.0" AnchorPane.topAnchor="65.0">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
+      <ComboBox fx:id="topicSelection" layoutX="355.0" layoutY="65.0" onAction="#topicSelected" prefWidth="150.0" promptText="All Topics" AnchorPane.leftAnchor="177.0" AnchorPane.topAnchor="65.0" />
     </children>
 </AnchorPane>

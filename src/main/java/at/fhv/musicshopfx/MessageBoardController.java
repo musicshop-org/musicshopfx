@@ -1,6 +1,8 @@
 package at.fhv.musicshopfx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -14,7 +16,7 @@ import java.util.List;
 public class MessageBoardController {
 
     @FXML
-    private MenuButton topicSelection;
+    private ComboBox topicSelection;
 
     @FXML
     private VBox messagesPane;
@@ -31,10 +33,21 @@ public class MessageBoardController {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
 
+
+            // TODO: add subscribed topics to ComboBox
+
+
         } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void topicSelected(ActionEvent e) {
+
+        // TODO: list messages from selected topic
+
     }
 
     @FXML
@@ -64,4 +77,5 @@ public class MessageBoardController {
             sceneSwitcher.switchSceneToMessageBoardView(e);
         }
     }
+
 }
