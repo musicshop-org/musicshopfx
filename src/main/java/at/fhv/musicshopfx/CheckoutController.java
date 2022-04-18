@@ -8,12 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.*;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.enums.PaymentMethod;
 import sharedrmi.domain.valueobjects.InvoiceId;
+import sharedrmi.domain.valueobjects.Role;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -51,15 +53,23 @@ public class CheckoutController {
     private Label checkoutErrorLabel;
     @FXML
     private ToggleGroup customerSettingsToggleGroup;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
+    private List<Role> roles;
     private List<CartLineItemDTO> cartLineItemDTOs;
 
 
     public void setData(List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -85,6 +95,30 @@ public class CheckoutController {
         });
 
         this.cartLineItemDTOs = cartLineItemDTOs;
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.SALESPERSON)) {
+                this.cartIconImage.setVisible(true);
+                this.invoiceIconImage.setVisible(true);
+            }
+        }
+
+        for (Role role : this.roles)
+        {
+            if (role.equals(Role.OPERATOR)) {
+                if (!cartIconImage.isVisible()) {
+                    cartIconImage.setVisible(true);
+                    cartIconImage.setImage(messageIconImage.getImage());
+                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
+                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
+                    cartIconImage.setFitHeight(26);
+                    cartIconImage.setFitWidth(26);
+                } else {
+                    this.messageIconImage.setVisible(true);
+                }
+            }
+        }
     }
 
 
@@ -106,6 +140,12 @@ public class CheckoutController {
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
     }
 
     @FXML

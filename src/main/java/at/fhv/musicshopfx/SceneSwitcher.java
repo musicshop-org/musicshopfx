@@ -23,6 +23,7 @@ public class SceneSwitcher {
     private final String productOverviewViewFxml = "productOverview-view.fxml";
     private final String invoiceSearchViewFxml = "invoiceSearch-view.fxml";
     private final String loginViewFxml = "login-view.fxml";
+    private final String messageProducerViewFxml = "messageProducer-view.fxml";
     private final String messageBoardViewFxml = "messageBoard-view.fxml";
 
 
@@ -99,6 +100,15 @@ public class SceneSwitcher {
 
         InvoiceSearchController invoiceSearchController = loader.getController();
         invoiceSearchController.setData();
+        displayScene(e);
+    }
+
+    public void switchSceneToMessageProducerView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(messageProducerViewFxml));
+        root = loader.load();
+
+        MessageProducerController messageProducerController = loader.getController();
+        messageProducerController.setData();
         displayScene(e);
     }
 

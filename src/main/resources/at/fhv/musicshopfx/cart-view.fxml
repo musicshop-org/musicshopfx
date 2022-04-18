@@ -24,7 +24,7 @@
                 </Label>
             </children>
         </AnchorPane>
-        <TableView fx:id="cartView" editable="true" layoutX="75.0" layoutY="58.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="371.0" prefWidth="707.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="58.0">
+        <TableView fx:id="cartView" editable="true" focusTraversable="false" layoutX="75.0" layoutY="58.0" onMouseClicked="#cartLineItemEdited" onMousePressed="#cartLineItemEdited" prefHeight="371.0" prefWidth="707.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="58.0">
             <columns>
                 <TableColumn fx:id="productCol" editable="false" prefWidth="130.66663360595703" sortable="false" style="-fx-alignment: CENTER;" text="Product" />
                 <TableColumn fx:id="mediumTypeCol" editable="false" prefWidth="106.00004577636719" sortable="false" style="-fx-alignment: CENTER;" text="Medium" />
@@ -45,13 +45,13 @@
                                 <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="16.0" top="15.0" />
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>
@@ -62,7 +62,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@images/invoice.png" />
                      </image>
@@ -73,17 +73,28 @@
                         <Insets bottom="15.0" left="17.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
-                        <Image url="@images/envelope.png" />
+                        <Image url="@images/writeMessage.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="17.0" top="15.0" />
+                        <Insets bottom="15.0" left="19.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
+                        <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/envelope.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="17.0" top="15.0" />
+                            </VBox.margin>
+                        </ImageView>
                     </children>
                 </VBox>
             </children>

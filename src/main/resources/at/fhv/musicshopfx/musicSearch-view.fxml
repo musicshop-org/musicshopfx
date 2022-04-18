@@ -27,7 +27,7 @@
         </AnchorPane>
         <TextField fx:id="musicSearchTextField" layoutX="76.0" layoutY="67.0" prefHeight="25.0" prefWidth="399.0" promptText="Song Title..." AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="67.0" />
         <Button fx:id="musicSearchButton" defaultButton="true" layoutX="488.0" layoutY="67.0" mnemonicParsing="false" onAction="#musicSearchButtonClicked" prefHeight="25.0" prefWidth="70.0" text="Search" AnchorPane.rightAnchor="242.0" AnchorPane.topAnchor="67.0" />
-        <TableView fx:id="musicView" layoutX="76.0" layoutY="106.0" onMouseClicked="#musicViewClicked" onMousePressed="#musicViewClicked" prefHeight="373.0" prefWidth="707.0" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="106.0">
+        <TableView fx:id="musicView" focusTraversable="false" layoutX="76.0" layoutY="106.0" onMouseClicked="#musicViewClicked" onMousePressed="#musicViewClicked" prefHeight="373.0" prefWidth="707.0" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="106.0">
             <columns>
                 <TableColumn fx:id="albumTitleCol" prefWidth="180.0" text="Album Title" />
                 <TableColumn fx:id="mediumTypeCol" prefWidth="78.0" text="Medium" />
@@ -45,7 +45,7 @@
                                 <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="16.0" top="15.0" />
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
                                 <Cursor fx:constant="HAND" />
@@ -73,17 +73,28 @@
                         <Insets bottom="15.0" left="17.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
-                        <Image url="@images/envelope.png" />
+                        <Image url="@images/writeMessage.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="17.0" top="15.0" />
+                        <Insets bottom="15.0" left="19.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
+                        <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
+                            <image>
+                                <Image url="@images/envelope.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="17.0" top="15.0" />
+                            </VBox.margin>
+                        </ImageView>
                     </children>
                 </VBox>
             </children>
