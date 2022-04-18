@@ -17,6 +17,7 @@ import sharedrmi.domain.enums.PaymentMethod;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -167,7 +168,7 @@ public class CheckoutController {
     }
 
     @FXML
-    protected void checkoutButtonClicked(ActionEvent event) {
+    protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException, RemoteException {
 
         List<AlbumDTO> albums = new ArrayList<>();
         for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {

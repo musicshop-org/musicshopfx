@@ -1,14 +1,18 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package sharedrmi.domain.valueobjects;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.Instant;
 
-public class InvoiceId  implements Serializable {
+public class InvoiceId implements Serializable {
     private final long invoiceId;
 
     public InvoiceId() {
-        this.invoiceId = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
+        this.invoiceId = Instant.now().toEpochMilli();
     }
 
     public InvoiceId(long invoiceId) {
