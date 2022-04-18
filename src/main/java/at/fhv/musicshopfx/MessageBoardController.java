@@ -33,14 +33,13 @@ public class MessageBoardController {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
 
-
-            // TODO: add subscribed topics to ComboBox
-
-
         } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
+        // TODO: add subscribed topics to ComboBox
+
     }
 
     @FXML
