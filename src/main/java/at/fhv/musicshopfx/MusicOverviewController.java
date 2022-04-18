@@ -160,7 +160,7 @@ public class MusicOverviewController {
     }
 
     @FXML
-    private void addToCartButtonClicked(ActionEvent event){
+    private void addToCartButtonClicked(ActionEvent event) throws IOException {
         try {
             int qty = Integer.parseInt(quantityTextField.getText());
 
