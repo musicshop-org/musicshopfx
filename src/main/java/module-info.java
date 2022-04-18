@@ -6,15 +6,23 @@ module at.fhv.musicshopfx {
     // requires sharedrmi;
 
     opens at.fhv.musicshopfx to javafx.fxml;
-   // opens at.fhv.musicshopfx.view.musicsearchscene to javafx.fxml;
 
     opens sharedrmi.application.dto to javafx.base;
     opens sharedrmi.application.api to javafx.base;
+    opens sharedrmi.application.exceptions to java.base;
+
     opens sharedrmi.domain.enums to javafx.base;
     opens sharedrmi.domain.valueobjects to javafx.base;
 
-    //exports at.fhv.musicshopfx.view.musicsearchscene to javafx.fxml;
-    exports at.fhv.musicshopfx;
     exports sharedrmi.domain;
+    exports sharedrmi.domain.enums;
+    exports sharedrmi.domain.valueobjects;
+
+    exports sharedrmi.application.dto;
+    exports sharedrmi.application.api;
+    exports sharedrmi.application.exceptions;
+
+    exports at.fhv.musicshopfx;
+
     opens sharedrmi.domain to javafx.fxml;
 }

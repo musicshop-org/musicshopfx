@@ -1,13 +1,17 @@
-package sharedrmi.application.dto;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
 
-import sharedrmi.domain.enums.PaymentMethod;
-import sharedrmi.domain.valueobjects.InvoiceId;
+package sharedrmi.application.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import sharedrmi.domain.enums.PaymentMethod;
+import sharedrmi.domain.valueobjects.InvoiceId;
 
-public class InvoiceDTO  implements Serializable {
+public class InvoiceDTO implements Serializable {
     private final InvoiceId invoiceId;
     private final List<InvoiceLineItemDTO> invoiceLineItems;
     private final PaymentMethod paymentMethod;

@@ -29,7 +29,7 @@
          <children>
             <TextField fx:id="usernameTextField" layoutX="114.0" layoutY="60.0" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="60.0" />
             <PasswordField fx:id="passwordTextField" layoutX="114.0" layoutY="99.0" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="99.0" />
-            <Button fx:id="loginButton" layoutX="114.0" layoutY="148.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
+            <Button fx:id="loginButton" defaultButton="true" layoutX="114.0" layoutY="148.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
             <Label layoutX="23.0" layoutY="62.0" text="Username" textFill="WHITE" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="62.0">
                <font>
                   <Font name="System Bold" size="14.0" />

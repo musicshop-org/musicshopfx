@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import javax.security.auth.login.FailedLoginException;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 public class LoginController {
 
@@ -22,27 +24,15 @@ public class LoginController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
-
     @FXML
     protected void login(ActionEvent e) throws IOException {
-        if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText())) {
-            sceneSwitcher.switchSceneToMusicSearchView(e);
-        } else {
-            loginFailedLabel.setText("wrong username or password");
+        try {
+            if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText())) {
+                sceneSwitcher.switchSceneToMusicSearchView(e);
+            }
+        } catch (FailedLoginException | AccessDeniedException ex) {
             passwordTextField.clear();
+            loginFailedLabel.setText(ex.getMessage());
         }
     }
-
-//    private void switchSceneToMusicSearchView (String fxml, Event event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-//        root = loader.load();
-//
-//        MusicSearchController musicSearchController = loader.getController();
-//        musicSearchController.setData();
-//
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
 }
