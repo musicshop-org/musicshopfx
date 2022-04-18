@@ -82,8 +82,9 @@ public class MessageBoardController {
 
         messageErrorLabel.setText("");
 
-        if (messages.isEmpty()) {
+        if (messages == null || messages.isEmpty()) {
 
+            // TODO: maybe throw new exception (NoMessagesFoundException)
             messageErrorLabel.setTextFill(Paint.valueOf("red"));
             messageErrorLabel.setText("no messages found");
 
