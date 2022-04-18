@@ -159,6 +159,8 @@ public class MusicOverviewController {
     @FXML
     protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException {
 
+        disableButtons(true);
+
         try {
             int qty = Integer.parseInt(quantityTextField.getText());
 
@@ -169,8 +171,6 @@ public class MusicOverviewController {
                 // TODO :: publish message
 
                 // /
-
-                disableButtons(true);
 
                 AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
 
