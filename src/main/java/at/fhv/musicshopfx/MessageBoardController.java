@@ -2,10 +2,16 @@ package at.fhv.musicshopfx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import sharedrmi.application.MessageConsumerServiceImpl;
+import sharedrmi.application.api.MessageConsumerService;
+import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
@@ -16,12 +22,15 @@ import java.util.List;
 public class MessageBoardController {
 
     @FXML
-    private ComboBox topicSelection;
-
+    private ComboBox<String> topicSelection;
+    @FXML
+    private Label messageErrorLabel;
     @FXML
     private VBox messagesPane;
 
+    private final String messageFxml = "message.fxml";
 
+    private MessageConsumerService messageConsumerService = new MessageConsumerServiceImpl();
     private RMIController rmiController;
     private List<Role> roles;
 
@@ -33,20 +42,63 @@ public class MessageBoardController {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
 
-        } catch (NotLoggedInException | RemoteException e) {
+            topicSelection.getItems().add("All Topics");
+            List<String> subscribedTopics = rmiController.getSubscribedTopicsForUser(SessionManager.getLoggedInUsername());
+            for (String subscribedTopic : subscribedTopics) {
+                topicSelection.getItems().add(subscribedTopic);
+            }
+
+            this.allTopicsSelected();
+
+        } catch (NotLoggedInException | IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
-        // TODO: add subscribed topics to ComboBox
+    }
 
+    protected void allTopicsSelected() throws IOException {
+
+        this.messagesPane.getChildren().clear();
+
+        List<MessageDTO> messages = messageConsumerService.getMessagesFromAllSubscribedTopics();
+        this.addMessagesToBoard(messages);
     }
 
     @FXML
-    protected void topicSelected(ActionEvent e) {
+    protected void topicSelected(ActionEvent e) throws IOException {
 
-        // TODO: list messages from selected topic
+        this.messagesPane.getChildren().clear();
 
+        if (topicSelection.getValue().equals("All Topics")) {
+            allTopicsSelected();
+        } else {
+            List<MessageDTO> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
+            this.addMessagesToBoard(messages);
+        }
+    }
+
+    protected void addMessagesToBoard(List<MessageDTO> messages) throws IOException {
+
+        messageErrorLabel.setText("");
+
+        if (messages.isEmpty()) {
+
+            messageErrorLabel.setTextFill(Paint.valueOf("red"));
+            messageErrorLabel.setText("no messages found");
+
+        } else {
+
+            for (MessageDTO message : messages) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
+                Parent root = loader.load();
+
+                MessageController messageController = loader.getController();
+                messageController.addMessages(message);
+
+                this.messagesPane.getChildren().add(root);
+            }
+        }
     }
 
     @FXML

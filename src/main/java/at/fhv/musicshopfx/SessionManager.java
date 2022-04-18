@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class SessionManager {
 
     private static SessionManager instance;
+    private static String loggedInUsername;
     private static boolean isLoggedIn;
     private static String lastSearch = "";
     private static List<AlbumDTO> lastAlbums = new ArrayList<>();
@@ -45,6 +46,7 @@ public class SessionManager {
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
             new SessionManager(rmiController);
+            SessionManager.loggedInUsername = username;
             SessionManager.isLoggedIn = true;
 
             return true;
@@ -57,6 +59,7 @@ public class SessionManager {
     public static void logout() throws NotLoggedInException {
         if (SessionManager.isLoggedIn) {
             SessionManager.instance = null;
+            SessionManager.loggedInUsername = "";
             SessionManager.isLoggedIn = false;
             SessionManager.lastSearch = "";
             SessionManager.lastAlbums = new ArrayList<>();
@@ -67,6 +70,10 @@ public class SessionManager {
 
     public RMIController getRMIController() {
         return rmiController;
+    }
+
+    public static String getLoggedInUsername() {
+        return SessionManager.loggedInUsername;
     }
 
     public static String getLastSearch() {

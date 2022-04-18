@@ -12,106 +12,88 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageBoardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageBoardController">
     <children>
-        <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label layoutX="14.0" layoutY="8.0" text="Message Board" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="20.0"/>
+                        <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
             </children>
         </AnchorPane>
-        <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;"
-                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
+        <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
             <children>
-                <Line endX="62.0" startX="62.0" startY="460.0" stroke="#9a9a9a" strokeWidth="0.5" visible="false"
-                      AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="61.5" AnchorPane.topAnchor="-0.5"/>
-                <VBox layoutY="90.0" prefHeight="435.0" prefWidth="60.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Line endX="62.0" startX="62.0" startY="460.0" stroke="#9a9a9a" strokeWidth="0.5" visible="false" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="61.5" AnchorPane.topAnchor="-0.5" />
+                <VBox layoutY="90.0" prefHeight="435.0" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <ImageView fx:id="musicIconImage" fitHeight="30.0" fitWidth="30.0"
-                                   onMouseClicked="#searchSymbolClicked" onMousePressed="#searchSymbolClicked"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="musicIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#searchSymbolClicked" onMousePressed="#searchSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/search.png"/>
+                                <Image url="@images/search.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="16.0" top="15.0"/>
+                                <Insets bottom="15.0" left="16.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
-                                <Cursor fx:constant="HAND"/>
+                                <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0"
-                                   onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/shopping-cart.png"/>
+                                <Image url="@images/shopping-cart.png" />
                             </image>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="15.0" top="15.0"/>
+                                <Insets bottom="15.0" left="15.0" top="15.0" />
                             </VBox.margin>
                             <cursor>
-                                <Cursor fx:constant="HAND"/>
+                                <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0"
-                                   onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/invoice.png"/>
+                                <Image url="@images/invoice.png" />
                             </image>
                             <cursor>
-                                <Cursor fx:constant="HAND"/>
+                                <Cursor fx:constant="HAND" />
                             </cursor>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="17.0" top="15.0"/>
+                                <Insets bottom="15.0" left="17.0" top="15.0" />
                             </VBox.margin>
                         </ImageView>
-                        <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0"
-                                   onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/writeMessage.png"/>
+                                <Image url="@images/writeMessage.png" />
                             </image>
                             <cursor>
-                                <Cursor fx:constant="HAND"/>
+                                <Cursor fx:constant="HAND" />
                             </cursor>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="19.0" top="15.0"/>
+                                <Insets bottom="15.0" left="19.0" top="15.0" />
                             </VBox.margin>
                         </ImageView>
-                        <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0"
-                                   onMouseClicked="#messageBoardSymbolClicked"
-                                   onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/envelope.png"/>
+                                <Image url="@images/envelope.png" />
                             </image>
                             <cursor>
-                                <Cursor fx:constant="HAND"/>
+                                <Cursor fx:constant="HAND" />
                             </cursor>
                             <VBox.margin>
-                                <Insets bottom="15.0" left="17.0" top="15.0"/>
+                                <Insets bottom="15.0" left="17.0" top="15.0" />
                             </VBox.margin>
                         </ImageView>
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
-        <ScrollPane layoutX="90.0" layoutY="108.0" prefHeight="375.0" prefWidth="686.0" AnchorPane.bottomAnchor="20.0"
-                    AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="106.0">
+        <ScrollPane layoutX="90.0" layoutY="108.0" prefHeight="375.0" prefWidth="686.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="106.0">
             <content>
-                <VBox fx:id="messagesPane" prefHeight="366.0" prefWidth="700.0"/>
+                <VBox fx:id="messagesPane" prefHeight="366.0" prefWidth="700.0" />
             </content>
         </ScrollPane>
-        <Label layoutX="76.0" layoutY="69.0" text="Filter Topics:" AnchorPane.leftAnchor="76.0"
-               AnchorPane.topAnchor="69.0"/>
-        <ComboBox fx:id="topicSelection" layoutX="355.0" layoutY="65.0" onAction="#topicSelected" prefWidth="150.0"
-                  promptText="All Topics" AnchorPane.leftAnchor="177.0" AnchorPane.topAnchor="65.0"/>
+        <Label layoutX="76.0" layoutY="69.0" text="Filter Topics:" AnchorPane.leftAnchor="76.0" AnchorPane.topAnchor="69.0" />
+        <ComboBox fx:id="topicSelection" layoutX="355.0" layoutY="65.0" onAction="#topicSelected" prefWidth="150.0" promptText="Select Topic" AnchorPane.leftAnchor="177.0" AnchorPane.topAnchor="65.0" />
+      <Label fx:id="messageErrorLabel" layoutX="355.0" layoutY="69.0" AnchorPane.leftAnchor="375.0" AnchorPane.topAnchor="69.0" />
     </children>
 </AnchorPane>

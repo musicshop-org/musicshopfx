@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="150.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="$CONTROLLER_NAME$">
+<AnchorPane prefHeight="150.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageController">
    <children>
       <Label fx:id="messageTopic" layoutX="633.0" layoutY="14.0" text="Topic" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <font>
