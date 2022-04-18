@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
@@ -169,24 +170,28 @@ public class MusicOverviewController {
 
                 // /
 
+                disableButtons(true);
+
+                AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
+
                 rmiController.increaseStockOfAlbum(
-                        currentAlbumDTO.getTitle(),
-                        currentAlbumDTO.getMediumType(),
+                        albumDTO.getTitle(),
+                        albumDTO.getMediumType(),
                         qty
                 );
 
-                int newQtyValue = currentAlbumDTO.getStock() + qty;
+                int newQtyValue = albumDTO.getStock() + qty;
                 stockLabel.setText(String.valueOf(newQtyValue));
 
                 currentAlbumDTO = AlbumDTO.builder()
-                        .albumId(currentAlbumDTO.getAlbumId())
-                        .label(currentAlbumDTO.getLabel())
-                        .mediumType(currentAlbumDTO.getMediumType())
-                        .price(currentAlbumDTO.getPrice())
-                        .releaseDate(currentAlbumDTO.getReleaseDate())
-                        .songs(currentAlbumDTO.getSongs())
-                        .stock(currentAlbumDTO.getStock() + qty)
-                        .title(currentAlbumDTO.getTitle())
+                        .albumId(albumDTO.getAlbumId())
+                        .label(albumDTO.getLabel())
+                        .mediumType(albumDTO.getMediumType())
+                        .price(albumDTO.getPrice())
+                        .releaseDate(albumDTO.getReleaseDate())
+                        .songs(albumDTO.getSongs())
+                        .stock(newQtyValue)
+                        .title(albumDTO.getTitle())
                         .build();
 
                 SessionManager.updateLastAlbums(currentAlbumDTO);
@@ -196,7 +201,13 @@ public class MusicOverviewController {
 
         } catch (NumberFormatException e) {
             this.showInvalidQtyErrorLabel();
+
+        } catch (AlbumNotFoundException e) {
+            throw new RuntimeException(e);
+
         }
+
+        disableButtons(false);
 
     }
 
@@ -216,6 +227,11 @@ public class MusicOverviewController {
         invalidQtyErrorLabel.setVisible(false);
         addToCartErrorLabel.setVisible(false);
         orderSuccessLabel.setVisible(true);
+    }
+
+    protected void disableButtons(boolean disabled) {
+        orderButton.setDisable(disabled);
+        addToCartButton.setDisable(disabled);
     }
 
 }
