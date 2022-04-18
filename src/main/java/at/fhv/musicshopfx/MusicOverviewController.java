@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
@@ -43,11 +42,17 @@ public class MusicOverviewController {
     @FXML
     private TableColumn artistCol;
     @FXML
+    private Button orderButton;
+    @FXML
     private Button addToCartButton;
     @FXML
     private TextField quantityTextField;
     @FXML
-    private Label addToCartLabel;
+    private Label invalidQtyErrorLabel;
+    @FXML
+    private Label addToCartErrorLabel;
+    @FXML
+    private Label orderSuccessLabel;
     @FXML
     private Label quantityLabel;
     @FXML
@@ -63,7 +68,7 @@ public class MusicOverviewController {
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
-    public void setData(AlbumDTO albumDTO){
+    public void setData(AlbumDTO albumDTO) {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -74,11 +79,11 @@ public class MusicOverviewController {
             e.printStackTrace();
         }
 
-        for (Role role : this.roles)
-        {
+        for (Role role : this.roles) {
             if (role.equals(Role.SALESPERSON)) {
                 this.quantityLabel.setVisible(true);
                 this.quantityTextField.setVisible(true);
+                this.orderButton.setVisible(true);
                 this.addToCartButton.setVisible(true);
                 this.cartIconImage.setVisible(true);
                 this.invoiceIconImage.setVisible(true);
@@ -109,39 +114,81 @@ public class MusicOverviewController {
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMusicSearchView(e);
+        }
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToCartView(e);
+        }
     }
 
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+        }
     }
 
     @FXML
-    private void addToCartButtonClicked(ActionEvent event){
+    protected void addToCartButtonClicked(ActionEvent event) throws IOException {
 
-        try {
+        int qty = Integer.parseInt(quantityTextField.getText());
+
+        if (qty < 1) {
+            this.showInvalidQtyErrorLabel();
+        } else if (qty > Integer.parseInt(stockLabel.getText())) {
+            this.showAddToCartErrorLabel();
+        } else {
             rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
-
-            if (Integer.parseInt(quantityTextField.getText()) < 1)
-                throw new NumberFormatException();
-
             sceneSwitcher.switchSceneToMusicSearchView(event);
-
-        } catch(NumberFormatException e) {
-            addToCartLabel.setTextFill(Paint.valueOf("red"));
-            addToCartLabel.setText("no valid value");
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
+
+    @FXML
+    protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException {
+
+        int qty = Integer.parseInt(quantityTextField.getText());
+
+        if (qty < 1) {
+            this.showInvalidQtyErrorLabel();
+        } else {
+
+            // TODO :: publish message
+
+            // /
+
+            rmiController.increaseStockOfAlbum(
+                    currentAlbumDTO.getTitle(),
+                    currentAlbumDTO.getMediumType(),
+                    qty
+            );
+
+            this.showOrderSuccessLabel();
+        }
+
+    }
+
+    protected void showInvalidQtyErrorLabel() {
+        orderSuccessLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(false);
+        invalidQtyErrorLabel.setVisible(true);
+    }
+
+    protected void showAddToCartErrorLabel() {
+        orderSuccessLabel.setVisible(false);
+        invalidQtyErrorLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(true);
+    }
+
+    protected void showOrderSuccessLabel() {
+        invalidQtyErrorLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(false);
+        orderSuccessLabel.setVisible(true);
+    }
+
 }
