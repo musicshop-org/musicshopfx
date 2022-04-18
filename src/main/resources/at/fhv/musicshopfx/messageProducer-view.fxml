@@ -74,6 +74,17 @@
                         <Insets bottom="15.0" left="19.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
+                  <ImageView fx:id="messageBoardIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#messageBoardSymbolClicked" onMousePressed="#messageBoardSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@images/envelope.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="17.0" top="15.0" />
+                     </VBox.margin>
+                  </ImageView>
                     </children>
                 </VBox>
             </children>

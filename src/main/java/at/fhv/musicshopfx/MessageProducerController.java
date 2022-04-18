@@ -26,6 +26,8 @@ public class MessageProducerController {
     @FXML
     private ImageView invoiceIconImage;
     @FXML
+    private ImageView messageBoardIconImage;
+    @FXML
     private TextField expirationTextField;
     @FXML
     private TextField messageTitleTextField;
@@ -102,6 +104,10 @@ public class MessageProducerController {
                 }
             }
         }
+
+        if (!this.roles.isEmpty()) {
+            this.messageBoardIconImage.setVisible(true);
+        }
     }
 
 
@@ -127,6 +133,13 @@ public class MessageProducerController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
     }
 
     @FXML

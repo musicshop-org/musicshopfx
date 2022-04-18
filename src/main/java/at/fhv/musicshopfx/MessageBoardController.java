@@ -71,6 +71,12 @@ public class MessageBoardController {
     }
 
     @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
     protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageBoardView(e);

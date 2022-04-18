@@ -152,6 +152,13 @@ public class MusicSearchController {
     }
 
     @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
     protected void logoutButtonClicked(ActionEvent e) throws IOException {
         try {
             SessionManager.logout();
@@ -161,18 +168,5 @@ public class MusicSearchController {
         }
 
         sceneSwitcher.switchSceneToLoginView(e);
-    }
-
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-    }
-
-    @FXML
-    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMessageBoardView(e);
-        }
     }
 }
