@@ -19,7 +19,6 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
 public class MusicOverviewController {
@@ -179,7 +178,6 @@ public class MusicOverviewController {
                 int newQtyValue = currentAlbumDTO.getStock() + qty;
                 stockLabel.setText(String.valueOf(newQtyValue));
 
-                // update albumDTOs
                 currentAlbumDTO = AlbumDTO.builder()
                         .albumId(currentAlbumDTO.getAlbumId())
                         .label(currentAlbumDTO.getLabel())
@@ -191,19 +189,7 @@ public class MusicOverviewController {
                         .title(currentAlbumDTO.getTitle())
                         .build();
 
-                SessionManager.setLastAlbums(SessionManager.getLastAlbums()
-                        .stream()
-                        .map(item -> {
-                            if (item.getAlbumId().equals(currentAlbumDTO.getAlbumId())) {
-                                return currentAlbumDTO;
-                            }
-
-                            return item;
-                        })
-                        .collect(Collectors.toList())
-                );
-
-                // /update albumDTOs
+                SessionManager.updateLastAlbums(currentAlbumDTO);
 
                 this.showOrderSuccessLabel();
             }
