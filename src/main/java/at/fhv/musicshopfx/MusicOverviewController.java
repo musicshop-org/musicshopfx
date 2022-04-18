@@ -15,6 +15,7 @@ import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
@@ -180,7 +181,7 @@ public class MusicOverviewController {
     }
 
     @FXML
-    protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException {
+    protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException, NoPermissionException {
 
         disableButtons(true);
 
