@@ -8,19 +8,21 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("rawtypes")
 public class MusicOverviewController {
     @FXML
     private Label albumTitleLabel;
@@ -43,11 +45,17 @@ public class MusicOverviewController {
     @FXML
     private TableColumn artistCol;
     @FXML
+    private Button orderButton;
+    @FXML
     private Button addToCartButton;
     @FXML
     private TextField quantityTextField;
     @FXML
-    private Label addToCartLabel;
+    private Label invalidQtyErrorLabel;
+    @FXML
+    private Label addToCartErrorLabel;
+    @FXML
+    private Label orderSuccessLabel;
     @FXML
     private Label quantityLabel;
     @FXML
@@ -64,10 +72,10 @@ public class MusicOverviewController {
     private List<Role> roles;
 
 
-    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-
-    public void setData(AlbumDTO albumDTO){
+    @SuppressWarnings("unchecked")
+    public void setData(AlbumDTO albumDTO) {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -78,11 +86,11 @@ public class MusicOverviewController {
             e.printStackTrace();
         }
 
-        for (Role role : this.roles)
-        {
+        for (Role role : this.roles) {
             if (role.equals(Role.SALESPERSON)) {
                 this.quantityLabel.setVisible(true);
                 this.quantityTextField.setVisible(true);
+                this.orderButton.setVisible(true);
                 this.addToCartButton.setVisible(true);
                 this.cartIconImage.setVisible(true);
                 this.invoiceIconImage.setVisible(true);
@@ -133,26 +141,30 @@ public class MusicOverviewController {
 
     @FXML
     protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMusicSearchView(e);
+        }
     }
 
     @FXML
     protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToCartView(e);
+        }
     }
 
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+        }
     }
 
     @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
+	protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageProducerView(e);
+        }
     }
 
     @FXML
@@ -163,22 +175,101 @@ public class MusicOverviewController {
     }
 
     @FXML
-    private void addToCartButtonClicked(ActionEvent event){
+    private void addToCartButtonClicked(ActionEvent event) throws IOException {
+        try {
+            int qty = Integer.parseInt(quantityTextField.getText());
+
+            if (qty < 1) {
+                this.showInvalidQtyErrorLabel();
+            } else if (qty > Integer.parseInt(stockLabel.getText())) {
+                this.showAddToCartErrorLabel();
+            } else {
+                rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+                sceneSwitcher.switchSceneToMusicSearchView(event);
+            }
+
+        } catch (NumberFormatException e) {
+            this.showInvalidQtyErrorLabel();
+        }
+
+    }
+
+    @FXML
+    protected void orderButtonClicked(ActionEvent actionEvent) throws RemoteException, NoPermissionException {
+
+        disableButtons(true);
 
         try {
-            rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+            int qty = Integer.parseInt(quantityTextField.getText());
 
-            if (Integer.parseInt(quantityTextField.getText()) < 1)
-                throw new NumberFormatException();
+            if (qty < 1) {
+                this.showInvalidQtyErrorLabel();
+            } else {
 
-            sceneSwitcher.switchSceneToMusicSearchView(event);
+                // TODO :: publish message
 
-        } catch(NumberFormatException e) {
-            addToCartLabel.setTextFill(Paint.valueOf("red"));
-            addToCartLabel.setText("no valid value");
+                // /
 
-        } catch (IOException e) {
-            e.printStackTrace();
+                AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
+
+                rmiController.increaseStockOfAlbum(
+                        albumDTO.getTitle(),
+                        albumDTO.getMediumType(),
+                        qty
+                );
+
+                int newQtyValue = albumDTO.getStock() + qty;
+                stockLabel.setText(String.valueOf(newQtyValue));
+
+                currentAlbumDTO = AlbumDTO.builder()
+                        .albumId(albumDTO.getAlbumId())
+                        .label(albumDTO.getLabel())
+                        .mediumType(albumDTO.getMediumType())
+                        .price(albumDTO.getPrice())
+                        .releaseDate(albumDTO.getReleaseDate())
+                        .songs(albumDTO.getSongs())
+                        .stock(newQtyValue)
+                        .title(albumDTO.getTitle())
+                        .build();
+
+                SessionManager.updateLastAlbums(currentAlbumDTO);
+
+                this.showOrderSuccessLabel();
+            }
+
+        } catch (NumberFormatException e) {
+            this.showInvalidQtyErrorLabel();
+
+        } catch (AlbumNotFoundException e) {
+            throw new RuntimeException(e);
+
         }
+
+        disableButtons(false);
+
     }
+
+    protected void showInvalidQtyErrorLabel() {
+        orderSuccessLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(false);
+        invalidQtyErrorLabel.setVisible(true);
+    }
+
+    protected void showAddToCartErrorLabel() {
+        orderSuccessLabel.setVisible(false);
+        invalidQtyErrorLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(true);
+    }
+
+    protected void showOrderSuccessLabel() {
+        invalidQtyErrorLabel.setVisible(false);
+        addToCartErrorLabel.setVisible(false);
+        orderSuccessLabel.setVisible(true);
+    }
+
+    protected void disableButtons(boolean disabled) {
+        orderButton.setDisable(disabled);
+        addToCartButton.setDisable(disabled);
+    }
+
 }
