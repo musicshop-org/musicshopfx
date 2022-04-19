@@ -4,11 +4,15 @@ public class MessageDTO {
     private final String messageTopic;
     private final String messageTitle;
     private final String messageText;
+    private final long expirationDays;
+    private final long timestamp;
 
-    public MessageDTO(String messageTopic, String messageTitle, String messageText) {
+    public MessageDTO(String messageTopic, String messageTitle, String messageText, long expirationDays, long timestamp) {
         this.messageTopic = messageTopic;
         this.messageTitle = messageTitle;
         this.messageText = messageText;
+        this.expirationDays = expirationDays;
+        this.timestamp = timestamp;
     }
 
     public static MessageDTO.MessageDTOBuilder builder() {
@@ -27,10 +31,20 @@ public class MessageDTO {
         return this.messageText;
     }
 
+    public long getExpirationDays() {
+        return expirationDays;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
     public static class MessageDTOBuilder {
         private String messageTopic;
         private String messageTitle;
         private String messageText;
+        private long expirationDays;
+        private long timestamp;
 
         MessageDTOBuilder() {
         }
@@ -50,12 +64,22 @@ public class MessageDTO {
             return this;
         }
 
+        public MessageDTO.MessageDTOBuilder expirationDays(long expirationDays) {
+            this.expirationDays = expirationDays;
+            return this;
+        }
+
+        public MessageDTO.MessageDTOBuilder timestamp(long timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
         public MessageDTO build() {
-            return new MessageDTO(this.messageTopic, this.messageTitle, this.messageText);
+            return new MessageDTO(this.messageTopic, this.messageTitle, this.messageText, this.expirationDays, this.timestamp);
         }
 
         public String toString() {
-            return "MessageDTO.MessageDTOBuilder(messageTopic=" + this.messageTopic + ", messageTitle=" + this.messageTitle + ", messageText=" + this.messageText + ")";
+            return "MessageDTO.MessageDTOBuilder(messageTopic=" + this.messageTopic + ", messageTitle=" + this.messageTitle + ", messageText=" + this.messageText + ", expirationDays=" + this.expirationDays + ", timestamp=" + this.timestamp + ")";
         }
 
     }
