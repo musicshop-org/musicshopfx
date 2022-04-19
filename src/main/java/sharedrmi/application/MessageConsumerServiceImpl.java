@@ -4,6 +4,7 @@ import sharedrmi.application.api.MessageConsumerService;
 import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.application.exceptions.NoMessagesFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MessageConsumerServiceImpl implements MessageConsumerService {
@@ -13,7 +14,7 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
 
         // TODO: implement method + throw exception
 
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -21,7 +22,7 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
 
         // TODO: implement method + throw exception
 
-        return null;
+        return Collections.emptyList();
     }
 
 }
