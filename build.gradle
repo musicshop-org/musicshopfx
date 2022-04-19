@@ -38,6 +38,7 @@ dependencies {
 //    implementation fileTree(dir: 'lib', include: ['*.jar'])
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+//    implementation group: 'org.apache.activemq', name: 'activemq-all', version: '5.14.3'
 }
 
 test {
