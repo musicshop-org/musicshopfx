@@ -40,9 +40,9 @@ public class SessionManager {
         return SessionManager.instance;
     }
 
-    public static boolean login(String username, String password) throws FailedLoginException, AccessDeniedException {
+    public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://"+server+"/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
             new SessionManager(rmiController);
             SessionManager.isLoggedIn = true;
