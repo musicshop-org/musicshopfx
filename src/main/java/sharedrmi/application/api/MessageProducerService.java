@@ -8,7 +8,9 @@ package sharedrmi.application.api;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import javax.naming.NoPermissionException;
+import sharedrmi.application.dto.MessageDTO;
 
 public interface MessageProducerService extends Remote {
-    void publish(List<String> topics, String messageTitle, String messageText, long expirationDays) throws RemoteException;
+    void publish(List<String> topics, MessageDTO messageDTO) throws RemoteException;
 }

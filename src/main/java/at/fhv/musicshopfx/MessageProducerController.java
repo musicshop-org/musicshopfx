@@ -8,10 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -194,8 +196,13 @@ public class MessageProducerController {
             topicErrorLabel.setText("");
         }
 
-        this.rmiController.publish(topicsToPublishMessage, messageTitle, messageText, expirationDays);
+        MessageDTO messageDTO = MessageDTO.builder()
+                .messageTitle(messageTitle)
+                .messageText(messageText)
+                .expirationDays(expirationDays)
+                .build();
 
+        this.rmiController.publish(topicsToPublishMessage, messageDTO);
         sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 }
