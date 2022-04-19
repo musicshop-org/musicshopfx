@@ -13,6 +13,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +45,6 @@ public class SessionManager {
 
     public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
         try {
-            System.setSecurityManager( new RMISecurityManager() ) ;
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://"+server+"/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
             new SessionManager(rmiController);
