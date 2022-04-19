@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.*;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
+import sharedrmi.application.exceptions.NotEnoughStockException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.enums.PaymentMethod;
 import sharedrmi.domain.valueobjects.InvoiceId;
@@ -169,7 +170,7 @@ public class CheckoutController {
 
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException, RemoteException {
-
+        /*
         List<AlbumDTO> albums = new ArrayList<>();
         for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {
             try {
@@ -194,6 +195,7 @@ public class CheckoutController {
             int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
             rmiController.decreaseStockOfAlbum(album.getTitle(), album.getMediumType(), boughtQuantity);
         }
+        */
 
         SessionManager.setLastAlbums(null);
         SessionManager.setLastSearch("");
@@ -224,6 +226,8 @@ public class CheckoutController {
             sceneSwitcher.switchSceneToMusicSearchView(event);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (AlbumNotFoundException | NotEnoughStockException e) {
+            checkoutErrorLabel.setText(e.getMessage());
         }
 
     }

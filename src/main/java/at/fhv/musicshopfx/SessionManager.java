@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class SessionManager {
 
     public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
         try {
+            System.setSecurityManager( new RMISecurityManager() ) ;
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://"+server+"/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
             new SessionManager(rmiController);
@@ -50,6 +52,7 @@ public class SessionManager {
             return true;
 
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
+            e.printStackTrace();
             return false;
         }
     }
