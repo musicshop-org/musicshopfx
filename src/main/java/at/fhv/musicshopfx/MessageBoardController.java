@@ -12,6 +12,7 @@ import javafx.scene.paint.Paint;
 import sharedrmi.application.MessageConsumerServiceImpl;
 import sharedrmi.application.api.MessageConsumerService;
 import sharedrmi.application.dto.MessageDTO;
+import sharedrmi.application.exceptions.NoMessagesFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
@@ -61,8 +62,15 @@ public class MessageBoardController {
 
         this.messagesPane.getChildren().clear();
 
-        List<MessageDTO> messages = messageConsumerService.getMessagesFromAllSubscribedTopics();
-        this.addMessagesToBoard(messages);
+        try {
+            List<MessageDTO> messages = messageConsumerService.getMessagesFromAllSubscribedTopics();
+            this.addMessagesToBoard(messages);
+
+        } catch (NoMessagesFoundException exception) {
+
+            messageErrorLabel.setTextFill(Paint.valueOf("red"));
+            messageErrorLabel.setText("no messages found");
+        }
     }
 
     @FXML
@@ -71,10 +79,20 @@ public class MessageBoardController {
         this.messagesPane.getChildren().clear();
 
         if (topicSelection.getValue().equals("All Topics")) {
+
             allTopicsSelected();
+
         } else {
-            List<MessageDTO> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
-            this.addMessagesToBoard(messages);
+
+            try {
+                List<MessageDTO> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
+                this.addMessagesToBoard(messages);
+
+            } catch (NoMessagesFoundException exception) {
+
+                messageErrorLabel.setTextFill(Paint.valueOf("red"));
+                messageErrorLabel.setText("no messages found");
+            }
         }
     }
 
@@ -82,23 +100,14 @@ public class MessageBoardController {
 
         messageErrorLabel.setText("");
 
-        if (messages == null || messages.isEmpty()) {
+        for (MessageDTO message : messages) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
+            Parent root = loader.load();
 
-            // TODO: maybe throw new exception (NoMessagesFoundException)
-            messageErrorLabel.setTextFill(Paint.valueOf("red"));
-            messageErrorLabel.setText("no messages found");
+            MessageController messageController = loader.getController();
+            messageController.addMessages(message);
 
-        } else {
-
-            for (MessageDTO message : messages) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
-                Parent root = loader.load();
-
-                MessageController messageController = loader.getController();
-                messageController.addMessages(message);
-
-                this.messagesPane.getChildren().add(root);
-            }
+            this.messagesPane.getChildren().add(root);
         }
     }
 
