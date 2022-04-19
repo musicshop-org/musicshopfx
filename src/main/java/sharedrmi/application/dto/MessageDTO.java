@@ -1,6 +1,8 @@
 package sharedrmi.application.dto;
 
-public class MessageDTO {
+import java.io.Serializable;
+
+public class MessageDTO implements Serializable {
     private final String messageTopic;
     private final String messageTitle;
     private final String messageText;
