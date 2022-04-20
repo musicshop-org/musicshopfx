@@ -150,6 +150,20 @@ public class CheckoutController {
     }
 
     @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
     protected void customerSearchButtonClicked() {
         try {
 
