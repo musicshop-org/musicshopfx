@@ -157,17 +157,4 @@ public class MusicSearchController {
             sceneSwitcher.switchSceneToLoginView(e);
         }
     }
-
-//    @FXML
-//    protected void logoutButtonClicked(ActionEvent e) throws IOException {
-//        try {
-//            SessionManager.logout();
-//        } catch (NotLoggedInException ex) {
-//            ex.printStackTrace();
-//            return;
-//        }
-//
-//        sceneSwitcher.switchSceneToLoginView(e);
-//    }
-
 }
