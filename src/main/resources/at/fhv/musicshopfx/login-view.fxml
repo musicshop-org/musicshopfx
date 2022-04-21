@@ -25,17 +25,17 @@
                 </Label>
          </children>
         </AnchorPane>
-      <AnchorPane layoutX="256.0" layoutY="145.0" prefHeight="210.0" prefWidth="288.0" style="-fx-border-color: #EaEaEa; -fx-border-width: 0.5px;" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="256.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="145.0">
+      <AnchorPane layoutX="227.0" layoutY="126.0" prefHeight="242.0" prefWidth="308.0" style="-fx-border-color: #EaEaEa; -fx-border-width: 0.5px;" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="246.0" AnchorPane.rightAnchor="246.0" AnchorPane.topAnchor="145.0">
          <children>
-            <TextField fx:id="usernameTextField" layoutX="114.0" layoutY="60.0" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="60.0" />
-            <PasswordField fx:id="passwordTextField" layoutX="114.0" layoutY="99.0" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="99.0" />
-            <Button fx:id="loginButton" defaultButton="true" layoutX="114.0" layoutY="148.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
-            <Label layoutX="23.0" layoutY="62.0" text="Username" textFill="WHITE" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="62.0">
+            <TextField fx:id="usernameTextField" layoutX="115.0" layoutY="47.0" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="47.0" />
+            <PasswordField fx:id="passwordTextField" layoutX="115.0" layoutY="86.0" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="24.5" AnchorPane.topAnchor="86.0" />
+            <TextField fx:id="serverTextField" layoutX="115.0" layoutY="123.0" prefHeight="25.0" prefWidth="169.0" text="localhost:1099" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="25.5" AnchorPane.topAnchor="123.0" />
+            <Label layoutX="24.0" layoutY="49.0" text="Username" textFill="WHITE" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="49.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="101.0" text="Password" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="101.0">
+            <Label layoutX="26.0" layoutY="88.0" text="Password" textFill="WHITE" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="88.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -43,6 +43,12 @@
             <Label fx:id="loginFailedLabel" layoutX="116.0" layoutY="39.0" prefHeight="15.0" prefWidth="149.0" textAlignment="CENTER" textFill="#bfd3d7">
                <font>
                   <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <Button fx:id="loginButton" defaultButton="true" layoutX="124.0" layoutY="174.0" mnemonicParsing="false" onAction="#login" prefHeight="15.0" prefWidth="60.0" text="Login" />
+            <Label layoutX="26.0" layoutY="126.0" text="Server IP" textFill="WHITE" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="126.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Label>
          </children>
