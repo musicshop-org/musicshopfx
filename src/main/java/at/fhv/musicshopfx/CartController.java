@@ -305,6 +305,12 @@ public class CartController {
     }
 
     @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
     protected void logoutSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             try {

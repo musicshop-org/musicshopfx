@@ -38,6 +38,8 @@ public class MusicSearchController {
     private ImageView invoiceIconImage;
     @FXML
     private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -74,16 +76,37 @@ public class MusicSearchController {
         {
             if (role.equals(Role.OPERATOR)) {
                 if (!cartIconImage.isVisible()) {
+
+                    // only operator -> move message to pos 2
                     cartIconImage.setVisible(true);
                     cartIconImage.setImage(messageIconImage.getImage());
                     cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
                     cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
                     cartIconImage.setFitHeight(26);
                     cartIconImage.setFitWidth(26);
+
+                    // only operator -> move settings to pos 3
+                    settingsIconImage.setVisible(false);
+                    invoiceIconImage.setVisible(true);
+                    invoiceIconImage.setImage(settingsIconImage.getImage());
+                    invoiceIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
+                    invoiceIconImage.setOnMouseClicked(settingsIconImage.getOnMouseClicked());
                 } else {
+                    // operator & salesperson
                     this.messageIconImage.setVisible(true);
                 }
             }
+        }
+
+        // only salesperson -> move settings to pos 4
+        if (!messageIconImage.isVisible() && settingsIconImage.isVisible()) {
+            settingsIconImage.setVisible(false);
+            messageIconImage.setVisible(true);
+            messageIconImage.setImage(settingsIconImage.getImage());
+            messageIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
+            messageIconImage.setOnMouseClicked(settingsIconImage.getOnMouseClicked());
+            messageIconImage.setFitHeight(30);
+            messageIconImage.setFitWidth(30);
         }
     }
 
@@ -142,6 +165,12 @@ public class MusicSearchController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML

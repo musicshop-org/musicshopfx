@@ -15,6 +15,7 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,7 @@ public class SettingsController {
                     cartIconImage.setFitWidth(26);
 
                     // only operator -> move settings to pos 3
+                    settingsIconImage.setVisible(false);
                     invoiceIconImage.setVisible(true);
                     invoiceIconImage.setImage(settingsIconImage.getImage());
                     invoiceIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
@@ -108,7 +110,8 @@ public class SettingsController {
         }
 
         // only salesperson -> move settings to pos 4
-        if (!messageIconImage.isVisible() && invoiceIconImage.isVisible()) {
+        if (!messageIconImage.isVisible() && settingsIconImage.isVisible()) {
+            settingsIconImage.setVisible(false);
             messageIconImage.setVisible(true);
             messageIconImage.setImage(settingsIconImage.getImage());
             messageIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
@@ -118,39 +121,52 @@ public class SettingsController {
         }
     }
 
+    @FXML
+    void searchSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMusicSearchView(e);
+    }
+
+    @FXML
+    protected void cartSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToCartView (e);
+    }
+
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
 
     @FXML
     void applyButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void cartSymbolClicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void invoiceSymbolClicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void logoutSymbolClicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void messageSymbolClicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void searchSymbolClicked(MouseEvent event) {
-
-    }
-
-    @FXML
-    void settingsSymbolClicked(MouseEvent event) {
-
+        System.out.println("APPLY CLICKED");
     }
 }
