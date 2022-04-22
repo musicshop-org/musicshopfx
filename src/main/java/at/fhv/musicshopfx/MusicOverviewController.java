@@ -162,6 +162,20 @@ public class MusicOverviewController {
     }
 
     @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
     private void addToCartButtonClicked(ActionEvent event) throws IOException {
         try {
             int qty = Integer.parseInt(quantityTextField.getText());
