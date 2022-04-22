@@ -161,11 +161,9 @@ public class SettingsController {
     }
 
     @FXML
-    void applyButtonClicked(ActionEvent e) throws RemoteException {
+    void applyButtonClicked() throws RemoteException {
 
         List<String> subscribedTopics = this.rmiController.getSubscribedTopicsForUser(this.user);
-        List<String> topicsToSubscribe = new ArrayList<>();
-        List<String> topicsToUnsubscribe = new ArrayList<>();
 
         for (TopicLine line : data)
         {
@@ -173,14 +171,10 @@ public class SettingsController {
             boolean topicIsCurrentlySelected = line.getCheckbox().isSelected();
 
             if (!subscribedTopics.contains(topic) && topicIsCurrentlySelected) {
-                System.out.println("subscribe " + topic);
-                // subscribe
+                this.rmiController.subscribe(topic, this.user);
+
             } else if (subscribedTopics.contains(topic) && !topicIsCurrentlySelected) {
-                System.out.println("unsubscribe " + topic);
-                // unsubscribe
-            } else {
-                System.out.println("nothing " + topic);
-                // do nothing
+                this.rmiController.unsubscribe(topic, this.user);
             }
         }
     }

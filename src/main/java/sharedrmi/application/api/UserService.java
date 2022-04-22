@@ -12,5 +12,9 @@ import java.util.List;
 public interface UserService extends Remote {
     List<String> getAllTopics() throws RemoteException;
 
-    List<String> getSubscribedTopicsForUser(String var1) throws RemoteException;
+    List<String> getSubscribedTopicsForUser(String username) throws RemoteException;
+
+    void subscribe(String topic, String username) throws RemoteException;
+
+    void unsubscribe(String topic, String username) throws RemoteException;
 }
