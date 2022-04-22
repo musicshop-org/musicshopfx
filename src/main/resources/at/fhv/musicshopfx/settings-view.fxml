@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageProducerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.SettingsController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -39,7 +39,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/shopping-cart.png" />
                             </image>
@@ -50,7 +50,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                             <image>
                                 <Image url="@images/invoice.png" />
                             </image>
@@ -61,7 +61,7 @@
                                 <Insets bottom="15.0" left="17.0" top="15.0" />
                             </VBox.margin>
                         </ImageView>
-                  <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@images/writeMessage.png" />
                      </image>

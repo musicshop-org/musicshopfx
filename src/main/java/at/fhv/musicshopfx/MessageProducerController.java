@@ -74,7 +74,7 @@ public class MessageProducerController {
         ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLines);
 
         topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
-        publishCol.setCellValueFactory(new PropertyValueFactory<>("publishCheckbox"));
+        publishCol.setCellValueFactory(new PropertyValueFactory<>("checkbox"));
 
         data = obsTopicLines;
         topicView.setItems(data);
@@ -184,7 +184,7 @@ public class MessageProducerController {
 
         for (TopicLine line : data)
         {
-            if (line.getPublishCheckbox().isSelected()) {
+            if (line.getCheckbox().isSelected()) {
                 topicsToPublishMessage.add(line.getTopicName());
             }
         }
