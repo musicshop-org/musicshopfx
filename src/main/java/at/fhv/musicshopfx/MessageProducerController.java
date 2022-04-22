@@ -27,6 +27,8 @@ public class MessageProducerController {
     @FXML
     private ImageView invoiceIconImage;
     @FXML
+    private ImageView settingsIconImage;
+    @FXML
     private TextField expirationTextField;
     @FXML
     private TextField messageTitleTextField;
@@ -80,29 +82,12 @@ public class MessageProducerController {
         topicView.setItems(data);
         topicView.getSelectionModel().clearSelection();
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
     }
 
 

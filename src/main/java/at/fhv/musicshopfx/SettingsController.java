@@ -75,50 +75,12 @@ public class SettingsController {
         subscriptionView.setItems(data);
         subscriptionView.getSelectionModel().clearSelection();
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-
-                    // only operator -> move message to pos 2
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-
-                    // only operator -> move settings to pos 3
-                    settingsIconImage.setVisible(false);
-                    invoiceIconImage.setVisible(true);
-                    invoiceIconImage.setImage(settingsIconImage.getImage());
-                    invoiceIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
-                    invoiceIconImage.setOnMouseClicked(settingsIconImage.getOnMouseClicked());
-                } else {
-                    // operator & salesperson
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
-
-        // only salesperson -> move settings to pos 4
-        if (!messageIconImage.isVisible() && settingsIconImage.isVisible()) {
-            settingsIconImage.setVisible(false);
-            messageIconImage.setVisible(true);
-            messageIconImage.setImage(settingsIconImage.getImage());
-            messageIconImage.setOnMousePressed(settingsIconImage.getOnMousePressed());
-            messageIconImage.setOnMouseClicked(settingsIconImage.getOnMouseClicked());
-            messageIconImage.setFitHeight(30);
-            messageIconImage.setFitWidth(30);
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
     }
 
     @FXML
