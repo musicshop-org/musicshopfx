@@ -193,11 +193,10 @@ public class MusicOverviewController {
                 this.showInvalidQtyErrorLabel();
             } else {
 
-                // TODO :: publish message
-
-                // /
-
                 AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
+
+                String messageContent = "Please order "+qty+" of "+albumDTO.getTitle()+" as "+albumDTO.getMediumType();
+                rmiController.publish(List.of("order"),"Order Request",messageContent,0L);
 
                 rmiController.increaseStockOfAlbum(
                         albumDTO.getTitle(),
