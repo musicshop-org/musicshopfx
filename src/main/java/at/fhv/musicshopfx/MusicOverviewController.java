@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
+import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.application.dto.SongDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
@@ -207,11 +208,14 @@ public class MusicOverviewController {
                 this.showInvalidQtyErrorLabel();
             } else {
 
-                // TODO :: publish message
-
-                // /
-
                 AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
+
+                MessageDTO message = MessageDTO.builder()
+                        .messageText("Please order "+qty+" of "+albumDTO.getTitle()+" as "+albumDTO.getMediumType())
+                        .messageTitle("Order Request")
+                        .expirationDays(0).build();
+
+                rmiController.publish(List.of("order"),message);
 
                 rmiController.increaseStockOfAlbum(
                         albumDTO.getTitle(),
