@@ -16,6 +16,7 @@ import sharedrmi.application.exceptions.NoMessagesFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -92,6 +93,8 @@ public class MessageBoardController {
 
                 messageErrorLabel.setTextFill(Paint.valueOf("red"));
                 messageErrorLabel.setText("no messages found");
+            } catch (JMSException ex) {
+                ex.printStackTrace();
             }
         }
     }
