@@ -19,6 +19,9 @@ public class LoginController {
     private TextField usernameTextField;
 
     @FXML
+    private TextField serverTextField;
+
+    @FXML
     private PasswordField passwordTextField;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
@@ -27,7 +30,7 @@ public class LoginController {
     @FXML
     protected void login(ActionEvent e) throws IOException {
         try {
-            if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText())) {
+            if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText(), serverTextField.getText())) {
                 sceneSwitcher.switchSceneToMusicSearchView(e);
             }
         } catch (FailedLoginException | AccessDeniedException ex) {
