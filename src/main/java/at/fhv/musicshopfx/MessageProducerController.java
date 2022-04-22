@@ -131,6 +131,20 @@ public class MessageProducerController {
     }
 
     @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
     protected void publishButtonClicked(ActionEvent e) throws IOException {
         String messageTitle = messageTitleTextField.getText();
         String messageText = messageTextField.getText();

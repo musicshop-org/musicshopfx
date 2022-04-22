@@ -38,7 +38,7 @@
         <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
             <children>
                 <Line endX="62.0" startX="62.0" startY="460.0" stroke="#9a9a9a" strokeWidth="0.5" visible="false" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="61.5" AnchorPane.topAnchor="-0.5" />
-                <VBox layoutY="90.0" prefHeight="435.0" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox layoutY="90.0" prefHeight="406.0" prefWidth="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <ImageView fx:id="musicIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#searchSymbolClicked" onMousePressed="#searchSymbolClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -86,8 +86,19 @@
                   </ImageView>
                     </children>
                 </VBox>
+            <AnchorPane prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="413.0">
+               <children>
+                  <ImageView fx:id="logoutIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#logoutSymbolClicked" onMousePressed="#logoutSymbolClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@images/logout.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
             </children>
         </AnchorPane>
-      <Button fx:id="logoutButton" layoutX="723.0" layoutY="67.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="25.0" prefWidth="60.0" text="Logout" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="67.0" />
     </children>
 </AnchorPane>

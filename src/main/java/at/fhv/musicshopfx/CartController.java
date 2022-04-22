@@ -291,13 +291,6 @@ public class CartController {
         }
     }
 
-    private void determineButtonStates() {
-        boolean isCartEmpty = cartView.getItems().isEmpty();
-
-        buyButton.setDisable(isCartEmpty);
-        clearCartButton.setDisable(isCartEmpty);
-    }
-
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
@@ -309,5 +302,26 @@ public class CartController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    private void determineButtonStates() {
+        boolean isCartEmpty = cartView.getItems().isEmpty();
+
+        buyButton.setDisable(isCartEmpty);
+        clearCartButton.setDisable(isCartEmpty);
     }
 }
