@@ -197,9 +197,9 @@ public class MusicOverviewController {
                 AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(currentAlbumDTO.getTitle(), currentAlbumDTO.getMediumType());
 
                 MessageDTO message = MessageDTO.builder()
-                                .messageText("Please order "+qty+" of "+albumDTO.getTitle()+" as "+albumDTO.getMediumType())
-                                        .messageTitle("Order Request")
-                                                .expirationDays(0).build();
+                        .messageText("Please order "+qty+" of "+albumDTO.getTitle()+" as "+albumDTO.getMediumType())
+                        .messageTitle("Order Request")
+                        .expirationDays(0).build();
 
                 rmiController.publish(List.of("order"),message);
 
