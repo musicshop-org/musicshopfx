@@ -186,10 +186,13 @@ public class MessageProducerController {
         } else {
             topicErrorLabel.setText("");
         }
+
         MessageDTO message = MessageDTO.builder()
                 .messageTitle(messageTitle)
                 .messageText(messageText)
-                .expirationDays(expirationDays).build();
+                .expirationDays(expirationDays)
+                .build();
+
         this.rmiController.publish(topicsToPublishMessage, message);
 
         sceneSwitcher.switchSceneToMusicSearchView(e);

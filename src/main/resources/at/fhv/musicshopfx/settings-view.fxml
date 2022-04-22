@@ -110,13 +110,13 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="43.0" text="essiga" />
-            <Label layoutX="22.0" layoutY="69.0" text="Role/s:">
+            <Label fx:id="usernameLabel" layoutX="83.0" layoutY="43.0" text="essiga" />
+            <Label fx:id="roleDescLabel" layoutX="22.0" layoutY="69.0" text="Roles:">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="68.0" prefHeight="17.0" prefWidth="581.0" text="salesperson, operator" />
+            <Label fx:id="roleLabel" layoutX="83.0" layoutY="68.0" prefHeight="17.0" prefWidth="581.0" text="salesperson, operator" />
             </children>
         </AnchorPane>
         <AnchorPane layoutX="82.0" layoutY="219.0" prefHeight="265.0" prefWidth="700.0" style="-fx-background-color: white; -fx-border-color: #9a9a9a;" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="219.0">
@@ -133,6 +133,7 @@
                   <TableColumn fx:id="subscribedCol" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" style="-fx-alignment: CENTER;" text="Subscribed" />
                </columns>
             </TableView>
+            <Label fx:id="topicErrorLabel" layoutX="496.0" layoutY="223.0" prefHeight="17.0" prefWidth="190.0" textFill="#d91b1b" />
             </children>
         </AnchorPane>
     </children>
