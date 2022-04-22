@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
@@ -180,8 +181,11 @@ public class MessageProducerController {
         } else {
             topicErrorLabel.setText("");
         }
-
-        this.rmiController.publish(topicsToPublishMessage, messageTitle, messageText, expirationDays);
+        MessageDTO message = MessageDTO.builder()
+                .messageTitle(messageTitle)
+                .messageText(messageText)
+                .expirationDays(expirationDays).build();
+        this.rmiController.publish(topicsToPublishMessage, message);
 
         sceneSwitcher.switchSceneToMusicSearchView(e);
     }

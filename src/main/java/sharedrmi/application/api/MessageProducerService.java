@@ -5,10 +5,12 @@
 
 package sharedrmi.application.api;
 
+import sharedrmi.application.dto.MessageDTO;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 public interface MessageProducerService extends Remote {
-    void publish(List<String> topics, String messageTitle, String messageText, long expirationDays) throws RemoteException;
+    void publish(List<String> topics, MessageDTO message) throws RemoteException;
 }
