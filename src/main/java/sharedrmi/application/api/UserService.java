@@ -14,7 +14,7 @@ public interface UserService extends Remote {
 
     List<String> getSubscribedTopicsForUser(String username) throws RemoteException;
 
-    void subscribe(String topic, String username) throws RemoteException;
+    boolean subscribe(String topic, String username) throws RemoteException;
 
-    void unsubscribe(String topic, String username) throws RemoteException;
+    boolean unsubscribe(String topic, String username) throws RemoteException;
 }

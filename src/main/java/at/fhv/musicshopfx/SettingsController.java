@@ -20,8 +20,6 @@ import java.util.List;
 public class SettingsController {
 
     @FXML
-    private Button applyButton;
-    @FXML
     private Label usernameLabel;
     @FXML
     private Label roleLabel;
@@ -32,11 +30,7 @@ public class SettingsController {
     @FXML
     private ImageView invoiceIconImage;
     @FXML
-    private ImageView logoutIconImage;
-    @FXML
     private ImageView messageIconImage;
-    @FXML
-    private ImageView searchIconImage;
     @FXML
     private ImageView settingsIconImage;
     @FXML
@@ -51,7 +45,7 @@ public class SettingsController {
     private String user;
     private List<Role> roles;
     private ObservableList<TopicLine> data;
-    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
 
     public void setData() throws RemoteException {
@@ -74,7 +68,7 @@ public class SettingsController {
 
         List<String> allTopics = this.rmiController.getAllTopics();
         List<String> subscribedTopics = this.rmiController.getSubscribedTopicsForUser(this.user);
-        List<TopicLine> topicLinesforTableView = new ArrayList<>();
+        List<TopicLine> topicLinesForTableView = new ArrayList<>();
 
         for (String currentTopic : allTopics) {
             TopicLine topicLine = new TopicLine(currentTopic);
@@ -83,10 +77,10 @@ public class SettingsController {
                 topicLine.getCheckbox().setSelected(true);
             }
 
-            topicLinesforTableView.add(topicLine);
+            topicLinesForTableView.add(topicLine);
         }
 
-        ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLinesforTableView);
+        ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLinesForTableView);
 
         topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
         subscribedCol.setCellValueFactory(new PropertyValueFactory<>("checkbox"));
