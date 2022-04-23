@@ -9,7 +9,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.CartLineItem;
 import sharedrmi.domain.valueobjects.Role;
@@ -59,6 +61,7 @@ public class CartController {
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
 
+    private final int PRODUCT_COLUMN_POSITION = 0;
     private final int MINUS_COLUMN_POSITION = 3;
     private final int PLUS_COLUMN_POSITION = 5;
     private final int CROSS_COLUMN_POSITION = 7;
@@ -180,7 +183,7 @@ public class CartController {
     }
 
     @FXML
-    protected void cartLineItemEdited(MouseEvent e) throws RemoteException {
+    protected void cartLineItemEdited(MouseEvent e) throws IOException, AlbumNotFoundException {
 
         if (e.isPrimaryButtonDown() && !cartView.getItems().isEmpty()) {
 
@@ -199,8 +202,16 @@ public class CartController {
                 selectedColIdx = po.getColumn();
             }
 
+            // product clicked
+            if (selectedColIdx == PRODUCT_COLUMN_POSITION) {
+                if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+                    AlbumDTO albumDTO = this.rmiController.findAlbumByAlbumTitleAndMedium(cartLineItem.getName(), cartLineItem.getMedium());
+                    sceneSwitcher.switchSceneToProductOverviewView(e, albumDTO);
+                }
+            }
+
             // minus clicked
-            if (selectedColIdx == MINUS_COLUMN_POSITION) {
+            else if (selectedColIdx == MINUS_COLUMN_POSITION) {
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
                     rmiController.removeProductFromCart(cartLineItemDTO);
