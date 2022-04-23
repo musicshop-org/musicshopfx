@@ -32,6 +32,8 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> mediumTypeCol;
     @FXML
+    private TableColumn<CartLineItem, String> stockCol;
+    @FXML
     private TableColumn<CartLineItem, String> quantityCol;
     @FXML
     private TableColumn<CartLineItem, String> priceCol;
@@ -57,9 +59,9 @@ public class CartController {
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
 
-    private final int MINUS_COLUMN_POSITION = 2;
-    private final int PLUS_COLUMN_POSITION = 4;
-    private final int CROSS_COLUMN_POSITION = 6;
+    private final int MINUS_COLUMN_POSITION = 3;
+    private final int PLUS_COLUMN_POSITION = 5;
+    private final int CROSS_COLUMN_POSITION = 7;
 
     private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
     private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
@@ -89,6 +91,7 @@ public class CartController {
         for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
                     cartLineItemDTO.getMediumType(),
+                    cartLineItemDTO.getStock(),
                     cartLineItemDTO.getQuantity(),
                     cartLineItemDTO.getPrice(),
                     getImageView(MINUS_PATH, 12, 12),
@@ -102,6 +105,7 @@ public class CartController {
 
         productCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
@@ -203,6 +207,7 @@ public class CartController {
                 } else {
                     data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                             cartLineItem.getMedium(),
+                            cartLineItem.getStock(),
                             cartLineItem.getQuantity() - 1,
                             cartLineItem.getPrice(),
                             cartLineItem.getMinus_image(),
@@ -217,17 +222,21 @@ public class CartController {
 
             // plus clicked
             else if (selectedColIdx == PLUS_COLUMN_POSITION) {
-                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
-                        cartLineItem.getMedium(),
-                        cartLineItem.getQuantity() + 1,
-                        cartLineItem.getPrice(),
-                        cartLineItem.getMinus_image(),
-                        cartLineItem.getPlus(),
-                        cartLineItem.getX_image(),
-                        cartLineItem.getLineItemDTO()
-                ));
 
-                rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() + 1);
+                if (cartLineItem.getQuantity() < cartLineItem.getStock()) {
+                    data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                            cartLineItem.getMedium(),
+                            cartLineItem.getStock(),
+                            cartLineItem.getQuantity() + 1,
+                            cartLineItem.getPrice(),
+                            cartLineItem.getMinus_image(),
+                            cartLineItem.getPlus(),
+                            cartLineItem.getX_image(),
+                            cartLineItem.getLineItemDTO()
+                    ));
+
+                    rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() + 1);
+                }
             }
 
             // x clicked

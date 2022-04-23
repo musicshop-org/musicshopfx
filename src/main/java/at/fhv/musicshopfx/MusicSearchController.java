@@ -33,6 +33,8 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
     @FXML
+    private TableColumn<AlbumDTO, String> stockCol;
+    @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
@@ -93,6 +95,7 @@ public class MusicSearchController {
         releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         musicView.setItems(albumDTO);
     }
 

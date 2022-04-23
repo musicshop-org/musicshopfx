@@ -33,6 +33,7 @@
                 <TableColumn fx:id="mediumTypeCol" prefWidth="78.0" text="Medium" />
                 <TableColumn fx:id="releaseDateCol" prefWidth="97.0" text="Release Date" />
                 <TableColumn fx:id="priceCol" prefWidth="57.0" text="Price" />
+            <TableColumn fx:id="stockCol" prefWidth="54.666717529296875" text="Stock" />
             </columns>
         </TableView>
         <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
