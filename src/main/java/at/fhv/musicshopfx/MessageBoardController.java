@@ -9,17 +9,17 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
-import sharedrmi.application.MessageConsumerServiceImpl;
-import sharedrmi.application.api.MessageConsumerService;
 import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.application.exceptions.NoMessagesFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 public class MessageBoardController {
 
@@ -32,11 +32,14 @@ public class MessageBoardController {
 
     private final String messageFxml = "message.fxml";
 
-    private MessageConsumerService messageConsumerService = new MessageConsumerServiceImpl();
+    private MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
     private RMIController rmiController;
     private List<Role> roles;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+
+    public MessageBoardController() throws RemoteException, NotLoggedInException {
+    }
 
     public void setData() {
 
@@ -64,13 +67,19 @@ public class MessageBoardController {
         this.messagesPane.getChildren().clear();
 
         try {
-            List<MessageDTO> messages = messageConsumerService.getMessagesFromAllSubscribedTopics();
-            this.addMessagesToBoard(messages);
+            Map<String, List<Message>> topicMessages = messageConsumerService.getMessagesFromAllSubscribedTopics();
 
-        } catch (NoMessagesFoundException exception) {
+            if(topicMessages.isEmpty()){
+                messageErrorLabel.setTextFill(Paint.valueOf("red"));
+                messageErrorLabel.setText("no messages found");
+            }
+            else{
+                addMessagesToBoard(topicMessages);
+            }
 
-            messageErrorLabel.setTextFill(Paint.valueOf("red"));
-            messageErrorLabel.setText("no messages found");
+
+        } catch (JMSException e) {
+            e.printStackTrace();
         }
     }
 
@@ -86,30 +95,47 @@ public class MessageBoardController {
         } else {
 
             try {
-                List<MessageDTO> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
-                this.addMessagesToBoard(messages);
+                List<Message> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
+                if(messages.isEmpty()){
+                    messageErrorLabel.setTextFill(Paint.valueOf("red"));
+                    messageErrorLabel.setText("no messages found");
+                }
+                else{
+                    addMessagesToBoard(messages, topicSelection.getValue());
+                }
 
-            } catch (NoMessagesFoundException exception) {
-
-                messageErrorLabel.setTextFill(Paint.valueOf("red"));
-                messageErrorLabel.setText("no messages found");
             } catch (JMSException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    protected void addMessagesToBoard(List<MessageDTO> messages) throws IOException {
+    protected void addMessagesToBoard(Map<String, List<Message>> topicMessages) throws IOException, JMSException {
 
         messageErrorLabel.setText("");
 
-        for (MessageDTO message : messages) {
+        for (Map.Entry<String, List<Message>> topicMessage:topicMessages.entrySet()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
             Parent root = loader.load();
 
             MessageController messageController = loader.getController();
-            messageController.addMessages(message);
 
+            for (Message message:topicMessage.getValue()) {
+                messageController.addMessage(message, topicMessage.getKey());
+                this.messagesPane.getChildren().add(root);
+            }
+        }
+    }
+    protected void addMessagesToBoard(List<Message> messages, String topic) throws IOException, JMSException {
+
+        messageErrorLabel.setText("");
+
+        for (Message message:messages) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
+            Parent root = loader.load();
+
+            MessageController messageController = loader.getController();
+            messageController.addMessage(message, topic);
             this.messagesPane.getChildren().add(root);
         }
     }

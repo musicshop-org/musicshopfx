@@ -3,8 +3,10 @@ package at.fhv.musicshopfx;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import sharedrmi.application.dto.MessageDTO;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import java.io.IOException;
 
 public class MessageController {
@@ -20,11 +22,11 @@ public class MessageController {
     @FXML
     private Button readMoreButton;
 
-    public void addMessages(MessageDTO message) throws IOException {
+    public void addMessage(Message message, String topic) throws IOException, JMSException {
 
-        this.messageTopic.setText(message.getMessageTopic());
-        this.messageTitle.setText(message.getMessageTitle());
-        this.messageText.setText(message.getMessageText());
+        this.messageTopic.setText(topic);
+        this.messageTitle.setText(message.getJMSCorrelationID());
+        this.messageText.setText(((TextMessage) message).getText());
 
     }
 

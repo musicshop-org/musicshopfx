@@ -7,10 +7,7 @@ module at.fhv.musicshopfx {
     requires static activemq.all;
 //    requires sharedrmi;
 
-    opens at.fhv.musicshopfx to javafx.fxml;
-
     opens sharedrmi.application.dto to javafx.base;
-    opens sharedrmi.application.api to javafx.base;
     opens sharedrmi.application.exceptions to java.base;
 
     opens sharedrmi.communication.rmi to java.base;
@@ -31,4 +28,6 @@ module at.fhv.musicshopfx {
     exports at.fhv.musicshopfx;
 
     opens sharedrmi.domain to javafx.fxml;
+    opens at.fhv.musicshopfx to javafx.base, javafx.fxml;
+    opens sharedrmi.application.api to javafx.base, javafx.fxml;
 }

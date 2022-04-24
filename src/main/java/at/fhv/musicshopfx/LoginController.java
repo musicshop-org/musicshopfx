@@ -31,11 +31,14 @@ public class LoginController {
     protected void login(ActionEvent e) throws IOException {
         try {
             if (SessionManager.login(usernameTextField.getText(), passwordTextField.getText(), serverTextField.getText())) {
+                MessageConsumerServiceImpl.getInstance();
                 sceneSwitcher.switchSceneToMusicSearchView(e);
             }
         } catch (FailedLoginException | AccessDeniedException ex) {
             passwordTextField.clear();
             loginFailedLabel.setText(ex.getMessage());
+        } catch (NotLoggedInException ex) {
+            ex.printStackTrace();
         }
     }
 }
