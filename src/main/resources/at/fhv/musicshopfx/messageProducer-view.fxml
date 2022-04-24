@@ -74,6 +74,17 @@
                         <Insets bottom="15.0" left="19.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
+                  <ImageView fx:id="settingsIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#settingsSymbolClicked" onMousePressed="#settingsSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/settings.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <VBox.margin>
+                        <Insets left="17.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </ImageView>
                     </children>
                 </VBox>
             <AnchorPane prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="413.0">

@@ -53,6 +53,8 @@ public class CartController {
     private ImageView invoiceIconImage;
     @FXML
     private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
@@ -125,29 +127,12 @@ public class CartController {
 
         determineButtonStates();
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
     }
 
     // get ImageView for UI table
@@ -302,6 +287,12 @@ public class CartController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML
