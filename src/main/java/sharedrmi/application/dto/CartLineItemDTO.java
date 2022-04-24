@@ -14,12 +14,14 @@ public class CartLineItemDTO implements Serializable {
     private final String name;
     private final int quantity;
     private final BigDecimal price;
+    private final int stock;
 
-    public CartLineItemDTO(MediumType mediumType, String name, int quantity, BigDecimal price) {
+    public CartLineItemDTO(MediumType mediumType, String name, int quantity, BigDecimal price, int stock) {
         this.mediumType = mediumType;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.stock = stock;
     }
 
     public static CartLineItemDTO.CartLineItemDTOBuilder builder() {
@@ -42,11 +44,16 @@ public class CartLineItemDTO implements Serializable {
         return this.price;
     }
 
+    public int getStock() {
+        return this.stock;
+    }
+
     public static class CartLineItemDTOBuilder {
         private MediumType mediumType;
         private String name;
         private int quantity;
         private BigDecimal price;
+        private int stock;
 
         CartLineItemDTOBuilder() {
         }
@@ -71,12 +78,17 @@ public class CartLineItemDTO implements Serializable {
             return this;
         }
 
+        public CartLineItemDTO.CartLineItemDTOBuilder stock(int stock) {
+            this.stock = stock;
+            return this;
+        }
+
         public CartLineItemDTO build() {
-            return new CartLineItemDTO(this.mediumType, this.name, this.quantity, this.price);
+            return new CartLineItemDTO(this.mediumType, this.name, this.quantity, this.price, this.stock);
         }
 
         public String toString() {
-            return "CartLineItemDTO.CartLineItemDTOBuilder(mediumType=" + this.mediumType + ", name=" + this.name + ", quantity=" + this.quantity + ", price=" + this.price + ")";
+            return "CartLineItemDTO.CartLineItemDTOBuilder(mediumType=" + this.mediumType + ", name=" + this.name + ", quantity=" + this.quantity + ", price=" + this.price + ", stock=" + this.stock + ")";
         }
     }
 }
