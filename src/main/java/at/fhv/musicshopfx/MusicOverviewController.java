@@ -65,6 +65,8 @@ public class MusicOverviewController {
     private ImageView invoiceIconImage;
     @FXML
     private ImageView messageIconImage;
+    @FXML
+    private ImageView messageBoardIconImage;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
@@ -110,6 +112,10 @@ public class MusicOverviewController {
                     this.messageIconImage.setVisible(true);
                 }
             }
+        }
+
+        if (!this.roles.isEmpty()) {
+            this.messageBoardIconImage.setVisible(true);
         }
 
         currentAlbumDTO = albumDTO;
@@ -173,6 +179,13 @@ public class MusicOverviewController {
             }
 
             sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
         }
     }
 

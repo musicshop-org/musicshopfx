@@ -13,6 +13,7 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class MessageProducerController {
     private ImageView messageIconImage;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageBoardIconImage;
     @FXML
     private TextField expirationTextField;
     @FXML
@@ -103,6 +106,10 @@ public class MessageProducerController {
                 }
             }
         }
+
+        if (!this.roles.isEmpty()) {
+            this.messageBoardIconImage.setVisible(true);
+        }
     }
 
 
@@ -128,6 +135,13 @@ public class MessageProducerController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
     }
 
     @FXML
@@ -195,12 +209,14 @@ public class MessageProducerController {
         } else {
             topicErrorLabel.setText("");
         }
-        MessageDTO message = MessageDTO.builder()
+
+       MessageDTO messageDTO = MessageDTO.builder()
                 .messageTitle(messageTitle)
                 .messageText(messageText)
-                .expirationDays(expirationDays).build();
-        this.rmiController.publish(topicsToPublishMessage, message);
+                .expirationDays(expirationDays)
+                .build();
 
+        this.rmiController.publish(topicsToPublishMessage, messageDTO);
         sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 }

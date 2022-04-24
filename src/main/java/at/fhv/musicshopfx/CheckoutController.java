@@ -165,6 +165,13 @@ public class CheckoutController {
     }
 
     @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
     protected void customerSearchButtonClicked() {
         try {
 
@@ -184,33 +191,6 @@ public class CheckoutController {
 
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException, RemoteException {
-        /*
-        List<AlbumDTO> albums = new ArrayList<>();
-        for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {
-            try {
-                AlbumDTO album = rmiController.findAlbumByAlbumTitleAndMedium(cartLineItem.getName(), cartLineItem.getMediumType());
-                int inStock = album.getStock();
-                int boughtQuantity = cartLineItem.getQuantity();
-
-                if (boughtQuantity > inStock) {
-                    checkoutErrorLabel.setText("not enough " + album.getTitle() + " available ... in stock: " + inStock + ", in cart: " + boughtQuantity);
-                    return;
-                }
-
-                albums.add(album);
-
-            } catch (RemoteException | AlbumNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < albums.size(); i++) {
-            AlbumDTO album = albums.get(i);
-            int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
-            rmiController.decreaseStockOfAlbum(album.getTitle(), album.getMediumType(), boughtQuantity);
-        }
-        */
-
         SessionManager.setLastAlbums(null);
         SessionManager.setLastSearch("");
 

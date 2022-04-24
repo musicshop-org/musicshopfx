@@ -291,6 +291,7 @@ public class CartController {
         }
     }
 
+
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
@@ -324,4 +325,12 @@ public class CartController {
         buyButton.setDisable(isCartEmpty);
         clearCartButton.setDisable(isCartEmpty);
     }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
 }
