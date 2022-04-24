@@ -73,6 +73,17 @@
                         <Insets bottom="15.0" left="19.0" top="15.0" />
                      </VBox.margin>
                   </ImageView>
+                  <ImageView fx:id="settingsIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#settingsSymbolClicked" onMousePressed="#settingsSymbolClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/settings.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <VBox.margin>
+                        <Insets left="17.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </ImageView>
                     </children>
                 </VBox>
             <AnchorPane layoutX="17.0" layoutY="410.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="413.0">
@@ -134,16 +145,16 @@
                         <TableColumn fx:id="artistCol" prefWidth="163.0" text="Artist" />
                     </columns>
                 </TableView>
-                <Button fx:id="addToCartButton" layoutX="595.0" layoutY="244.0" mnemonicParsing="false" onAction="#addToCartButtonClicked" text="Add to Cart" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="27.0" />
-                <TextField fx:id="quantityTextField" layoutX="403.0" layoutY="243.0" prefHeight="25.0" prefWidth="73.0" text="1" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="226.0" />
+                <Button fx:id="addToCartButton" layoutX="595.0" layoutY="244.0" mnemonicParsing="false" onAction="#addToCartButtonClicked" text="Add to Cart" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="27.0" />
+                <TextField fx:id="quantityTextField" layoutX="403.0" layoutY="243.0" prefHeight="25.0" prefWidth="73.0" text="1" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="226.0" />
                 <Label fx:id="orderSuccessLabel" layoutX="291.0" layoutY="250.0" text="Order successful!" textFill="#0fa314" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="318.0" />
-            <Label fx:id="quantityLabel" layoutX="402.0" layoutY="234.0" text="Quantity" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="260.0">
+            <Label fx:id="quantityLabel" layoutX="402.0" layoutY="234.0" text="Quantity" visible="false" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="260.0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Button fx:id="orderButton" layoutX="507.0" layoutY="243.0" mnemonicParsing="false" onAction="#orderButtonClicked" prefHeight="25.0" prefWidth="78.0" text="Order" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="115.0" />
-            <Label fx:id="addToCartErrorLabel" layoutX="156.0" layoutY="242.0" style="-fx-max-width: 225px;" text="Not enough stock available, please reduce quantity or order additional items." textFill="#d91b1b" visible="false" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="319.0" />
+            <Button fx:id="orderButton" layoutX="507.0" layoutY="243.0" mnemonicParsing="false" onAction="#orderButtonClicked" prefHeight="25.0" prefWidth="78.0" text="Order" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="115.0" />
+            <Label fx:id="addToCartErrorLabel" layoutX="156.0" layoutY="242.0" style="-fx-max-width: 225px;" text="Not enough stock available, please reduce quantity or order additional itmes." textFill="#d91b1b" visible="false" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="319.0" />
             <Label fx:id="invalidQtyErrorLabel" layoutX="199.0" layoutY="250.0" text="Please enter a valid quantity value." textFill="#d91b1b" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="318.0" />
             </children>
         </AnchorPane>

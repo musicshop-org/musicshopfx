@@ -61,6 +61,8 @@ public class CheckoutController {
     private ImageView invoiceIconImage;
     @FXML
     private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
@@ -98,29 +100,12 @@ public class CheckoutController {
 
         this.cartLineItemDTOs = cartLineItemDTOs;
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
     }
 
 
@@ -148,6 +133,12 @@ public class CheckoutController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML
