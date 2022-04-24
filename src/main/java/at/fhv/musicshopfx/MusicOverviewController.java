@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("rawtypes")
+
 public class MusicOverviewController {
     @FXML
     private Label albumTitleLabel;
@@ -75,7 +75,6 @@ public class MusicOverviewController {
 
     private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    @SuppressWarnings("unchecked")
     public void setData(AlbumDTO albumDTO) {
 
         try {
@@ -114,6 +113,15 @@ public class MusicOverviewController {
                 this.messageIconImage,
                 this.settingsIconImage
         );
+
+        for (Role role : this.roles) {
+            if (role.equals(Role.SALESPERSON)) {
+                this.quantityLabel.setVisible(true);
+                this.quantityTextField.setVisible(true);
+                this.orderButton.setVisible(true);
+                this.addToCartButton.setVisible(true);
+            }
+        }
     }
 
     @FXML
