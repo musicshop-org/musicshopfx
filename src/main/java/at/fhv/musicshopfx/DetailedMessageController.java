@@ -15,6 +15,7 @@ import sharedrmi.application.exceptions.UserNotFoundException;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.time.Instant;
@@ -50,11 +51,14 @@ public class DetailedMessageController {
     private Label messageTopicLabel;
     @FXML
     private ImageView musicIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
 
     private Message message;
     private String topic;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     public DetailedMessageController() throws JMSException, RemoteException, NotLoggedInException {
     }
@@ -76,7 +80,9 @@ public class DetailedMessageController {
             messageTopicLabel.setText(topic);
             messageTextArea.setText(((TextMessage) message).getText());
 
-        } catch (JMSException e) {
+            navbarIconPositioner.positionIcons(navbarVbox);
+
+        } catch (JMSException | FileNotFoundException e) {
             e.printStackTrace();
         }
 

@@ -8,12 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -51,12 +53,15 @@ public class MessageProducerController {
     private TableColumn<TopicLine, CheckBox> publishCol;
     @FXML
     private TableColumn<TopicLine, String> topicCol;
+    @FXML
+    private VBox navbarVbox;
 
 
     private RMIController rmiController;
     private List<Role> roles;
     private ObservableList<TopicLine> data;
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
 
     public void setData() throws RemoteException {
@@ -64,8 +69,9 @@ public class MessageProducerController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -84,13 +90,6 @@ public class MessageProducerController {
         data = obsTopicLines;
         topicView.setItems(data);
         topicView.getSelectionModel().clearSelection();
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
     }
 
 

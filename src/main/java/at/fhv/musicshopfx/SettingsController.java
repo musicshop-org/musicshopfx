@@ -8,10 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class SettingsController {
     private TableColumn<TopicLine, CheckBox> subscribedCol;
     @FXML
     private TableColumn<TopicLine, String> topicCol;
+    @FXML
+    private VBox navbarVbox;
 
 
     private RMIController rmiController;
@@ -46,6 +50,7 @@ public class SettingsController {
     private List<Role> roles;
     private ObservableList<TopicLine> data;
     private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
 
     public void setData() throws RemoteException {
@@ -53,8 +58,9 @@ public class SettingsController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -88,13 +94,6 @@ public class SettingsController {
         data = obsTopicLines;
         subscriptionView.setItems(data);
         subscriptionView.getSelectionModel().clearSelection();
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
     }
 
     private String concatRoles(List<Role> roles) {

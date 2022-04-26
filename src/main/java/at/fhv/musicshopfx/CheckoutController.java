@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.*;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.NotEnoughStockException;
@@ -63,17 +64,21 @@ public class CheckoutController {
     private ImageView messageIconImage;
     @FXML
     private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
     private List<Role> roles;
     private List<CartLineItemDTO> cartLineItemDTOs;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
 
     public void setData(List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -99,13 +104,6 @@ public class CheckoutController {
         });
 
         this.cartLineItemDTOs = cartLineItemDTOs;
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
     }
 
 

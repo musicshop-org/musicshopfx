@@ -42,12 +42,15 @@ public class MessageBoardController {
     private ScrollPane messagesScrollPane;
     @FXML
     private ImageView messageBoardIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private final String messageFxml = "message.fxml";
 
     private MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
     private RMIController rmiController;
     private List<Role> roles;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -65,6 +68,7 @@ public class MessageBoardController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
             topicSelection.getItems().add("All Topics");
             List<String> subscribedTopics = rmiController.getSubscribedTopicsForUser(SessionManager.getLoggedInUsername());
