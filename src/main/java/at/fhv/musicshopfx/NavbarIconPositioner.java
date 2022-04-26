@@ -20,14 +20,14 @@ public class NavbarIconPositioner {
 
     private final static SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    private final  String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
-    private final  String SEARCH_IMAGE = BASE_IMAGE_PATH + "search.png";
-    private final  String CART_IMAGE = BASE_IMAGE_PATH + "shopping-Cart.png";
-    private final  String INVOICE_IMAGE = BASE_IMAGE_PATH + "invoice.png";
-    private final  String PUBLISH_IMAGE = BASE_IMAGE_PATH + "writeMessage.png";
-    private final  String MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelope.png";
-    private final  String NEW_MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelopered.png";
-    private final  String SETTINGS_IMAGE = BASE_IMAGE_PATH + "settings.png";
+    private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
+    private final String SEARCH_IMAGE = BASE_IMAGE_PATH + "search.png";
+    private final String CART_IMAGE = BASE_IMAGE_PATH + "shopping-Cart.png";
+    private final String INVOICE_IMAGE = BASE_IMAGE_PATH + "invoice.png";
+    private final String PUBLISH_IMAGE = BASE_IMAGE_PATH + "writeMessage.png";
+    private final String MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelope.png";
+    private final String NEW_MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelopered.png";
+    private final String SETTINGS_IMAGE = BASE_IMAGE_PATH + "settings.png";
 
     private ImageView searchIcon;
     private ImageView cartIcon;
@@ -45,13 +45,18 @@ public class NavbarIconPositioner {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
-            this.searchIcon = getImageView(SEARCH_IMAGE, 30, 30);
-            this.cartIcon = getImageView(CART_IMAGE, 30, 30);
-            this.invoiceIcon = getImageView(INVOICE_IMAGE, 30, 30);
-            this.publishIcon = getImageView(PUBLISH_IMAGE, 30, 30);
-            this.messageIcon = getImageView(MESSAGE_IMAGE, 30, 30);
-            this.newMessageIcon = getImageView(NEW_MESSAGE_IMAGE, 30, 30);
-            this.settingsIcon = getImageView(SETTINGS_IMAGE, 30, 30);
+
+            int imgHeight = 28;
+            int imgWidth = 28;
+
+            this.searchIcon = getImageView(SEARCH_IMAGE, imgHeight, imgWidth);
+            this.cartIcon = getImageView(CART_IMAGE, imgHeight, imgWidth);
+            this.invoiceIcon = getImageView(INVOICE_IMAGE, imgHeight, imgWidth);
+            this.publishIcon = getImageView(PUBLISH_IMAGE, 27, 27);
+            this.messageIcon = getImageView(MESSAGE_IMAGE, 26, 26);
+            this.newMessageIcon = getImageView(NEW_MESSAGE_IMAGE, 26, 26);
+            this.settingsIcon = getImageView(SETTINGS_IMAGE, imgHeight, imgWidth);
+
             this.searchIcon.setPickOnBounds(true);
             this.cartIcon.setPickOnBounds(true);
             this.invoiceIcon.setPickOnBounds(true);
@@ -59,6 +64,7 @@ public class NavbarIconPositioner {
             this.messageIcon.setPickOnBounds(true);
             this.newMessageIcon.setPickOnBounds(true);
             this.settingsIcon.setPickOnBounds(true);
+
             this.searchIcon.setCursor(Cursor.HAND);
             this.cartIcon.setCursor(Cursor.HAND);
             this.invoiceIcon.setCursor(Cursor.HAND);
@@ -121,7 +127,7 @@ public class NavbarIconPositioner {
                 }
             });
 
-            VBox.setMargin(invoiceIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            VBox.setMargin(invoiceIcon, new Insets(15.0, 0.0, 15.0, 17.0));
             navbarVbox.getChildren().add(invoiceIcon);
         }
 
@@ -139,7 +145,7 @@ public class NavbarIconPositioner {
                 }
             });
 
-            VBox.setMargin(publishIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            VBox.setMargin(publishIcon, new Insets(15.0, 0.0, 15.0, 19.0));
             navbarVbox.getChildren().add(publishIcon);
         }
         if (SessionManager.isNewMessageAvailable()) {
@@ -156,7 +162,7 @@ public class NavbarIconPositioner {
                 }
             });
 
-            VBox.setMargin(newMessageIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            VBox.setMargin(newMessageIcon, new Insets(15.0, 0.0, 15.0, 19.0));
             navbarVbox.getChildren().add(newMessageIcon);
 
 
@@ -174,7 +180,7 @@ public class NavbarIconPositioner {
                 }
             });
 
-            VBox.setMargin(messageIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            VBox.setMargin(messageIcon, new Insets(15.0, 0.0, 15.0, 19.0));
             navbarVbox.getChildren().add(messageIcon);
         }
 
@@ -191,7 +197,7 @@ public class NavbarIconPositioner {
             }
         });
 
-        VBox.setMargin(settingsIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+        VBox.setMargin(settingsIcon, new Insets(15.0, 0.0, 15.0, 18.0));
         navbarVbox.getChildren().add(settingsIcon);
     }
 

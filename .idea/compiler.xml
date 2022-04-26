@@ -9,7 +9,7 @@
         <module name="maventest" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="11">
       <module name="maventest" target="11" />
     </bytecodeTargetLevel>
   </component>
