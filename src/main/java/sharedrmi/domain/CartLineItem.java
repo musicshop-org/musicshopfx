@@ -10,6 +10,7 @@ public class CartLineItem {
 
     private final String name;
     private final MediumType medium;
+    private final int stock;
     private final int quantity;
     private final BigDecimal price;
     private final ImageView minus_image;
@@ -17,9 +18,10 @@ public class CartLineItem {
     private final ImageView x_image;
     private CartLineItemDTO cartLineItemDTO;
 
-    public CartLineItem(String name, MediumType medium, int quantity, BigDecimal price, ImageView minus_image, String plus, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
+    public CartLineItem(String name, MediumType medium, int stock, int quantity, BigDecimal price, ImageView minus_image, String plus, ImageView x_image, CartLineItemDTO cartLineItemDTO) {
         this.name = name;
         this.medium = medium;
+        this.stock = stock;
         this.quantity = quantity;
         this.price = price;
         this.minus_image = minus_image;
@@ -34,6 +36,10 @@ public class CartLineItem {
 
     public MediumType getMedium() {
         return medium;
+    }
+
+    public int getStock() {
+        return stock;
     }
 
     public int getQuantity() {

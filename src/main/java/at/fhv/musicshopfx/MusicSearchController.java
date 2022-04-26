@@ -34,6 +34,8 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
     @FXML
+    private TableColumn<AlbumDTO, String> stockCol;
+    @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
@@ -41,6 +43,8 @@ public class MusicSearchController {
     private ImageView messageIconImage;
     @FXML
     private ImageView messageBoardIconImage;
+    @FXML
+    private ImageView settingsIconImage;
 
     private RMIController rmiController;
     private List<Role> roles;
@@ -65,33 +69,12 @@ public class MusicSearchController {
             populateTable(SessionManager.getLastAlbums());
         }
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
-
-        if (!this.roles.isEmpty()) {
-            this.messageBoardIconImage.setVisible(true);
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                                           this.cartIconImage,
+                                           this.invoiceIconImage,
+                                           this.messageIconImage,
+                                           this.settingsIconImage
+                                           );
     }
 
     private void populateTable(List<AlbumDTO> albums) {
@@ -100,6 +83,7 @@ public class MusicSearchController {
         releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         musicView.setItems(albumDTO);
     }
 
@@ -159,6 +143,12 @@ public class MusicSearchController {
     }
 
     @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
     protected void logoutSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             try {
@@ -171,5 +161,4 @@ public class MusicSearchController {
             sceneSwitcher.switchSceneToLoginView(e);
         }
     }
-
 }

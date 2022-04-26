@@ -66,6 +66,8 @@ public class MusicOverviewController {
     @FXML
     private ImageView messageIconImage;
     @FXML
+    private ImageView settingsIconImage;
+    @FXML
     private ImageView messageBoardIconImage;
 
     private RMIController rmiController;
@@ -85,37 +87,6 @@ public class MusicOverviewController {
         } catch (NotLoggedInException | RemoteException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }
-
-        for (Role role : this.roles) {
-            if (role.equals(Role.SALESPERSON)) {
-                this.quantityLabel.setVisible(true);
-                this.quantityTextField.setVisible(true);
-                this.orderButton.setVisible(true);
-                this.addToCartButton.setVisible(true);
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
-
-        if (!this.roles.isEmpty()) {
-            this.messageBoardIconImage.setVisible(true);
         }
 
         currentAlbumDTO = albumDTO;
@@ -138,6 +109,22 @@ public class MusicOverviewController {
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artists"));
 
         songsTableView.setItems(songDTOs);
+
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
+
+        for (Role role : this.roles) {
+            if (role.equals(Role.SALESPERSON)) {
+                this.quantityLabel.setVisible(true);
+                this.quantityTextField.setVisible(true);
+                this.orderButton.setVisible(true);
+                this.addToCartButton.setVisible(true);
+            }
+        }
     }
 
     @FXML
@@ -166,6 +153,12 @@ public class MusicOverviewController {
         if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageProducerView(e);
         }
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML

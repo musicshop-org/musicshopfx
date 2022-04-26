@@ -30,6 +30,8 @@ public class MessageProducerController {
     @FXML
     private ImageView messageBoardIconImage;
     @FXML
+    private ImageView settingsIconImage;
+    @FXML
     private TextField expirationTextField;
     @FXML
     private TextField messageTitleTextField;
@@ -77,39 +79,18 @@ public class MessageProducerController {
         ObservableList<TopicLine> obsTopicLines = FXCollections.observableArrayList(topicLines);
 
         topicCol.setCellValueFactory(new PropertyValueFactory<>("topicName"));
-        publishCol.setCellValueFactory(new PropertyValueFactory<>("publishCheckbox"));
+        publishCol.setCellValueFactory(new PropertyValueFactory<>("checkbox"));
 
         data = obsTopicLines;
         topicView.setItems(data);
         topicView.getSelectionModel().clearSelection();
 
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.OPERATOR)) {
-                if (!cartIconImage.isVisible()) {
-                    cartIconImage.setVisible(true);
-                    cartIconImage.setImage(messageIconImage.getImage());
-                    cartIconImage.setOnMousePressed(messageIconImage.getOnMousePressed());
-                    cartIconImage.setOnMouseClicked(messageIconImage.getOnMouseClicked());
-                    cartIconImage.setFitHeight(26);
-                    cartIconImage.setFitWidth(26);
-                } else {
-                    this.messageIconImage.setVisible(true);
-                }
-            }
-        }
-
-        if (!this.roles.isEmpty()) {
-            this.messageBoardIconImage.setVisible(true);
-        }
+        NavbarIconPositioner.positionIcons(this.roles,
+                this.cartIconImage,
+                this.invoiceIconImage,
+                this.messageIconImage,
+                this.settingsIconImage
+        );
     }
 
 
@@ -142,6 +123,12 @@ public class MessageProducerController {
         if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageBoardView(e);
         }
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML
@@ -198,7 +185,7 @@ public class MessageProducerController {
 
         for (TopicLine line : data)
         {
-            if (line.getPublishCheckbox().isSelected()) {
+            if (line.getCheckbox().isSelected()) {
                 topicsToPublishMessage.add(line.getTopicName());
             }
         }
@@ -210,13 +197,14 @@ public class MessageProducerController {
             topicErrorLabel.setText("");
         }
 
-       MessageDTO messageDTO = MessageDTO.builder()
+        MessageDTO message = MessageDTO.builder()
                 .messageTitle(messageTitle)
                 .messageText(messageText)
                 .expirationDays(expirationDays)
                 .build();
 
-        this.rmiController.publish(topicsToPublishMessage, messageDTO);
+        this.rmiController.publish(topicsToPublishMessage, message);
+
         sceneSwitcher.switchSceneToMusicSearchView(e);
     }
 }

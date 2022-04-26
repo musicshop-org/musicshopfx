@@ -17,4 +17,6 @@ public interface UserService extends Remote {
     List<String> getSubscribedTopicsForUser(String var1) throws RemoteException;
     void changeLastViewed(String var1, LocalDateTime var2) throws UserNotFoundException, RemoteException;
     LocalDateTime getLastViewedForUser(String var1) throws RemoteException, UserNotFoundException;
+    boolean subscribe(String topic, String username) throws RemoteException;
+    boolean unsubscribe(String topic, String username) throws RemoteException;
 }
