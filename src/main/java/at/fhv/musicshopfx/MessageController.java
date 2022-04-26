@@ -51,6 +51,11 @@ public class MessageController {
     }
 
     @FXML
+    public void readMoreButtonOnClick(ActionEvent e) throws IOException {
+        sceneSwitcher.switchSceneDetailedMessageView(e, message, topic);
+    }
+
+    @FXML
     public void deleteButtonOnClick(ActionEvent e) throws IOException {
         messageConsumerService.removeMessage(message, topic);
         sceneSwitcher.switchSceneToMessageBoardView(e);

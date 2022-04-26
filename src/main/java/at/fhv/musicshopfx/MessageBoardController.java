@@ -57,7 +57,7 @@ public class MessageBoardController {
     public void setData() {
 
         messagesVbox.maxWidthProperty().bind(messagesScrollPane.widthProperty());
-        //VBox.setVgrow(messagesVbox, Priority.ALWAYS);
+        VBox.setVgrow(messagesVbox, Priority.ALWAYS);
         if(SessionManager.isNewMessageAvailable()){
             messageBoardIconImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/at/fhv/musicshopfx/images/envelopered.png"))));
         }
@@ -137,6 +137,7 @@ public class MessageBoardController {
         }
     }
 
+
     protected void addMessagesToBoard(Map<String, List<Message>> topicMessages) throws IOException, JMSException {
 
         messageErrorLabel.setText("");
@@ -155,9 +156,10 @@ public class MessageBoardController {
                 MessageController messageController = loader.getController();
                 messageController.addMessage(message, topicMessage.getKey());
                 this.messagesVbox.getChildren().add(0, messageFXML);
-                AnchorPane.setTopAnchor(messageFXML, 0.0);
-                AnchorPane.setRightAnchor(messageFXML, 0.0);
-                AnchorPane.setLeftAnchor(messageFXML, 0.0);
+//                AnchorPane.setTopAnchor(messageFXML, 0.0);
+//                AnchorPane.setRightAnchor(messageFXML, 0.0);
+//                AnchorPane.setLeftAnchor(messageFXML, 0.0);
+
             }
         }
     }
@@ -174,9 +176,9 @@ public class MessageBoardController {
             MessageController messageController = loader.getController();
             messageController.addMessage(message, topic);
             this.messagesVbox.getChildren().add(0, root);
-            AnchorPane.setTopAnchor(root, 0.0);
-            AnchorPane.setRightAnchor(root, 0.0);
-            AnchorPane.setLeftAnchor(root, 0.0);
+//            AnchorPane.setTopAnchor(root, 0.0);
+//            AnchorPane.setRightAnchor(root, 0.0);
+//            AnchorPane.setLeftAnchor(root, 0.0);
         }
     }
 
