@@ -110,36 +110,6 @@ public class SettingsController {
     }
 
     @FXML
-    void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMusicSearchView(e);
-    }
-
-    @FXML
-    protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToCartView (e);
-    }
-
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-    }
-
-    @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMessageProducerView(e);
-    }
-
-    @FXML
-    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToSettingsView(e);
-    }
-
-    @FXML
     protected void logoutSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             try {

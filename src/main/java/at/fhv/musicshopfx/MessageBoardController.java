@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -41,9 +42,9 @@ public class MessageBoardController {
     @FXML
     private ScrollPane messagesScrollPane;
     @FXML
-    private ImageView messageBoardIconImage;
-    @FXML
     private VBox navbarVbox;
+    @FXML
+    private ImageView logoutIconImage;
 
     private final String messageFxml = "message.fxml";
 
@@ -59,11 +60,9 @@ public class MessageBoardController {
 
     public void setData() {
 
+        SessionManager.setNewMessages(false);
         messagesVbox.maxWidthProperty().bind(messagesScrollPane.widthProperty());
         VBox.setVgrow(messagesVbox, Priority.ALWAYS);
-        if(SessionManager.isNewMessageAvailable()){
-            messageBoardIconImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/at/fhv/musicshopfx/images/envelopered.png"))));
-        }
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -82,7 +81,7 @@ public class MessageBoardController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        SessionManager.setNewMessages(false);
+
         try {
             rmiController.changeLastViewed(SessionManager.getLoggedInUsername(), LocalDateTime.now());
         } catch (UserNotFoundException e) {
@@ -187,37 +186,19 @@ public class MessageBoardController {
     }
 
     @FXML
-    protected void searchSymbolClicked(MouseEvent e) throws IOException {
+    protected void logoutIconImageOnClick(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMusicSearchView(e);
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
         }
     }
 
-    @FXML
-    protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToCartView(e);
-        }
-    }
 
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMessageProducerView(e);
-    }
-
-    @FXML
-    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMessageBoardView(e);
-        }
-    }
 
 }

@@ -74,7 +74,7 @@ public class SessionManager {
         if (SessionManager.isLoggedIn) {
             SessionManager.instance = null;
             SessionManager.loggedInUsername = "";
-            SessionManager.isLoggedIn = false;
+
             SessionManager.lastSearch = "";
             SessionManager.lastAlbums = new ArrayList<>();
             try {
@@ -85,7 +85,7 @@ public class SessionManager {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-
+            SessionManager.isLoggedIn = false;
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
         }

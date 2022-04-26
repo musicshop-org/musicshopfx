@@ -2,15 +2,18 @@ package at.fhv.musicshopfx;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class NavbarIconPositioner {
@@ -34,17 +37,37 @@ public class NavbarIconPositioner {
     private ImageView newMessageIcon;
     private ImageView settingsIcon;
 
+    private RMIController rmiController;
+    private List<Role> roles;
+
     public NavbarIconPositioner() {
 
         try {
-            searchIcon = getImageView(SEARCH_IMAGE, 30, 30);
-            cartIcon = getImageView(CART_IMAGE, 30, 30);
-            invoiceIcon = getImageView(INVOICE_IMAGE, 30, 30);
-            publishIcon = getImageView(PUBLISH_IMAGE, 30, 30);
-            messageIcon = getImageView(MESSAGE_IMAGE, 30, 30);
-            newMessageIcon = getImageView(NEW_MESSAGE_IMAGE, 30, 30);
-            settingsIcon = getImageView(SETTINGS_IMAGE, 30, 30);
-        } catch (FileNotFoundException e) {
+            this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
+            this.searchIcon = getImageView(SEARCH_IMAGE, 30, 30);
+            this.cartIcon = getImageView(CART_IMAGE, 30, 30);
+            this.invoiceIcon = getImageView(INVOICE_IMAGE, 30, 30);
+            this.publishIcon = getImageView(PUBLISH_IMAGE, 30, 30);
+            this.messageIcon = getImageView(MESSAGE_IMAGE, 30, 30);
+            this.newMessageIcon = getImageView(NEW_MESSAGE_IMAGE, 30, 30);
+            this.settingsIcon = getImageView(SETTINGS_IMAGE, 30, 30);
+            this.searchIcon.setPickOnBounds(true);
+            this.cartIcon.setPickOnBounds(true);
+            this.invoiceIcon.setPickOnBounds(true);
+            this.publishIcon.setPickOnBounds(true);
+            this.messageIcon.setPickOnBounds(true);
+            this.newMessageIcon.setPickOnBounds(true);
+            this.settingsIcon.setPickOnBounds(true);
+            this.searchIcon.setCursor(Cursor.HAND);
+            this.cartIcon.setCursor(Cursor.HAND);
+            this.invoiceIcon.setCursor(Cursor.HAND);
+            this.publishIcon.setCursor(Cursor.HAND);
+            this.messageIcon.setCursor(Cursor.HAND);
+            this.newMessageIcon.setCursor(Cursor.HAND);
+            this.settingsIcon.setCursor(Cursor.HAND);
+
+        } catch (FileNotFoundException | NotLoggedInException | RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -67,57 +90,58 @@ public class NavbarIconPositioner {
         VBox.setMargin(searchIcon, new Insets(15.0, 0.0, 15.0, 15.0));
         navbarVbox.getChildren().add(searchIcon);
 
-
-        cartIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.isPrimaryButtonDown()) {
-                    try {
-                        sceneSwitcher.switchSceneToCartView(mouseEvent);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if(roles.contains(Role.SALESPERSON)) {
+            cartIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()) {
+                        try {
+                            sceneSwitcher.switchSceneToCartView(mouseEvent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        VBox.setMargin(cartIcon, new Insets(15.0, 0.0, 15.0, 15.0));
-        navbarVbox.getChildren().add(cartIcon);
+            VBox.setMargin(cartIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            navbarVbox.getChildren().add(cartIcon);
 
 
-        invoiceIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.isPrimaryButtonDown()) {
-                    try {
-                        sceneSwitcher.switchSceneToInvoiceSearchView(mouseEvent);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            invoiceIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()) {
+                        try {
+                            sceneSwitcher.switchSceneToInvoiceSearchView(mouseEvent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        VBox.setMargin(invoiceIcon, new Insets(15.0, 0.0, 15.0, 15.0));
-        navbarVbox.getChildren().add(invoiceIcon);
+            VBox.setMargin(invoiceIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            navbarVbox.getChildren().add(invoiceIcon);
+        }
 
-
-        publishIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.isPrimaryButtonDown()) {
-                    try {
-                        sceneSwitcher.switchSceneToMessageProducerView(mouseEvent);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if(roles.contains(Role.OPERATOR)) {
+            publishIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()) {
+                        try {
+                            sceneSwitcher.switchSceneToMessageProducerView(mouseEvent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        VBox.setMargin(publishIcon, new Insets(15.0, 0.0, 15.0, 15.0));
-        navbarVbox.getChildren().add(publishIcon);
-
+            VBox.setMargin(publishIcon, new Insets(15.0, 0.0, 15.0, 15.0));
+            navbarVbox.getChildren().add(publishIcon);
+        }
         if (SessionManager.isNewMessageAvailable()) {
             newMessageIcon.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
