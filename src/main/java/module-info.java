@@ -4,8 +4,9 @@ module at.fhv.musicshopfx {
     requires java.rmi;
     requires java.desktop;
     requires java.naming;
-    requires static activemq.all;
-//    requires sharedrmi;
+    requires activemq.all;
+    //requires org.apache.logging.log4j.core;
+    //    requires sharedrmi;
 
     opens sharedrmi.application.dto to javafx.base;
     opens sharedrmi.application.exceptions to java.base;
@@ -14,6 +15,7 @@ module at.fhv.musicshopfx {
 
     opens sharedrmi.domain.enums to javafx.base;
     opens sharedrmi.domain.valueobjects to javafx.base;
+
 
     exports sharedrmi.domain;
     exports sharedrmi.domain.enums;

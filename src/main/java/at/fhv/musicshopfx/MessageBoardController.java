@@ -6,7 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.MessageDTO;
@@ -29,6 +31,8 @@ public class MessageBoardController {
     private Label messageErrorLabel;
     @FXML
     private VBox messagesPane;
+    @FXML
+    private ScrollPane messagesScrollPane;
 
     private final String messageFxml = "message.fxml";
 
@@ -115,14 +119,22 @@ public class MessageBoardController {
         messageErrorLabel.setText("");
 
         for (Map.Entry<String, List<Message>> topicMessage:topicMessages.entrySet()) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
-            Parent root = loader.load();
 
-            MessageController messageController = loader.getController();
+
+
 
             for (Message message:topicMessage.getValue()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
+                Parent root = loader.load();
+                //AnchorPane anchorPane = (AnchorPane) root.lookup("messageAnchorPane");
+
+
+                MessageController messageController = loader.getController();
                 messageController.addMessage(message, topicMessage.getKey());
                 this.messagesPane.getChildren().add(root);
+                AnchorPane.setTopAnchor(root, 0.0);
+                AnchorPane.setRightAnchor(root, 0.0);
+                AnchorPane.setLeftAnchor(root, 0.0);
             }
         }
     }
@@ -133,10 +145,15 @@ public class MessageBoardController {
         for (Message message:messages) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
             Parent root = loader.load();
+            //AnchorPane anchorPane = (AnchorPane) root.lookup("messageAnchorPane");
+
 
             MessageController messageController = loader.getController();
             messageController.addMessage(message, topic);
             this.messagesPane.getChildren().add(root);
+            AnchorPane.setTopAnchor(root, 0.0);
+            AnchorPane.setRightAnchor(root, 0.0);
+            AnchorPane.setLeftAnchor(root, 0.0);
         }
     }
 

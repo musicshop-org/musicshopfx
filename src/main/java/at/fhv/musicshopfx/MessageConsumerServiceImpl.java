@@ -5,6 +5,7 @@ import sharedrmi.communication.rmi.RMIController;
 
 import javax.jms.*;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,15 +15,17 @@ import java.util.stream.Stream;
 public class MessageConsumerServiceImpl implements MessageConsumerService {
 
     private static MessageConsumerService instance;
-    private List<Thread> topicConsumerThreads;
+    private static List<Thread> topicConsumerThreads;
     private SessionManager sessionManager;
     private RMIController rmiController;
     private static Map<String, List<Message>> topicMessages;
 
     private MessageConsumerServiceImpl() throws NotLoggedInException, RemoteException {
         this.sessionManager = SessionManager.getInstance();
-
+        this.topicConsumerThreads = new LinkedList<>();
+        this.topicMessages = new HashMap<>();
         rmiController = sessionManager.getRMIController();
+
 
         String username = sessionManager.getLoggedInUsername();
         List<String> topics = rmiController.getSubscribedTopicsForUser(username);
@@ -43,6 +46,12 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
         return instance;
     }
 
+    public static void close() {
+
+        TopicConsumer.interrupt();
+        instance = null;
+    }
+
     @Override
     public Map<String, List<Message>> getMessagesFromAllSubscribedTopics(){
         return topicMessages;
@@ -55,13 +64,23 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
     @Override
     public void addMessage(Message message, String topic){
         List<Message> messages = topicMessages.get(topic);
+        if(messages == null){
+            messages = new LinkedList<>();
+        }
         messages.add(message);
+        topicMessages.put(topic, messages);
+
     }
 
     @Override
     public void removeMessage(Message message, String topic){
         List<Message> messages = topicMessages.get(topic);
         messages.remove(message);
+        try {
+            message.acknowledge();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
     }
 
 }

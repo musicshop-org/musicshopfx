@@ -67,6 +67,8 @@ public class SessionManager {
             SessionManager.isLoggedIn = false;
             SessionManager.lastSearch = "";
             SessionManager.lastAlbums = new ArrayList<>();
+            MessageConsumerServiceImpl.close();
+
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
         }
