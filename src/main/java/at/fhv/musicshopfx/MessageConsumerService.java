@@ -16,5 +16,6 @@ public interface MessageConsumerService {
     void removeMessage(Message message, String topic);
     List<Message> getMessagesFromSubscribedTopic(String topic);
     Map<String, List<Message>> getMessagesFromAllSubscribedTopics();
+    void close() throws JMSException;
 
 }

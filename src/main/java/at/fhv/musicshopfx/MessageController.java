@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import javax.jms.JMSException;
@@ -20,7 +21,7 @@ public class MessageController {
     @FXML
     private Label messageTitle;
     @FXML
-    private Label messageText;
+    private TextArea messageText;
     @FXML
     private Button deleteButton;
     @FXML
@@ -31,14 +32,19 @@ public class MessageController {
     private String topic;
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    public MessageController() throws RemoteException, NotLoggedInException {
+    public MessageController() throws RemoteException, NotLoggedInException, JMSException {
     }
 
     public void addMessage(Message message, String topic) throws IOException, JMSException {
 
         this.messageTopic.setText(topic);
         this.messageTitle.setText(message.getJMSCorrelationID());
-        this.messageText.setText(((TextMessage) message).getText());
+        String messageText = ((TextMessage) message).getText();
+        if(messageText.length() >= 250){
+            this.messageText.setText(messageText.substring(0, 250)+"...");
+        } else {
+            this.messageText.setText(messageText);
+        }
         this.message = message;
         this.topic = topic;
 

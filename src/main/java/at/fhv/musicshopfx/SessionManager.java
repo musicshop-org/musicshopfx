@@ -6,6 +6,7 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.communication.rmi.RMIControllerFactory;
 import sharedrmi.domain.enums.MediumType;
 
+import javax.jms.JMSException;
 import javax.security.auth.login.FailedLoginException;
 import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
@@ -25,6 +26,7 @@ public class SessionManager {
     private static String loggedInUsername;
     private static boolean isLoggedIn;
     private static String lastSearch = "";
+    private static boolean newMessages = false;
     private static List<AlbumDTO> lastAlbums = new ArrayList<>();
 
     private final RMIController rmiController;
@@ -42,6 +44,14 @@ public class SessionManager {
         }
 
         return SessionManager.instance;
+    }
+
+    public static boolean isNewMessageAvailable() {
+        return newMessages;
+    }
+
+    public static void setNewMessages(boolean newMessages) {
+        SessionManager.newMessages = newMessages;
     }
 
     public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
@@ -67,7 +77,14 @@ public class SessionManager {
             SessionManager.isLoggedIn = false;
             SessionManager.lastSearch = "";
             SessionManager.lastAlbums = new ArrayList<>();
-            MessageConsumerServiceImpl.close();
+            try {
+                MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
+                messageConsumerService.close();
+            } catch (JMSException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
 
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");

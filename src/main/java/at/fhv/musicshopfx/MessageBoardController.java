@@ -7,32 +7,41 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
-import sharedrmi.application.dto.MessageDTO;
-import sharedrmi.application.exceptions.NoMessagesFoundException;
+import sharedrmi.application.exceptions.UserNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.io.IOException;
+import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MessageBoardController {
 
     @FXML
     private ComboBox<String> topicSelection;
     @FXML
+    private AnchorPane mainAnchorPane;
+    @FXML
     private Label messageErrorLabel;
     @FXML
-    private VBox messagesPane;
+    private VBox messagesVbox;
     @FXML
     private ScrollPane messagesScrollPane;
+    @FXML
+    private ImageView messageBoardIconImage;
 
     private final String messageFxml = "message.fxml";
 
@@ -42,10 +51,16 @@ public class MessageBoardController {
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    public MessageBoardController() throws RemoteException, NotLoggedInException {
+    public MessageBoardController() throws RemoteException, NotLoggedInException, JMSException {
     }
 
     public void setData() {
+
+        messagesVbox.maxWidthProperty().bind(messagesScrollPane.widthProperty());
+        //VBox.setVgrow(messagesVbox, Priority.ALWAYS);
+        if(SessionManager.isNewMessageAvailable()){
+            messageBoardIconImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/at/fhv/musicshopfx/images/envelopered.png"))));
+        }
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -63,12 +78,20 @@ public class MessageBoardController {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+        SessionManager.setNewMessages(false);
+        try {
+            rmiController.changeLastViewed(SessionManager.getLoggedInUsername(), LocalDateTime.now());
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 
     protected void allTopicsSelected() throws IOException {
 
-        this.messagesPane.getChildren().clear();
+        this.messagesVbox.getChildren().clear();
 
         try {
             Map<String, List<Message>> topicMessages = messageConsumerService.getMessagesFromAllSubscribedTopics();
@@ -90,7 +113,7 @@ public class MessageBoardController {
     @FXML
     protected void topicSelected(ActionEvent e) throws IOException {
 
-        this.messagesPane.getChildren().clear();
+        this.messagesVbox.getChildren().clear();
 
         if (topicSelection.getValue().equals("All Topics")) {
 
@@ -125,16 +148,16 @@ public class MessageBoardController {
 
             for (Message message:topicMessage.getValue()) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
-                Parent root = loader.load();
+                Parent messageFXML = loader.load();
                 //AnchorPane anchorPane = (AnchorPane) root.lookup("messageAnchorPane");
 
 
                 MessageController messageController = loader.getController();
                 messageController.addMessage(message, topicMessage.getKey());
-                this.messagesPane.getChildren().add(root);
-                AnchorPane.setTopAnchor(root, 0.0);
-                AnchorPane.setRightAnchor(root, 0.0);
-                AnchorPane.setLeftAnchor(root, 0.0);
+                this.messagesVbox.getChildren().add(0, messageFXML);
+                AnchorPane.setTopAnchor(messageFXML, 0.0);
+                AnchorPane.setRightAnchor(messageFXML, 0.0);
+                AnchorPane.setLeftAnchor(messageFXML, 0.0);
             }
         }
     }
@@ -150,7 +173,7 @@ public class MessageBoardController {
 
             MessageController messageController = loader.getController();
             messageController.addMessage(message, topic);
-            this.messagesPane.getChildren().add(root);
+            this.messagesVbox.getChildren().add(0, root);
             AnchorPane.setTopAnchor(root, 0.0);
             AnchorPane.setRightAnchor(root, 0.0);
             AnchorPane.setLeftAnchor(root, 0.0);

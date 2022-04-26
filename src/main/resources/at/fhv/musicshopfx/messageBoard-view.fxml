@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageBoardController">
+<AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.MessageBoardController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -85,7 +85,7 @@
         </AnchorPane>
         <ScrollPane fx:id="messagesScrollPane" layoutX="90.0" layoutY="108.0" prefHeight="375.0" prefWidth="686.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="106.0">
             <content>
-                <VBox fx:id="messagesPane" prefHeight="366.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <VBox fx:id="messagesVbox" prefHeight="366.0" prefWidth="700.0" style="-fx-background-color: blue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </content>
         </ScrollPane>
         <Label layoutX="76.0" layoutY="69.0" text="Filter Topics:" AnchorPane.leftAnchor="76.0" AnchorPane.topAnchor="69.0" />

@@ -15,14 +15,14 @@ import java.util.stream.Stream;
 public class MessageConsumerServiceImpl implements MessageConsumerService {
 
     private static MessageConsumerService instance;
-    private static List<Thread> topicConsumerThreads;
+    private List<TopicConsumer> topicConsumers;
     private SessionManager sessionManager;
     private RMIController rmiController;
     private static Map<String, List<Message>> topicMessages;
 
-    private MessageConsumerServiceImpl() throws NotLoggedInException, RemoteException {
+    private MessageConsumerServiceImpl() throws NotLoggedInException, RemoteException, JMSException {
         this.sessionManager = SessionManager.getInstance();
-        this.topicConsumerThreads = new LinkedList<>();
+        this.topicConsumers = new LinkedList<>();
         this.topicMessages = new HashMap<>();
         rmiController = sessionManager.getRMIController();
 
@@ -31,14 +31,13 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
         List<String> topics = rmiController.getSubscribedTopicsForUser(username);
 
         for (String topic:topics) {
-            Thread topicConsumerThread = new Thread(new TopicConsumer(topic, username));
-            topicConsumerThreads.add(topicConsumerThread);
-            topicConsumerThread.start();
+            TopicConsumer consumer = new TopicConsumer(topic, username);
+            topicConsumers.add(consumer);
         }
 
     }
 
-    public static MessageConsumerService getInstance() throws RemoteException, NotLoggedInException {
+    public static MessageConsumerService getInstance() throws RemoteException, NotLoggedInException, JMSException {
         if(instance == null){
             instance = new MessageConsumerServiceImpl();
         }
@@ -46,9 +45,11 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
         return instance;
     }
 
-    public static void close() {
+    public void close() throws JMSException {
 
-        TopicConsumer.interrupt();
+        for (TopicConsumer topicConsumer:topicConsumers) {
+            topicConsumer.close();
+        }
         instance = null;
     }
 
