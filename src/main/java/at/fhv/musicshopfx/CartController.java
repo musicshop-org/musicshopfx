@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
@@ -59,6 +60,8 @@ public class CartController {
     private ImageView messageIconImage;
     @FXML
     private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
@@ -75,6 +78,7 @@ public class CartController {
     private final String CURRENCY = "€";
     private RMIController rmiController;
     private List<Role> roles;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -83,6 +87,7 @@ public class CartController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -133,13 +138,6 @@ public class CartController {
         }
 
         determineButtonStates();
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
     }
 
     // get ImageView for UI table
@@ -296,6 +294,7 @@ public class CartController {
         }
     }
 
+
     @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
@@ -335,4 +334,12 @@ public class CartController {
         buyButton.setDisable(isCartEmpty);
         clearCartButton.setDisable(isCartEmpty);
     }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
 }

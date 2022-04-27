@@ -3,17 +3,24 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 
 import javax.naming.NoPermissionException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -41,10 +48,15 @@ public class MusicSearchController {
     @FXML
     private ImageView messageIconImage;
     @FXML
+    private ImageView messageBoardIconImage;
+    @FXML
     private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private RMIController rmiController;
     private List<Role> roles;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -53,8 +65,9 @@ public class MusicSearchController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -65,13 +78,6 @@ public class MusicSearchController {
             musicSearchTextField.setText(lastSearch);
             populateTable(SessionManager.getLastAlbums());
         }
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                                           this.cartIconImage,
-                                           this.invoiceIconImage,
-                                           this.messageIconImage,
-                                           this.settingsIconImage
-                                           );
     }
 
     private void populateTable(List<AlbumDTO> albums) {
@@ -130,6 +136,13 @@ public class MusicSearchController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
     }
 
     @FXML

@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.MessageDTO;
@@ -17,13 +18,14 @@ import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
+@SuppressWarnings("rawtypes")
 public class MusicOverviewController {
     @FXML
     private Label albumTitleLabel;
@@ -60,28 +62,24 @@ public class MusicOverviewController {
     @FXML
     private Label quantityLabel;
     @FXML
-    private ImageView cartIconImage;
-    @FXML
-    private ImageView invoiceIconImage;
-    @FXML
-    private ImageView messageIconImage;
-    @FXML
-    private ImageView settingsIconImage;
+    private VBox navbarVbox;
 
     private RMIController rmiController;
     private AlbumDTO currentAlbumDTO;
     private List<Role> roles;
-
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
+    @SuppressWarnings("unchecked")
     public void setData(AlbumDTO albumDTO) {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -106,13 +104,6 @@ public class MusicOverviewController {
         artistCol.setCellValueFactory(new PropertyValueFactory<>("artists"));
 
         songsTableView.setItems(songDTOs);
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
 
         for (Role role : this.roles) {
             if (role.equals(Role.SALESPERSON)) {
@@ -169,6 +160,13 @@ public class MusicOverviewController {
             }
 
             sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
         }
     }
 

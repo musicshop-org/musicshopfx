@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import sharedrmi.application.api.MessageProducerService;
 import sharedrmi.application.api.*;
 import sharedrmi.domain.valueobjects.Role;
 

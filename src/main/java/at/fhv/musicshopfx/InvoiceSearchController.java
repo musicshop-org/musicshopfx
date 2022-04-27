@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.InvoiceDTO;
@@ -18,6 +19,7 @@ import sharedrmi.domain.InvoiceLineItem;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -55,14 +57,16 @@ public class InvoiceSearchController {
     private ImageView messageIconImage;
     @FXML
     private ImageView settingsIconImage;
-
     @FXML
     private Button returnButton;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private ObservableList<InvoiceLineItem> data;
     private InvoiceDTO invoiceDTO;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private final int MINUS_COLUMN_POSITION = 4;
     private final int PLUS_COLUMN_POSITION = 6;
@@ -77,20 +81,14 @@ public class InvoiceSearchController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
         determineButtonStates();
-
-        NavbarIconPositioner.positionIcons(this.roles,
-                this.cartIconImage,
-                this.invoiceIconImage,
-                this.messageIconImage,
-                this.settingsIconImage
-        );
     }
 
     @FXML
@@ -248,6 +246,13 @@ public class InvoiceSearchController {
     protected void messageSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             sceneSwitcher.switchSceneToMessageProducerView(e);
+        }
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
         }
     }
 

@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.SettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.musicshopfx.SettingsController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="800.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -26,65 +21,7 @@
         <AnchorPane prefHeight="200.0" prefWidth="60.0" style="-fx-background-color: f0f0f0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="46.0">
             <children>
                 <Line endX="62.0" startX="62.0" startY="460.0" stroke="#9a9a9a" strokeWidth="0.5" visible="false" AnchorPane.bottomAnchor="-0.5" AnchorPane.leftAnchor="61.5" AnchorPane.topAnchor="-0.5" />
-                <VBox layoutY="90.0" prefHeight="405.0" prefWidth="60.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <ImageView fx:id="searchIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#searchSymbolClicked" onMousePressed="#searchSymbolClicked" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/search.png" />
-                            </image>
-                            <VBox.margin>
-                                <Insets bottom="15.0" left="15.0" top="15.0" />
-                            </VBox.margin>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </ImageView>
-                        <ImageView fx:id="cartIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#cartSymbolClicked" onMousePressed="#cartSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
-                            <image>
-                                <Image url="@images/shopping-cart.png" />
-                            </image>
-                            <VBox.margin>
-                                <Insets bottom="15.0" left="15.0" top="15.0" />
-                            </VBox.margin>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </ImageView>
-                        <ImageView fx:id="invoiceIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#invoiceSymbolClicked" onMousePressed="#invoiceSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
-                            <image>
-                                <Image url="@images/invoice.png" />
-                            </image>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                            <VBox.margin>
-                                <Insets bottom="15.0" left="17.0" top="15.0" />
-                            </VBox.margin>
-                        </ImageView>
-                  <ImageView fx:id="messageIconImage" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#messageSymbolClicked" onMousePressed="#messageSymbolClicked" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@images/writeMessage.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <VBox.margin>
-                        <Insets bottom="15.0" left="19.0" top="15.0" />
-                     </VBox.margin>
-                  </ImageView>
-                  <ImageView fx:id="settingsIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#settingsSymbolClicked" onMousePressed="#settingsSymbolClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/settings.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <VBox.margin>
-                        <Insets bottom="15.0" left="17.0" top="15.0" />
-                     </VBox.margin>
-                  </ImageView>
-                    </children>
-                </VBox>
+                <VBox fx:id="navbarVbox" layoutY="90.0" prefHeight="405.0" prefWidth="60.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <AnchorPane prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="413.0">
                <children>
                   <ImageView fx:id="logoutIconImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#logoutSymbolClicked" onMousePressed="#logoutSymbolClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0">
@@ -126,14 +63,14 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </Label>
-            <Button fx:id="applyButton" layoutX="396.0" layoutY="219.0" mnemonicParsing="false" onAction="#applyButtonClicked" prefHeight="25.0" prefWidth="100.0" text="Apply" AnchorPane.bottomAnchor="20.666666666666657" AnchorPane.rightAnchor="204.0" />
-            <TableView fx:id="subscriptionView" focusTraversable="false" layoutX="21.0" layoutY="25.0" minHeight="219.0" minWidth="350.0" prefHeight="219.0" prefWidth="362.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="24.0">
+            <Button fx:id="applyButton" layoutX="581.0" layoutY="226.0" mnemonicParsing="false" onAction="#applyButtonClicked" prefHeight="25.0" prefWidth="100.0" text="Apply" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="19.0" />
+            <TableView fx:id="subscriptionView" focusTraversable="false" layoutX="24.0" layoutY="28.0" minHeight="189.0" minWidth="350.0" prefHeight="189.0" prefWidth="659.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="27.0">
                <columns>
-                  <TableColumn fx:id="topicCol" editable="false" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" sortable="false" text="Topic" />
-                  <TableColumn fx:id="subscribedCol" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" style="-fx-alignment: CENTER;" text="Subscribed" />
+                  <TableColumn fx:id="topicCol" editable="false" maxWidth="496.0" minWidth="250.0" prefWidth="496.0" sortable="false" text="Topic" />
+                  <TableColumn fx:id="subscribedCol" editable="false" maxWidth="332.0" minWidth="43.0" prefWidth="160.0" sortable="false" style="-fx-alignment: CENTER;" text="Subscribed" />
                </columns>
             </TableView>
-            <Label fx:id="topicErrorLabel" layoutX="496.0" layoutY="223.0" prefHeight="17.0" prefWidth="190.0" textFill="#d91b1b" />
+            <Label fx:id="topicErrorLabel" layoutX="368.0" layoutY="231.0" prefHeight="17.0" prefWidth="190.0" textFill="#d91b1b" AnchorPane.bottomAnchor="17.0" AnchorPane.rightAnchor="142.0" />
             </children>
         </AnchorPane>
     </children>
