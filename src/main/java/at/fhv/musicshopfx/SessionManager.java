@@ -1,27 +1,35 @@
 package at.fhv.musicshopfx;
 
 import sharedrmi.application.dto.AlbumDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.communication.rmi.RMIControllerFactory;
+import sharedrmi.domain.enums.MediumType;
 
+import javax.jms.JMSException;
 import javax.security.auth.login.FailedLoginException;
 import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SessionManager {
 
     private static SessionManager instance;
+    private static String loggedInUsername;
     private static boolean isLoggedIn;
     private static String lastSearch = "";
+    private static boolean newMessages = false;
     private static List<AlbumDTO> lastAlbums = new ArrayList<>();
 
-    private RMIController rmiController;
+    private final RMIController rmiController;
 
 
     private SessionManager(RMIController rmiController) {
@@ -38,26 +46,46 @@ public class SessionManager {
         return SessionManager.instance;
     }
 
-    public static boolean login(String username, String password) throws FailedLoginException, AccessDeniedException{
+    public static boolean isNewMessageAvailable() {
+        return newMessages;
+    }
+
+    public static void setNewMessages(boolean newMessages) {
+        SessionManager.newMessages = newMessages;
+    }
+
+    public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
         try {
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://localhost/RMIControllerFactory");
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://"+server+"/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
             new SessionManager(rmiController);
+            SessionManager.loggedInUsername = username;
             SessionManager.isLoggedIn = true;
 
             return true;
 
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     public static void logout() throws NotLoggedInException {
-        if (isLoggedIn) {
+        if (SessionManager.isLoggedIn) {
             SessionManager.instance = null;
-            isLoggedIn = false;
-            lastSearch = "";
-            lastAlbums = new ArrayList<>();
+            SessionManager.loggedInUsername = "";
+
+            SessionManager.lastSearch = "";
+            SessionManager.lastAlbums = new ArrayList<>();
+            try {
+                MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
+                messageConsumerService.close();
+            } catch (JMSException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            SessionManager.isLoggedIn = false;
         } else {
             throw new NotLoggedInException("Not logged in! Call SessionManager.login() first");
         }
@@ -67,13 +95,53 @@ public class SessionManager {
         return rmiController;
     }
 
-    public static String getLastSearch() { return SessionManager.lastSearch; }
+    public static String getLoggedInUsername() {
+        return SessionManager.loggedInUsername;
+    }
+
+    public static String getLastSearch() {
+        return SessionManager.lastSearch;
+    }
 
     public static void setLastSearch(String lastSearch) {
         SessionManager.lastSearch = lastSearch;
     }
 
-    public static List<AlbumDTO> getLastAlbums() {return lastAlbums; }
+    public static List<AlbumDTO> getLastAlbums() {
+        return SessionManager.lastAlbums;
+    }
 
-    public static void setLastAlbums(List<AlbumDTO> albums) { SessionManager.lastAlbums = albums; }
+    public static void setLastAlbums(List<AlbumDTO> albums) {
+        SessionManager.lastAlbums = albums;
+    }
+
+    public static void updateLastAlbums(AlbumDTO updatedAlbumDTO) {
+        if (SessionManager.lastAlbums.size() > 0) {
+            SessionManager.lastAlbums = SessionManager.lastAlbums
+                    .stream()
+                    .map(item -> {
+                        if (item.getAlbumId().equals(updatedAlbumDTO.getAlbumId())) {
+                            return updatedAlbumDTO;
+                        }
+
+                        return item;
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public static AlbumDTO findLastAlbumByTitleAndMedium(String title, MediumType type) throws AlbumNotFoundException {
+
+        List<AlbumDTO> albumsDTOs = SessionManager.lastAlbums
+                .stream()
+                .filter(item -> item.getTitle().equals(title) && item.getMediumType().equals(type))
+                .collect(Collectors.toList());
+
+        if (albumsDTOs.size() < 1) {
+            throw new AlbumNotFoundException("album not found");
+        }
+
+        return albumsDTOs.get(0);
+
+    }
 }

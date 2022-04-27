@@ -3,16 +3,24 @@ package at.fhv.musicshopfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
 
+import javax.naming.NoPermissionException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -32,12 +40,23 @@ public class MusicSearchController {
     @FXML
     private TableColumn<AlbumDTO, String> priceCol;
     @FXML
+    private TableColumn<AlbumDTO, String> stockCol;
+    @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
+    @FXML
+    private ImageView messageBoardIconImage;
+    @FXML
+    private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private RMIController rmiController;
     private List<Role> roles;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -46,8 +65,9 @@ public class MusicSearchController {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -58,14 +78,6 @@ public class MusicSearchController {
             musicSearchTextField.setText(lastSearch);
             populateTable(SessionManager.getLastAlbums());
         }
-
-        for (Role role : this.roles)
-        {
-            if (role.equals(Role.SALESPERSON)) {
-                this.cartIconImage.setVisible(true);
-                this.invoiceIconImage.setVisible(true);
-            }
-        }
     }
 
     private void populateTable(List<AlbumDTO> albums) {
@@ -74,6 +86,7 @@ public class MusicSearchController {
         releaseDateCol.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("mediumType"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         musicView.setItems(albumDTO);
     }
 
@@ -114,20 +127,41 @@ public class MusicSearchController {
     }
 
     @FXML
-    protected void logoutButtonClicked(ActionEvent e) throws IOException {
-        try {
-            SessionManager.logout();
-        } catch (NotLoggedInException ex) {
-            ex.printStackTrace();
-            return;
-        }
-
-        sceneSwitcher.switchSceneToLoginView(e);
-    }
-
-    @FXML
     protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown())
             sceneSwitcher.switchSceneToInvoiceSearchView(e);
+    }
+
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
     }
 }

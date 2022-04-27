@@ -1,27 +1,28 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package sharedrmi.application.api;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.List;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.ArtistDTO;
 import sharedrmi.application.dto.SongDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.domain.enums.MediumType;
 
+import javax.naming.NoPermissionException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.List;
+
 public interface ProductService extends Remote {
-    List<AlbumDTO> findAlbumsBySongTitle(String var1) throws RemoteException;
 
-    AlbumDTO findAlbumByAlbumTitleAndMedium(String var1, MediumType var2) throws RemoteException, AlbumNotFoundException;
+    List<AlbumDTO> findAlbumsBySongTitle(String title) throws RemoteException;
 
-    List<SongDTO> findSongsByTitle(String var1) throws RemoteException;
+    AlbumDTO findAlbumByAlbumTitleAndMedium(String title, MediumType mediumType) throws RemoteException, AlbumNotFoundException;
 
-    List<ArtistDTO> findArtistsByName(String var1) throws RemoteException;
+    List<SongDTO> findSongsByTitle(String title) throws RemoteException;
 
-    void decreaseStockOfAlbum(String var1, MediumType var2, int var3);
+    List<ArtistDTO> findArtistsByName(String name) throws RemoteException;
+
+    void decreaseStockOfAlbum(String title, MediumType mediumType, int decreaseAmount) throws RemoteException, NoPermissionException;
+
+    void increaseStockOfAlbum(String title, MediumType mediumType, int decreaseAmount) throws RemoteException, NoPermissionException;
+
 }

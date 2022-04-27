@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
 
+import javax.jms.Message;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class SceneSwitcher {
     private final String productOverviewViewFxml = "productOverview-view.fxml";
     private final String invoiceSearchViewFxml = "invoiceSearch-view.fxml";
     private final String loginViewFxml = "login-view.fxml";
+    private final String messageProducerViewFxml = "messageProducer-view.fxml";
+    private final String messageBoardViewFxml = "messageBoard-view.fxml";
+    private final String detailedMessageViewFxml = "detailedMessage-view.fxml";
+    private final String settingsViewFxml = "settings-view.fxml";
 
 
     private void displayScene(Event event) {
@@ -77,6 +82,16 @@ public class SceneSwitcher {
         displayScene(e);
     }
 
+    public void switchSceneDetailedMessageView(Event e, Message message, String topic) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(detailedMessageViewFxml));
+        root = loader.load();
+
+        DetailedMessageController detailedMessageController = loader.getController();
+        detailedMessageController.setData(message, topic);
+        displayScene(e);
+    }
+
+
     public void switchSceneToProductOverviewView(Event event, AlbumDTO albumDTO) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(productOverviewViewFxml));
         root = loader.load();
@@ -98,6 +113,33 @@ public class SceneSwitcher {
 
         InvoiceSearchController invoiceSearchController = loader.getController();
         invoiceSearchController.setData();
+        displayScene(e);
+    }
+
+    public void switchSceneToMessageProducerView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(messageProducerViewFxml));
+        root = loader.load();
+
+        MessageProducerController messageProducerController = loader.getController();
+        messageProducerController.setData();
+        displayScene(e);
+    }
+
+    public void switchSceneToMessageBoardView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(messageBoardViewFxml));
+        root = loader.load();
+
+        MessageBoardController messageBoardController = loader.getController();
+        messageBoardController.setData();
+        displayScene(e);
+    }
+
+    public void switchSceneToSettingsView(Event e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(settingsViewFxml));
+        root = loader.load();
+
+        SettingsController settingsController = loader.getController();
+        settingsController.setData();
         displayScene(e);
     }
 }

@@ -9,7 +9,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.CartLineItem;
 import sharedrmi.domain.valueobjects.Role;
@@ -32,6 +35,8 @@ public class CartController {
     @FXML
     private TableColumn<CartLineItem, String> mediumTypeCol;
     @FXML
+    private TableColumn<CartLineItem, String> stockCol;
+    @FXML
     private TableColumn<CartLineItem, String> quantityCol;
     @FXML
     private TableColumn<CartLineItem, String> priceCol;
@@ -47,13 +52,24 @@ public class CartController {
     private Button buyButton;
     @FXML
     private Button clearCartButton;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private ObservableList<CartLineItem> data;
     private List<CartLineItemDTO> cartLineItemDTOs;
 
-    private final int MINUS_COLUMN_POSITION = 2;
-    private final int PLUS_COLUMN_POSITION = 4;
-    private final int CROSS_COLUMN_POSITION = 6;
+    private final int PRODUCT_COLUMN_POSITION = 0;
+    private final int MINUS_COLUMN_POSITION = 3;
+    private final int PLUS_COLUMN_POSITION = 5;
+    private final int CROSS_COLUMN_POSITION = 7;
 
     private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
     private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
@@ -61,6 +77,8 @@ public class CartController {
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
+    private List<Role> roles;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
@@ -68,6 +86,8 @@ public class CartController {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -81,6 +101,7 @@ public class CartController {
         for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
                     cartLineItemDTO.getMediumType(),
+                    cartLineItemDTO.getStock(),
                     cartLineItemDTO.getQuantity(),
                     cartLineItemDTO.getPrice(),
                     getImageView(MINUS_PATH, 12, 12),
@@ -94,6 +115,7 @@ public class CartController {
 
         productCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         mediumTypeCol.setCellValueFactory(new PropertyValueFactory<>("medium"));
+        stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
@@ -144,7 +166,7 @@ public class CartController {
     }
 
     @FXML
-    protected void cartLineItemEdited(MouseEvent e) throws RemoteException {
+    protected void cartLineItemEdited(MouseEvent e) throws IOException, AlbumNotFoundException {
 
         if (e.isPrimaryButtonDown() && !cartView.getItems().isEmpty()) {
 
@@ -163,14 +185,23 @@ public class CartController {
                 selectedColIdx = po.getColumn();
             }
 
+            // product clicked
+            if (selectedColIdx == PRODUCT_COLUMN_POSITION) {
+                if (e.isPrimaryButtonDown() && e.getClickCount() == 2) {
+                    AlbumDTO albumDTO = this.rmiController.findAlbumByAlbumTitleAndMedium(cartLineItem.getName(), cartLineItem.getMedium());
+                    sceneSwitcher.switchSceneToProductOverviewView(e, albumDTO);
+                }
+            }
+
             // minus clicked
-            if (selectedColIdx == MINUS_COLUMN_POSITION) {
+            else if (selectedColIdx == MINUS_COLUMN_POSITION) {
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
                     rmiController.removeProductFromCart(cartLineItemDTO);
                 } else {
                     data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
                             cartLineItem.getMedium(),
+                            cartLineItem.getStock(),
                             cartLineItem.getQuantity() - 1,
                             cartLineItem.getPrice(),
                             cartLineItem.getMinus_image(),
@@ -185,17 +216,21 @@ public class CartController {
 
             // plus clicked
             else if (selectedColIdx == PLUS_COLUMN_POSITION) {
-                data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
-                        cartLineItem.getMedium(),
-                        cartLineItem.getQuantity() + 1,
-                        cartLineItem.getPrice(),
-                        cartLineItem.getMinus_image(),
-                        cartLineItem.getPlus(),
-                        cartLineItem.getX_image(),
-                        cartLineItem.getLineItemDTO()
-                ));
 
-                rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() + 1);
+                if (cartLineItem.getQuantity() < cartLineItem.getStock()) {
+                    data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                            cartLineItem.getMedium(),
+                            cartLineItem.getStock(),
+                            cartLineItem.getQuantity() + 1,
+                            cartLineItem.getPrice(),
+                            cartLineItem.getMinus_image(),
+                            cartLineItem.getPlus(),
+                            cartLineItem.getX_image(),
+                            cartLineItem.getLineItemDTO()
+                    ));
+
+                    rmiController.changeQuantity(cartLineItemDTO, cartLineItem.getQuantity() + 1);
+                }
             }
 
             // x clicked
@@ -259,6 +294,40 @@ public class CartController {
         }
     }
 
+
+    @FXML
+    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+        }
+    }
+
+    @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
     private void determineButtonStates() {
         boolean isCartEmpty = cartView.getItems().isEmpty();
 
@@ -267,9 +336,9 @@ public class CartController {
     }
 
     @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
+            sceneSwitcher.switchSceneToMessageBoardView(e);
         }
     }
 

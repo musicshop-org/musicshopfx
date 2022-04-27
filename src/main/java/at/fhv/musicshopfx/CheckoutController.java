@@ -8,13 +8,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.*;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
+import sharedrmi.application.exceptions.NotEnoughStockException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.enums.PaymentMethod;
 import sharedrmi.domain.valueobjects.InvoiceId;
+import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -51,15 +56,29 @@ public class CheckoutController {
     private Label checkoutErrorLabel;
     @FXML
     private ToggleGroup customerSettingsToggleGroup;
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView invoiceIconImage;
+    @FXML
+    private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
     private RMIController rmiController;
+    private List<Role> roles;
     private List<CartLineItemDTO> cartLineItemDTOs;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
 
     public void setData(List<CartLineItemDTO> cartLineItemDTOs) throws IOException {
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
+            this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
         } catch (NotLoggedInException e) {
             System.out.println(e.getMessage());
@@ -109,6 +128,39 @@ public class CheckoutController {
     }
 
     @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
     protected void customerSearchButtonClicked() {
         try {
 
@@ -127,33 +179,7 @@ public class CheckoutController {
     }
 
     @FXML
-    protected void checkoutButtonClicked(ActionEvent event) {
-
-        List<AlbumDTO> albums = new ArrayList<>();
-        for (CartLineItemDTO cartLineItem : cartLineItemDTOs) {
-            try {
-                AlbumDTO album = rmiController.findAlbumByAlbumTitleAndMedium(cartLineItem.getName(), cartLineItem.getMediumType());
-                int inStock = album.getStock();
-                int boughtQuantity = cartLineItem.getQuantity();
-
-                if (boughtQuantity > inStock) {
-                    checkoutErrorLabel.setText("not enough " + album.getTitle() + " available ... in stock: " + inStock + ", in cart: " + boughtQuantity);
-                    return;
-                }
-
-                albums.add(album);
-
-            } catch (RemoteException | AlbumNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < albums.size(); i++) {
-            AlbumDTO album = albums.get(i);
-            int boughtQuantity = cartLineItemDTOs.get(i).getQuantity();
-            rmiController.decreaseStockOfAlbum(album.getTitle(), album.getMediumType(), boughtQuantity);
-        }
-
+    protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException, RemoteException {
         SessionManager.setLastAlbums(null);
         SessionManager.setLastSearch("");
 
@@ -183,6 +209,8 @@ public class CheckoutController {
             sceneSwitcher.switchSceneToMusicSearchView(event);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (AlbumNotFoundException | NotEnoughStockException e) {
+            checkoutErrorLabel.setText(e.getMessage());
         }
 
     }

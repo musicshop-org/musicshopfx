@@ -7,20 +7,25 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.InvoiceDTO;
 import sharedrmi.application.dto.InvoiceLineItemDTO;
+import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.InvoiceNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.InvoiceLineItem;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("rawtypes")
 public class InvoiceSearchController {
 
     @FXML
@@ -46,14 +51,22 @@ public class InvoiceSearchController {
     private TableColumn<InvoiceLineItem, String> plusCol;
     @FXML
     private TableColumn<InvoiceLineItem, String> returnedQuantityCol;
-
+    @FXML
+    private ImageView cartIconImage;
+    @FXML
+    private ImageView messageIconImage;
+    @FXML
+    private ImageView settingsIconImage;
     @FXML
     private Button returnButton;
     @FXML
     private ImageView invoiceIconImage;
+    @FXML
+    private VBox navbarVbox;
 
     private ObservableList<InvoiceLineItem> data;
     private InvoiceDTO invoiceDTO;
+    private NavbarIconPositioner navbarIconPositioner = new NavbarIconPositioner();
 
     private final int MINUS_COLUMN_POSITION = 4;
     private final int PLUS_COLUMN_POSITION = 6;
@@ -61,15 +74,16 @@ public class InvoiceSearchController {
     private RMIController rmiController;
     private List<Role> roles;
 
-    private SceneSwitcher sceneSwitcher = new SceneSwitcher();
+    private final SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     public void setData() {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
             this.roles = rmiController.getRoles();
+            navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException e) {
+        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -82,8 +96,8 @@ public class InvoiceSearchController {
 
         try {
 
-            if (Integer.parseInt(invoiceSearchTextField.getText()) < 1) {
-                throw new NumberFormatException("no valid value");
+            if (Long.parseLong(invoiceSearchTextField.getText()) < 1) {
+                throw new NumberFormatException("Invalid invoice ID");
             }
 
             invoiceDTO = rmiController.findInvoiceById(new InvoiceId(Long.parseLong(invoiceSearchTextField.getText())));
@@ -229,11 +243,67 @@ public class InvoiceSearchController {
     }
 
     @FXML
+    protected void messageSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageProducerView(e);
+        }
+    }
+
+    @FXML
+    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            sceneSwitcher.switchSceneToMessageBoardView(e);
+        }
+    }
+
+    @FXML
+    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown())
+            sceneSwitcher.switchSceneToSettingsView(e);
+    }
+
+    @FXML
+    protected void logoutSymbolClicked(MouseEvent e) throws IOException {
+        if (e.isPrimaryButtonDown()) {
+            try {
+                SessionManager.logout();
+            } catch (NotLoggedInException ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            sceneSwitcher.switchSceneToLoginView(e);
+        }
+    }
+
+    @FXML
     public void returnButtonClicked(MouseEvent e) throws InvoiceNotFoundException, IOException {
         if (e.isPrimaryButtonDown() && !invoiceView.getItems().isEmpty()) {
 
             for (InvoiceLineItem invoiceLineItem : data) {
-                rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), invoiceLineItem.getReturnQuantity());
+
+                int returnQty = invoiceLineItem.getReturnQuantity();
+
+                rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), returnQty);
+
+                try {
+                    AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(invoiceLineItem.getAlbumTitle(), invoiceLineItem.getMediumType());
+
+                    SessionManager.updateLastAlbums(
+                            AlbumDTO.builder()
+                                    .albumId(albumDTO.getAlbumId())
+                                    .label(albumDTO.getLabel())
+                                    .mediumType(albumDTO.getMediumType())
+                                    .price(albumDTO.getPrice())
+                                    .releaseDate(albumDTO.getReleaseDate())
+                                    .songs(albumDTO.getSongs())
+                                    .stock(albumDTO.getStock() + returnQty)
+                                    .title(albumDTO.getTitle())
+                                    .build()
+                    );
+                } catch (AlbumNotFoundException ignored) {
+                }
+
             }
 
             sceneSwitcher.switchSceneToMusicSearchView(e);
