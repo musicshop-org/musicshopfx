@@ -10,6 +10,7 @@ import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
 
 import javax.jms.Message;
+import javax.naming.NoPermissionException;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,7 +57,11 @@ public class SceneSwitcher {
         root = loader.load();
 
         CartController cartController = loader.getController();
-        cartController.setData();
+        try {
+            cartController.setData();
+        } catch (NoPermissionException e) {
+            e.printStackTrace();
+        }
         displayScene(event);
 
     }

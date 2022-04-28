@@ -173,7 +173,7 @@ public class CheckoutController {
             emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("email"));
             customerTableView.setItems(customerDTOs);
 
-        } catch (RemoteException e) {
+        } catch (NoPermissionException e) {
             e.printStackTrace();
         }
     }

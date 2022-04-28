@@ -7,6 +7,9 @@ import sharedrmi.communication.rmi.RMIControllerFactory;
 import sharedrmi.domain.enums.MediumType;
 
 import javax.jms.JMSException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.security.auth.login.FailedLoginException;
 import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
@@ -18,6 +21,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class SessionManager {
@@ -56,15 +60,25 @@ public class SessionManager {
 
     public static boolean login(String username, String password, String server) throws FailedLoginException, AccessDeniedException {
         try {
+            /*
             RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) Naming.lookup("rmi://"+server+"/RMIControllerFactory");
             RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
+             */
+            Properties props = new Properties();
+            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+            Context ctx = new InitialContext(props);
+
+            //ejb:/[DeployedName]/Implementierungsname![packages + Interface of Bean]
+            RMIController rmiController = (RMIController) ctx.lookup("ejb:/musicshop-1.0-SNAPSHOT/RMIControllerImpl!sharedrmi.communication.rmi.RMIController?stateful");
+
             new SessionManager(rmiController);
             SessionManager.loggedInUsername = username;
             SessionManager.isLoggedIn = true;
 
             return true;
 
-        } catch (MalformedURLException | RemoteException | NotBoundException e) {
+        } catch (NamingException e) {
             e.printStackTrace();
             return false;
         }
@@ -81,8 +95,6 @@ public class SessionManager {
                 MessageConsumerService messageConsumerService = MessageConsumerServiceImpl.getInstance();
                 messageConsumerService.close();
             } catch (JMSException e) {
-                e.printStackTrace();
-            } catch (RemoteException e) {
                 e.printStackTrace();
             }
             SessionManager.isLoggedIn = false;

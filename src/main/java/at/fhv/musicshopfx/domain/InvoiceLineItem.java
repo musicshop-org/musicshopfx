@@ -1,4 +1,4 @@
-package sharedrmi.domain;
+package at.fhv.musicshopfx.domain;
 
 import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.domain.enums.MediumType;

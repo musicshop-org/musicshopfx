@@ -2,7 +2,6 @@ package at.fhv.musicshopfx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -10,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.domain.TopicLine;
+import at.fhv.musicshopfx.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
 import java.io.FileNotFoundException;
@@ -60,7 +59,7 @@ public class SettingsController {
             this.roles = rmiController.getRoles();
             navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
+        } catch (NotLoggedInException | FileNotFoundException e) {
             e.printStackTrace();
         }
 

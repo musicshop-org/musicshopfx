@@ -67,7 +67,7 @@ public class MusicSearchController {
             this.roles = rmiController.getRoles();
             navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
+        } catch (NotLoggedInException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -93,16 +93,12 @@ public class MusicSearchController {
     @FXML
     protected void musicSearchButtonClicked() {
 
-        try {
-            String search = musicSearchTextField.getText();
-            List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(search);
-            SessionManager.setLastSearch(search);
-            SessionManager.setLastAlbums(albums);
-            populateTable(albums);
+        String search = musicSearchTextField.getText();
+        List<AlbumDTO> albums = rmiController.findAlbumsBySongTitle(search);
+        SessionManager.setLastSearch(search);
+        SessionManager.setLastAlbums(albums);
+        populateTable(albums);
 
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML

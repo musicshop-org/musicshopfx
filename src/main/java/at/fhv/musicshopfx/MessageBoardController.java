@@ -80,7 +80,7 @@ public class MessageBoardController {
 
         try {
             rmiController.changeLastViewed(SessionManager.getLoggedInUsername(), LocalDateTime.now());
-        } catch (UserNotFoundException | RemoteException e) {
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
         }
 

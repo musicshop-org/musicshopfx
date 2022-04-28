@@ -79,7 +79,7 @@ public class MusicOverviewController {
             this.roles = rmiController.getRoles();
             navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
+        } catch (NotLoggedInException |  FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -186,6 +186,8 @@ public class MusicOverviewController {
 
         } catch (NumberFormatException e) {
             this.showInvalidQtyErrorLabel();
+        } catch (NoPermissionException e) {
+            e.printStackTrace();
         }
 
     }

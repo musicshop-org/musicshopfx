@@ -1,4 +1,4 @@
-package sharedrmi.domain;
+package at.fhv.musicshopfx.domain;
 
 
 import javafx.scene.control.CheckBox;
