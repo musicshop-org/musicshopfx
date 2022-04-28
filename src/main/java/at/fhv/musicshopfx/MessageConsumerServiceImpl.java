@@ -5,10 +5,7 @@ import sharedrmi.communication.rmi.RMIController;
 
 import javax.jms.*;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,7 +56,12 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
     }
 
     public List<Message> getMessagesFromSubscribedTopic(String topic){
-        return topicMessages.get(topic);
+        List<Message> messages = topicMessages.get(topic);
+        if (messages != null) {
+            return messages;
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
