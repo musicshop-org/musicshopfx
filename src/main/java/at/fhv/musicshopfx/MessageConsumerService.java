@@ -1,12 +1,7 @@
 package at.fhv.musicshopfx;
 
-import sharedrmi.application.dto.MessageDTO;
-import sharedrmi.application.exceptions.NoMessagesFoundException;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
