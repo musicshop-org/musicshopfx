@@ -13,5 +13,5 @@ module at.fhv.musicshopfx {
     exports at.fhv.musicshopfx;
 
     opens at.fhv.musicshopfx to javafx.base, javafx.fxml;
-    opens at.fhv.musicshopfx.domain to javafx.fxml;
+    opens at.fhv.musicshopfx.domain to javafx.base, javafx.fxml;
 }
