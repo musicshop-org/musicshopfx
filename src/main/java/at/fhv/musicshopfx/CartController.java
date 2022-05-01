@@ -14,9 +14,10 @@ import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.domain.CartLineItem;
+import at.fhv.musicshopfx.domain.CartLineItem;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class CartController {
 
     private SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    public void setData() throws IOException {
+    public void setData() throws IOException, NoPermissionException {
 
         try {
             this.rmiController = SessionManager.getInstance().getRMIController();
@@ -166,7 +167,7 @@ public class CartController {
     }
 
     @FXML
-    protected void cartLineItemEdited(MouseEvent e) throws IOException, AlbumNotFoundException {
+    protected void cartLineItemEdited(MouseEvent e) throws IOException, AlbumNotFoundException, NoPermissionException {
 
         if (e.isPrimaryButtonDown() && !cartView.getItems().isEmpty()) {
 
@@ -262,6 +263,8 @@ public class CartController {
             sceneSwitcher.switchSceneToCheckoutView(event, cartLineItemDTOs);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NoPermissionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -274,7 +277,7 @@ public class CartController {
 
             determineButtonStates();
 
-        } catch (RemoteException e) {
+        } catch (NoPermissionException e) {
             e.printStackTrace();
         }
 

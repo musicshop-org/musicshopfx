@@ -15,10 +15,11 @@ import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.InvoiceNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.domain.InvoiceLineItem;
+import at.fhv.musicshopfx.domain.InvoiceLineItem;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
+import javax.naming.NoPermissionException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -83,7 +84,7 @@ public class InvoiceSearchController {
             this.roles = rmiController.getRoles();
             navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
+        } catch (NotLoggedInException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -146,7 +147,7 @@ public class InvoiceSearchController {
                 invoiceErrorLabel.setText("no valid value");
             }
 
-        } catch (RemoteException e) {
+        } catch (NoPermissionException e) {
             e.printStackTrace();
         }
     }
@@ -284,9 +285,10 @@ public class InvoiceSearchController {
 
                 int returnQty = invoiceLineItem.getReturnQuantity();
 
-                rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), returnQty);
+
 
                 try {
+                    rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), returnQty);
                     AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(invoiceLineItem.getAlbumTitle(), invoiceLineItem.getMediumType());
 
                     SessionManager.updateLastAlbums(
@@ -302,6 +304,8 @@ public class InvoiceSearchController {
                                     .build()
                     );
                 } catch (AlbumNotFoundException ignored) {
+                } catch (NoPermissionException ex) {
+                    ex.printStackTrace();
                 }
 
             }
