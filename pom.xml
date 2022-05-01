@@ -54,20 +54,20 @@
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-ejb-client-bom</artifactId>
-            <version>21.0.1.Final</version>
+            <version>26.1.0.Final</version>
             <type>pom</type>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.wildfly/wildfly-naming-client -->
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-naming-client</artifactId>
-            <version>1.0.13.Final</version>
+            <version>1.0.15.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jboss/jboss-ejb-client -->
         <dependency>
             <groupId>org.jboss</groupId>
             <artifactId>jboss-ejb-client</artifactId>
-            <version>4.0.36.Final</version>
+            <version>4.0.44.Final</version>
         </dependency>
         <dependency>
             <groupId>at.fhv</groupId>

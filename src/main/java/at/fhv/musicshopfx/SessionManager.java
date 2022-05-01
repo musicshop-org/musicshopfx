@@ -67,12 +67,13 @@ public class SessionManager {
             Properties props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
             props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+            props.put("jboss.naming.client.ejb.context", true);
             Context ctx = new InitialContext(props);
 
             //ejb:/[DeployedName]/Implementierungsname![packages + Interface of Bean]
-            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) ctx.lookup("ejb:/musicshop-1.0-SNAPSHOT/RMIControllerFactoryImpl!sharedrmi.communication.rmi.RMIControllerFactory");
+            RMIController rmiController = (RMIController) ctx.lookup("ejb:/musicshop-1.0-SNAPSHOT/RMIControllerImpl!sharedrmi.communication.rmi.RMIController?stateful");
 
-            RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
+            rmiController.login(username, password);
 
             new SessionManager(rmiController);
             SessionManager.loggedInUsername = username;
