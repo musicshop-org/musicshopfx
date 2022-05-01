@@ -70,7 +70,9 @@ public class SessionManager {
             Context ctx = new InitialContext(props);
 
             //ejb:/[DeployedName]/Implementierungsname![packages + Interface of Bean]
-            RMIController rmiController = (RMIController) ctx.lookup("ejb:/musicshop-1.0-SNAPSHOT/RMIControllerImpl!sharedrmi.communication.rmi.RMIController?stateful");
+            RMIControllerFactory rmiControllerFactory = (RMIControllerFactory) ctx.lookup("ejb:/musicshop-1.0-SNAPSHOT/RMIControllerFactoryImpl!sharedrmi.communication.rmi.RMIControllerFactory");
+
+            RMIController rmiController = rmiControllerFactory.createRMIController(username, password);
 
             new SessionManager(rmiController);
             SessionManager.loggedInUsername = username;
@@ -78,7 +80,7 @@ public class SessionManager {
 
             return true;
 
-        } catch (NamingException e) {
+        } catch (RemoteException|NamingException e) {
             e.printStackTrace();
             return false;
         }
