@@ -70,7 +70,7 @@
                   <TableColumn fx:id="subscribedCol" editable="false" maxWidth="332.0" minWidth="43.0" prefWidth="160.0" sortable="false" style="-fx-alignment: CENTER;" text="Subscribed" />
                </columns>
             </TableView>
-            <Label fx:id="topicErrorLabel" layoutX="368.0" layoutY="231.0" prefHeight="17.0" prefWidth="190.0" textFill="#d91b1b" AnchorPane.bottomAnchor="17.0" AnchorPane.rightAnchor="142.0" />
+            <Label fx:id="topicErrorLabel" layoutX="368.0" layoutY="231.0" prefHeight="17.0" prefWidth="220.0" textFill="#d91b1b" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="145.0" />
             </children>
         </AnchorPane>
     </children>

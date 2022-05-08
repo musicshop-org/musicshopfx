@@ -27,6 +27,8 @@ public class SettingsController {
     @FXML
     private Label roleDescLabel;
     @FXML
+    private Label topicErrorLabel;
+    @FXML
     private ImageView cartIconImage;
     @FXML
     private ImageView invoiceIconImage;
@@ -139,5 +141,6 @@ public class SettingsController {
                 this.rmiController.unsubscribe(topic, this.user);
             }
         }
+        topicErrorLabel.setText("Changes will be applied after logout!");
     }
 }
