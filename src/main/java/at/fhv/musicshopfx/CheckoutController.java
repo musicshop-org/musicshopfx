@@ -1,5 +1,6 @@
 package at.fhv.musicshopfx;
 
+import at.fhv.musicshopfx.domain.CartLineItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +17,8 @@ import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.NotEnoughStockException;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.enums.PaymentMethod;
+import sharedrmi.domain.valueobjects.Address;
+import sharedrmi.domain.valueobjects.CustomerData;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
@@ -93,6 +96,7 @@ public class CheckoutController {
                         searchButton.setDisable(true);
                         customerSearchTextField.setDisable(true);
                         customerTableView.setDisable(true);
+                        checkoutErrorLabel.setText("");
                         break;
 
                     case "Existing Customer":
@@ -104,39 +108,6 @@ public class CheckoutController {
         });
 
         this.cartLineItemDTOs = cartLineItemDTOs;
-    }
-
-
-    @FXML
-    protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMusicSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToCartView(e);
-        }
-    }
-
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-    }
-
-    @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMessageProducerView(e);
-    }
-
-    @FXML
-    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToSettingsView(e);
     }
 
     @FXML
@@ -173,13 +144,13 @@ public class CheckoutController {
             emailAddressCol.setCellValueFactory(new PropertyValueFactory<>("email"));
             customerTableView.setItems(customerDTOs);
 
-        } catch (NoPermissionException e) {
+        } catch (NoPermissionException | RemoteException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException, RemoteException {
+    protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException {
         SessionManager.setLastAlbums(null);
         SessionManager.setLastSearch("");
 
@@ -195,24 +166,56 @@ public class CheckoutController {
                 break;
         }
 
-        InvoiceDTO invoiceDTO = InvoiceDTO.builder()
-                .invoiceId(new InvoiceId())
-                .date(LocalDate.now())
-                .paymentMethod(selectedPaymentMethod)
-                .invoiceLineItems(InvoiceLineItemDTO.createFromCartLineItemDTOs(cartLineItemDTOs))
-                .build();
+        CustomerDTO customerDTO = (CustomerDTO) customerTableView.getSelectionModel().getSelectedItem();
+        String customerSettingsString = ((RadioButton) customerSettingsToggleGroup.getSelectedToggle()).getText();
 
-        try {
-            rmiController.createInvoice(invoiceDTO);
-            rmiController.clearCart();
+        if (customerDTO != null || customerSettingsString.equals("Anonymous Customer")) {
+            InvoiceDTO invoiceDTO = null;
 
-            sceneSwitcher.switchSceneToMusicSearchView(event);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (AlbumNotFoundException | NotEnoughStockException e) {
-            checkoutErrorLabel.setText(e.getMessage());
+            switch (customerSettingsString) {
+                case "Anonymous Customer":
+                    invoiceDTO = InvoiceDTO.builder()
+                            .invoiceId(new InvoiceId())
+                            .date(LocalDate.now())
+                            .paymentMethod(selectedPaymentMethod)
+                            .invoiceLineItems(InvoiceLineItemDTO.createFromCartLineItemDTOs(cartLineItemDTOs))
+                            .build();
+                    break;
+
+                case "Existing Customer":
+                    invoiceDTO = InvoiceDTO.builder()
+                            .invoiceId(new InvoiceId())
+                            .date(LocalDate.now())
+                            .paymentMethod(selectedPaymentMethod)
+                            .invoiceLineItems(InvoiceLineItemDTO.createFromCartLineItemDTOs(cartLineItemDTOs))
+                            .customerData(
+                                    CustomerData.builder()
+                                            .firstName(customerDTO.getFirstName())
+                                            .lastName(customerDTO.getLastName())
+                                            .email(customerDTO.getEmail())
+                                            .address(Address.builder()
+                                                    .addressCountry(customerDTO.getAddress().getAddressCountry())
+                                                    .addressLocality(customerDTO.getAddress().getAddressLocality())
+                                                    .postalCode(customerDTO.getAddress().getPostalCode())
+                                                    .streetAddress(customerDTO.getAddress().getStreetAddress())
+                                                    .build())
+                                            .build()
+                            )
+                            .build();
+            }
+
+            try {
+                rmiController.createInvoice(invoiceDTO);
+                rmiController.clearCart();
+
+                sceneSwitcher.switchSceneToMusicSearchView(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (AlbumNotFoundException | NotEnoughStockException e) {
+                checkoutErrorLabel.setText(e.getMessage());
+            }
+        } else {
+            checkoutErrorLabel.setText("select an existing customer or choose anonymous customer");
         }
-
     }
-
 }
