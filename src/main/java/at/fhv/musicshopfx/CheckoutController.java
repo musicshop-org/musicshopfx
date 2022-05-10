@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.*;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
@@ -203,8 +204,22 @@ public class CheckoutController {
                 .build();
 
         try {
-            rmiController.createInvoice(invoiceDTO);
+            InvoiceId invoiceId = rmiController.createInvoice(invoiceDTO);
             rmiController.clearCart();
+
+            TextArea textArea = new TextArea("Invoice ID: " + invoiceId.getInvoiceId());
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+            GridPane gridPane = new GridPane();
+            gridPane.setMaxWidth(Double.MAX_VALUE);
+            gridPane.add(textArea, 0, 0);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Checkout Success");
+            alert.setHeaderText("Items successfully bought and invoice created!");
+            alert.getDialogPane().setContent(gridPane);
+
+            alert.showAndWait();
 
             sceneSwitcher.switchSceneToMusicSearchView(event);
         } catch (IOException e) {
