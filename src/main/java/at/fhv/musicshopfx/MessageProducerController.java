@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.domain.TopicLine;
+import at.fhv.musicshopfx.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;
@@ -71,7 +71,7 @@ public class MessageProducerController {
             this.roles = rmiController.getRoles();
             navbarIconPositioner.positionIcons(navbarVbox);
 
-        } catch (NotLoggedInException | RemoteException | FileNotFoundException e) {
+        } catch (NotLoggedInException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -202,7 +202,11 @@ public class MessageProducerController {
                 .expirationDays(expirationDays)
                 .build();
 
-        this.rmiController.publish(topicsToPublishMessage, message);
+        try {
+            this.rmiController.publish(topicsToPublishMessage, message);
+        } catch (NoPermissionException ex) {
+            ex.printStackTrace();
+        }
 
         sceneSwitcher.switchSceneToMusicSearchView(e);
     }

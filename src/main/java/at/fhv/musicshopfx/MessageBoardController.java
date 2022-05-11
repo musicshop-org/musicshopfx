@@ -4,11 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,12 +20,10 @@ import sharedrmi.domain.valueobjects.Role;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.io.IOException;
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class MessageBoardController {
 
@@ -86,8 +82,6 @@ public class MessageBoardController {
             rmiController.changeLastViewed(SessionManager.getLoggedInUsername(), LocalDateTime.now());
         } catch (UserNotFoundException e) {
             e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
 
     }
@@ -126,11 +120,10 @@ public class MessageBoardController {
 
             try {
                 List<Message> messages = messageConsumerService.getMessagesFromSubscribedTopic(topicSelection.getValue());
-                if(messages.isEmpty()){
+                if (messages.isEmpty()) {
                     messageErrorLabel.setTextFill(Paint.valueOf("red"));
                     messageErrorLabel.setText("no messages found");
-                }
-                else{
+                } else {
                     addMessagesToBoard(messages, topicSelection.getValue());
                 }
 
@@ -140,32 +133,23 @@ public class MessageBoardController {
         }
     }
 
-
     protected void addMessagesToBoard(Map<String, List<Message>> topicMessages) throws IOException, JMSException {
 
         messageErrorLabel.setText("");
 
         for (Map.Entry<String, List<Message>> topicMessage:topicMessages.entrySet()) {
 
-
-
-
             for (Message message:topicMessage.getValue()) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
                 Parent messageFXML = loader.load();
-                //AnchorPane anchorPane = (AnchorPane) root.lookup("messageAnchorPane");
-
 
                 MessageController messageController = loader.getController();
                 messageController.addMessage(message, topicMessage.getKey());
                 this.messagesVbox.getChildren().add(0, messageFXML);
-//                AnchorPane.setTopAnchor(messageFXML, 0.0);
-//                AnchorPane.setRightAnchor(messageFXML, 0.0);
-//                AnchorPane.setLeftAnchor(messageFXML, 0.0);
-
             }
         }
     }
+
     protected void addMessagesToBoard(List<Message> messages, String topic) throws IOException, JMSException {
 
         messageErrorLabel.setText("");
@@ -173,15 +157,10 @@ public class MessageBoardController {
         for (Message message:messages) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(messageFxml));
             Parent root = loader.load();
-            //AnchorPane anchorPane = (AnchorPane) root.lookup("messageAnchorPane");
-
 
             MessageController messageController = loader.getController();
             messageController.addMessage(message, topic);
             this.messagesVbox.getChildren().add(0, root);
-//            AnchorPane.setTopAnchor(root, 0.0);
-//            AnchorPane.setRightAnchor(root, 0.0);
-//            AnchorPane.setLeftAnchor(root, 0.0);
         }
     }
 
@@ -198,7 +177,5 @@ public class MessageBoardController {
             sceneSwitcher.switchSceneToLoginView(e);
         }
     }
-
-
 
 }

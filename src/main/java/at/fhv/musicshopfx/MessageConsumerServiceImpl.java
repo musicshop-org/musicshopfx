@@ -5,10 +5,7 @@ import sharedrmi.communication.rmi.RMIController;
 
 import javax.jms.*;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +17,7 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
     private RMIController rmiController;
     private static Map<String, List<Message>> topicMessages;
 
-    private MessageConsumerServiceImpl() throws NotLoggedInException, RemoteException, JMSException {
+    private MessageConsumerServiceImpl() throws NotLoggedInException, JMSException {
         this.sessionManager = SessionManager.getInstance();
         this.topicConsumers = new LinkedList<>();
         this.topicMessages = new HashMap<>();
@@ -37,7 +34,7 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
 
     }
 
-    public static MessageConsumerService getInstance() throws RemoteException, NotLoggedInException, JMSException {
+    public static MessageConsumerService getInstance() throws NotLoggedInException, JMSException {
         if(instance == null){
             instance = new MessageConsumerServiceImpl();
         }
@@ -59,7 +56,12 @@ public class MessageConsumerServiceImpl implements MessageConsumerService {
     }
 
     public List<Message> getMessagesFromSubscribedTopic(String topic){
-        return topicMessages.get(topic);
+        List<Message> messages = topicMessages.get(topic);
+        if (messages != null) {
+            return messages;
+        }
+
+        return Collections.emptyList();
     }
 
     @Override

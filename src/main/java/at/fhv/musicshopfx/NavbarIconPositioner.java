@@ -73,7 +73,7 @@ public class NavbarIconPositioner {
             this.newMessageIcon.setCursor(Cursor.HAND);
             this.settingsIcon.setCursor(Cursor.HAND);
 
-        } catch (FileNotFoundException | NotLoggedInException | RemoteException e) {
+        } catch (FileNotFoundException | NotLoggedInException e) {
             e.printStackTrace();
         }
     }
