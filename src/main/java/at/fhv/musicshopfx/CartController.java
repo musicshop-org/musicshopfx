@@ -73,8 +73,8 @@ public class CartController {
     private final int CROSS_COLUMN_POSITION = 7;
 
     private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
-    private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
-    private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
+    private final Image MINUS_IMG = new Image(Launcher.class.getResourceAsStream("/images/minus.png"));
+    private final Image CROSS_IMG = new Image(Launcher.class.getResourceAsStream("/images/cross.png"));
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
@@ -95,8 +95,17 @@ public class CartController {
             e.printStackTrace();
         }
 
+        ImageView minus = new ImageView(MINUS_IMG);
+        minus.setFitHeight(12);
+        minus.setFitWidth(12);
+
+        ImageView cross = new ImageView(CROSS_IMG);
+        cross.setFitWidth(18);
+        cross.setFitHeight(18);
+
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
+
 
         cartLineItemDTOs = rmiController.getCart().getCartLineItems();
         for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
@@ -105,9 +114,9 @@ public class CartController {
                     cartLineItemDTO.getStock(),
                     cartLineItemDTO.getQuantity(),
                     cartLineItemDTO.getPrice(),
-                    getImageView(MINUS_PATH, 12, 12),
+                    minus,
                     "+",
-                    getImageView(CROSS_PATH, 18, 18), cartLineItemDTO
+                    cross, cartLineItemDTO
             ));
         }
 
