@@ -209,7 +209,8 @@ public class CartController {
                     data.remove(selectedRowIdx);
                     rmiController.removeProductFromCart(cartLineItemDTO);
                 } else {
-                    data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                    data.set(selectedRowIdx, new CartLineItem(
+                            cartLineItem.getName(),
                             cartLineItem.getMedium(),
                             cartLineItem.getStock(),
                             cartLineItem.getQuantity() - 1,
