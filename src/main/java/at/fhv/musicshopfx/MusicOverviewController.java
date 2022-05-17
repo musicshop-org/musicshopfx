@@ -180,7 +180,7 @@ public class MusicOverviewController {
             } else if (qty > Integer.parseInt(stockLabel.getText())) {
                 this.showAddToCartErrorLabel();
             } else {
-                rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+                rmiController.addAlbumsToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
                 sceneSwitcher.switchSceneToMusicSearchView(event);
             }
 

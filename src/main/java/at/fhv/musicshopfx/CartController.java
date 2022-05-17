@@ -207,7 +207,7 @@ public class CartController {
             else if (selectedColIdx == MINUS_COLUMN_POSITION) {
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
-                    rmiController.removeProductFromCart(cartLineItemDTO);
+                    rmiController.removeLineItemFromCart(cartLineItemDTO);
                 } else {
                     data.set(selectedRowIdx, new CartLineItem(
                             cartLineItem.getName(),
@@ -247,7 +247,7 @@ public class CartController {
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION) {
                 data.remove(selectedRowIdx);
-                rmiController.removeProductFromCart(cartLineItemDTO);
+                rmiController.removeLineItemFromCart(cartLineItemDTO);
             }
 
             if (rmiController.getCart().getCartLineItems().size() == 0) {
