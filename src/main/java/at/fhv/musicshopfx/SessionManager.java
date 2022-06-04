@@ -71,7 +71,7 @@ public class SessionManager {
             Context ctx = new InitialContext(props);
 
             //ejb:/[DeployedName]/Implementierungsname![packages + Interface of Bean]
-            RMIController rmiController = (RMIController) ctx.lookup("ejb:/musicshop-1.0/RMIControllerImpl!sharedrmi.communication.rmi.RMIController?stateful");
+            RMIController rmiController = (RMIController) ctx.lookup("ejb:/musicshop-1.0/RMIControllerImpl!sharedrmi.communication.rmi.RMIController");
 
             rmiController.login(username, password);
 

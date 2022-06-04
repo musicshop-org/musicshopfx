@@ -152,7 +152,7 @@ public class CheckoutController {
 
     @FXML
     protected void checkoutButtonClicked(ActionEvent event) throws NoPermissionException {
-        SessionManager.setLastAlbums(null);
+        SessionManager.setLastAlbums(new ArrayList<>());
         SessionManager.setLastSearch("");
 
         PaymentMethod selectedPaymentMethod = PaymentMethod.CASH;
