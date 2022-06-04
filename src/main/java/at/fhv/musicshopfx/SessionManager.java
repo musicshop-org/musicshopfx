@@ -130,6 +130,7 @@ public class SessionManager {
         SessionManager.lastAlbums = albums;
     }
 
+    //Updates AlbumDTO in search after stock change due to return or buy
     public static void updateLastAlbums(AlbumDTO updatedAlbumDTO) {
         if (SessionManager.lastAlbums.size() > 0) {
             SessionManager.lastAlbums = SessionManager.lastAlbums

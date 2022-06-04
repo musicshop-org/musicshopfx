@@ -289,6 +289,7 @@ public class InvoiceSearchController {
 
                 try {
                     rmiController.returnInvoiceLineItem(invoiceDTO.getInvoiceId(), invoiceLineItem.getInvoiceLineItemDTO(), returnQty);
+
                     AlbumDTO albumDTO = rmiController.findAlbumByAlbumTitleAndMedium(invoiceLineItem.getAlbumTitle(), invoiceLineItem.getMediumType());
 
                     SessionManager.updateLastAlbums(
