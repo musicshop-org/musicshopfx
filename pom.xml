@@ -63,18 +63,18 @@
             <artifactId>wildfly-naming-client</artifactId>
             <version>1.0.15.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss/jboss-ejb-client -->
-        <dependency>
-            <groupId>org.jboss</groupId>
-            <artifactId>jboss-ejb-client</artifactId>
-            <version>4.0.44.Final</version>
-        </dependency>
         <dependency>
             <groupId>at.fhv</groupId>
             <artifactId>sharedrmi</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/sharedrmi.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jboss/jboss-ejb-client -->
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-ejb-client</artifactId>
+            <version>4.0.36.Final</version>
         </dependency>
 
     </dependencies>

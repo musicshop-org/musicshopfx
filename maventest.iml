@@ -127,8 +127,6 @@
     <orderEntry type="library" name="Maven: org.wildfly.wildfly-http-client:wildfly-http-naming-client:1.1.11.Final" level="project" />
     <orderEntry type="library" name="Maven: org.wildfly.wildfly-http-client:wildfly-http-transaction-client:1.1.11.Final" level="project" />
     <orderEntry type="library" name="Maven: org.wildfly:wildfly-naming-client:1.0.15.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss:jboss-ejb-client:4.0.44.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.1.Final" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: at.fhv:sharedrmi:1.0">
         <CLASSES>
@@ -138,5 +136,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Maven: org.jboss:jboss-ejb-client:4.0.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.1.Final" level="project" />
   </component>
 </module>
