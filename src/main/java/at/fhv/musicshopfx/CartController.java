@@ -54,14 +54,6 @@ public class CartController {
     @FXML
     private Button clearCartButton;
     @FXML
-    private ImageView cartIconImage;
-    @FXML
-    private ImageView invoiceIconImage;
-    @FXML
-    private ImageView messageIconImage;
-    @FXML
-    private ImageView settingsIconImage;
-    @FXML
     private VBox navbarVbox;
 
     private ObservableList<CartLineItem> data;
@@ -71,10 +63,6 @@ public class CartController {
     private final int MINUS_COLUMN_POSITION = 3;
     private final int PLUS_COLUMN_POSITION = 5;
     private final int CROSS_COLUMN_POSITION = 7;
-
-    private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
-    private final Image MINUS_IMG = new Image(Launcher.class.getResourceAsStream("/images/minus.png"));
-    private final Image CROSS_IMG = new Image(Launcher.class.getResourceAsStream("/images/cross.png"));
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
@@ -95,14 +83,6 @@ public class CartController {
             e.printStackTrace();
         }
 
-        ImageView minus = new ImageView(MINUS_IMG);
-        minus.setFitHeight(12);
-        minus.setFitWidth(12);
-
-        ImageView cross = new ImageView(CROSS_IMG);
-        cross.setFitWidth(18);
-        cross.setFitHeight(18);
-
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
@@ -114,9 +94,9 @@ public class CartController {
                     cartLineItemDTO.getStock(),
                     cartLineItemDTO.getQuantity(),
                     cartLineItemDTO.getPrice(),
-                    minus,
+                    "-",
                     "+",
-                    cross, cartLineItemDTO
+                    "x", cartLineItemDTO
             ));
         }
 
@@ -128,9 +108,9 @@ public class CartController {
         stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
+        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus"));
         plusCol.setCellValueFactory(new PropertyValueFactory<>("plus"));
-        xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
+        xCol.setCellValueFactory(new PropertyValueFactory<>("x"));
 
         data = obsDTOs;
 
@@ -148,18 +128,6 @@ public class CartController {
         }
 
         determineButtonStates();
-    }
-
-    // get ImageView for UI table
-    private ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(pathToImage);
-
-        Image image = new Image(inpStr);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-
-        return imageView;
     }
 
     private double calculateTotalPrice(Iterator<CartLineItem> iter) {
@@ -215,9 +183,9 @@ public class CartController {
                             cartLineItem.getStock(),
                             cartLineItem.getQuantity() - 1,
                             cartLineItem.getPrice(),
-                            cartLineItem.getMinus_image(),
+                            cartLineItem.getMinus(),
                             cartLineItem.getPlus(),
-                            cartLineItem.getX_image(),
+                            cartLineItem.getX(),
                             cartLineItem.getLineItemDTO()
                     ));
 
@@ -234,9 +202,9 @@ public class CartController {
                             cartLineItem.getStock(),
                             cartLineItem.getQuantity() + 1,
                             cartLineItem.getPrice(),
-                            cartLineItem.getMinus_image(),
+                            cartLineItem.getMinus(),
                             cartLineItem.getPlus(),
-                            cartLineItem.getX_image(),
+                            cartLineItem.getX(),
                             cartLineItem.getLineItemDTO()
                     ));
 
@@ -294,40 +262,6 @@ public class CartController {
     }
 
     @FXML
-    protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMusicSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToCartView(e);
-        }
-    }
-
-
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMessageProducerView(e);
-    }
-
-    @FXML
-    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToSettingsView(e);
-    }
-
-    @FXML
     protected void logoutSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             try {
@@ -347,12 +281,4 @@ public class CartController {
         buyButton.setDisable(isCartEmpty);
         clearCartButton.setDisable(isCartEmpty);
     }
-
-    @FXML
-    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMessageBoardView(e);
-        }
-    }
-
 }

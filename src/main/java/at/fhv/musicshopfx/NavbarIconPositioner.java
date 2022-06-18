@@ -214,15 +214,4 @@ public class NavbarIconPositioner {
         VBox.setMargin(settingsIcon, new Insets(15.0, 0.0, 15.0, 18.0));
         navbarVbox.getChildren().add(settingsIcon);
     }
-
-    private static ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(pathToImage);
-
-        Image image = new Image(inpStr);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-
-        return imageView;
-    }
 }

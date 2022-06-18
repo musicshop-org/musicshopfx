@@ -130,7 +130,7 @@ public class SessionManager {
         SessionManager.lastAlbums = albums;
     }
 
-    //Updates AlbumDTO in search after stock change due to return or buy
+    // updates AlbumDTO in search after stock change due to return or buy
     public static void updateLastAlbums(AlbumDTO updatedAlbumDTO) {
         if (SessionManager.lastAlbums.size() > 0) {
             SessionManager.lastAlbums = SessionManager.lastAlbums
@@ -144,20 +144,5 @@ public class SessionManager {
                     })
                     .collect(Collectors.toList());
         }
-    }
-
-    public static AlbumDTO findLastAlbumByTitleAndMedium(String title, MediumType type) throws AlbumNotFoundException {
-
-        List<AlbumDTO> albumsDTOs = SessionManager.lastAlbums
-                .stream()
-                .filter(item -> item.getTitle().equals(title) && item.getMediumType().equals(type))
-                .collect(Collectors.toList());
-
-        if (albumsDTOs.size() < 1) {
-            throw new AlbumNotFoundException("album not found");
-        }
-
-        return albumsDTOs.get(0);
-
     }
 }
