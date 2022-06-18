@@ -10,7 +10,7 @@
     <children>
       <ImageView fitHeight="500.0" fitWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@images/login.jpg" />
+            <Image url="@../../../images/login.jpg" />
          </image>
          <viewport>
             <Rectangle2D width="1600.0" />
