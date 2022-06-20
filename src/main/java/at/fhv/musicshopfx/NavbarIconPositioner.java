@@ -10,10 +10,8 @@ import javafx.scene.layout.VBox;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class NavbarIconPositioner {
@@ -213,16 +211,5 @@ public class NavbarIconPositioner {
 
         VBox.setMargin(settingsIcon, new Insets(15.0, 0.0, 15.0, 18.0));
         navbarVbox.getChildren().add(settingsIcon);
-    }
-
-    private static ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(pathToImage);
-
-        Image image = new Image(inpStr);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-
-        return imageView;
     }
 }

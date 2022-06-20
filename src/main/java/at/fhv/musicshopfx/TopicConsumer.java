@@ -1,17 +1,13 @@
 package at.fhv.musicshopfx;
 
-import javax.jms.*;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 import sharedrmi.application.exceptions.UserNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
 
-
-import java.rmi.RemoteException;
+import javax.jms.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 public class TopicConsumer implements MessageListener

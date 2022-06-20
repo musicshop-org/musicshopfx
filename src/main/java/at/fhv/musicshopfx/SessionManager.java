@@ -1,24 +1,15 @@
 package at.fhv.musicshopfx;
 
 import sharedrmi.application.dto.AlbumDTO;
-import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
-import sharedrmi.domain.enums.MediumType;
 
 import javax.jms.JMSException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.security.auth.login.FailedLoginException;
-import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -130,7 +121,7 @@ public class SessionManager {
         SessionManager.lastAlbums = albums;
     }
 
-    //Updates AlbumDTO in search after stock change due to return or buy
+    // updates AlbumDTO in search after stock change due to return or buy
     public static void updateLastAlbums(AlbumDTO updatedAlbumDTO) {
         if (SessionManager.lastAlbums.size() > 0) {
             SessionManager.lastAlbums = SessionManager.lastAlbums
@@ -144,20 +135,5 @@ public class SessionManager {
                     })
                     .collect(Collectors.toList());
         }
-    }
-
-    public static AlbumDTO findLastAlbumByTitleAndMedium(String title, MediumType type) throws AlbumNotFoundException {
-
-        List<AlbumDTO> albumsDTOs = SessionManager.lastAlbums
-                .stream()
-                .filter(item -> item.getTitle().equals(title) && item.getMediumType().equals(type))
-                .collect(Collectors.toList());
-
-        if (albumsDTOs.size() < 1) {
-            throw new AlbumNotFoundException("album not found");
-        }
-
-        return albumsDTOs.get(0);
-
     }
 }

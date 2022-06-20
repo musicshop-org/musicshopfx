@@ -1,6 +1,5 @@
 package at.fhv.musicshopfx;
 
-import at.fhv.musicshopfx.domain.CartLineItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,7 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import sharedrmi.application.dto.*;
+import sharedrmi.application.dto.CartLineItemDTO;
+import sharedrmi.application.dto.CustomerDTO;
+import sharedrmi.application.dto.InvoiceDTO;
+import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.NotEnoughStockException;
 import sharedrmi.communication.rmi.RMIController;

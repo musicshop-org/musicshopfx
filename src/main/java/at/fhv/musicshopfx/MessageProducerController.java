@@ -1,5 +1,6 @@
 package at.fhv.musicshopfx;
 
+import at.fhv.musicshopfx.domain.TopicLine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.MessageDTO;
 import sharedrmi.communication.rmi.RMIController;
-import at.fhv.musicshopfx.domain.TopicLine;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;

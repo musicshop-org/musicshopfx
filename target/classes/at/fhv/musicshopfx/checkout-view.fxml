@@ -36,7 +36,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <image>
-                        <Image url="@images/logout.png" />
+                        <Image url="@../../../images/logout.png" />
                      </image>
                   </ImageView>
                </children>
