@@ -1,5 +1,6 @@
 package at.fhv.musicshopfx;
 
+import at.fhv.musicshopfx.domain.InvoiceLineItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,14 +16,12 @@ import sharedrmi.application.dto.InvoiceLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.application.exceptions.InvoiceNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import at.fhv.musicshopfx.domain.InvoiceLineItem;
 import sharedrmi.domain.valueobjects.InvoiceId;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
 

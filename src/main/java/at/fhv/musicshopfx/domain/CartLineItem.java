@@ -1,6 +1,5 @@
 package at.fhv.musicshopfx.domain;
 
-import javafx.scene.image.ImageView;
 import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.domain.enums.MediumType;
 

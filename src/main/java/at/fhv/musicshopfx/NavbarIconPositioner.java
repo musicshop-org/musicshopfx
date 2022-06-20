@@ -10,10 +10,8 @@ import javafx.scene.layout.VBox;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class NavbarIconPositioner {

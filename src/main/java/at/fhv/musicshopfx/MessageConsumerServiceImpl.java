@@ -3,11 +3,9 @@ package at.fhv.musicshopfx;
 
 import sharedrmi.communication.rmi.RMIController;
 
-import javax.jms.*;
-import java.rmi.RemoteException;
+import javax.jms.JMSException;
+import javax.jms.Message;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MessageConsumerServiceImpl implements MessageConsumerService {
 

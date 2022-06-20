@@ -1,24 +1,15 @@
 package at.fhv.musicshopfx;
 
 import sharedrmi.application.dto.AlbumDTO;
-import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import sharedrmi.communication.rmi.RMIControllerFactory;
-import sharedrmi.domain.enums.MediumType;
 
 import javax.jms.JMSException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.security.auth.login.FailedLoginException;
-import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
