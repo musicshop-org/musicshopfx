@@ -21,7 +21,7 @@ public class NavbarIconPositioner {
     private final static SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
     private final Image SEARCH_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/search.png"));
-    private final Image CART_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/shopping-Cart.png"));
+    private final Image CART_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/shopping-cart.png"));
     private final Image INVOICE_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/invoice.png"));
     private final Image PUBLISH_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/writeMessage.png"));
     private final Image MESSAGE_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/envelope.png"));
