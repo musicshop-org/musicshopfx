@@ -1,27 +1,22 @@
 package at.fhv.musicshopfx;
 
+import at.fhv.musicshopfx.domain.CartLineItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
 import sharedrmi.application.dto.CartLineItemDTO;
 import sharedrmi.application.exceptions.AlbumNotFoundException;
 import sharedrmi.communication.rmi.RMIController;
-import at.fhv.musicshopfx.domain.CartLineItem;
 import sharedrmi.domain.valueobjects.Role;
 
 import javax.naming.NoPermissionException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,14 +49,6 @@ public class CartController {
     @FXML
     private Button clearCartButton;
     @FXML
-    private ImageView cartIconImage;
-    @FXML
-    private ImageView invoiceIconImage;
-    @FXML
-    private ImageView messageIconImage;
-    @FXML
-    private ImageView settingsIconImage;
-    @FXML
     private VBox navbarVbox;
 
     private ObservableList<CartLineItem> data;
@@ -71,10 +58,6 @@ public class CartController {
     private final int MINUS_COLUMN_POSITION = 3;
     private final int PLUS_COLUMN_POSITION = 5;
     private final int CROSS_COLUMN_POSITION = 7;
-
-    private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
-    private final String MINUS_PATH = BASE_IMAGE_PATH + "minus.png";
-    private final String CROSS_PATH = BASE_IMAGE_PATH + "cross.png";
 
     private final String CURRENCY = "€";
     private RMIController rmiController;
@@ -98,6 +81,7 @@ public class CartController {
         // translate List<LineItemDTO> to List<CartLineItem>
         List<CartLineItem> cartLineItems = new ArrayList<>();
 
+
         cartLineItemDTOs = rmiController.getCart().getCartLineItems();
         for (CartLineItemDTO cartLineItemDTO : cartLineItemDTOs) {
             cartLineItems.add(new CartLineItem(cartLineItemDTO.getName(),
@@ -105,9 +89,9 @@ public class CartController {
                     cartLineItemDTO.getStock(),
                     cartLineItemDTO.getQuantity(),
                     cartLineItemDTO.getPrice(),
-                    getImageView(MINUS_PATH, 12, 12),
+                    "-",
                     "+",
-                    getImageView(CROSS_PATH, 18, 18), cartLineItemDTO
+                    "x", cartLineItemDTO
             ));
         }
 
@@ -119,9 +103,9 @@ public class CartController {
         stockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus_image"));
+        minusCol.setCellValueFactory(new PropertyValueFactory<>("minus"));
         plusCol.setCellValueFactory(new PropertyValueFactory<>("plus"));
-        xCol.setCellValueFactory(new PropertyValueFactory<>("x_image"));
+        xCol.setCellValueFactory(new PropertyValueFactory<>("x"));
 
         data = obsDTOs;
 
@@ -139,18 +123,6 @@ public class CartController {
         }
 
         determineButtonStates();
-    }
-
-    // get ImageView for UI table
-    private ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(pathToImage);
-
-        Image image = new Image(inpStr);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-
-        return imageView;
     }
 
     private double calculateTotalPrice(Iterator<CartLineItem> iter) {
@@ -198,16 +170,17 @@ public class CartController {
             else if (selectedColIdx == MINUS_COLUMN_POSITION) {
                 if (cartLineItem.getQuantity() == 1) {
                     data.remove(selectedRowIdx);
-                    rmiController.removeProductFromCart(cartLineItemDTO);
+                    rmiController.removeLineItemFromCart(cartLineItemDTO);
                 } else {
-                    data.set(selectedRowIdx, new CartLineItem(cartLineItem.getName(),
+                    data.set(selectedRowIdx, new CartLineItem(
+                            cartLineItem.getName(),
                             cartLineItem.getMedium(),
                             cartLineItem.getStock(),
                             cartLineItem.getQuantity() - 1,
                             cartLineItem.getPrice(),
-                            cartLineItem.getMinus_image(),
+                            cartLineItem.getMinus(),
                             cartLineItem.getPlus(),
-                            cartLineItem.getX_image(),
+                            cartLineItem.getX(),
                             cartLineItem.getLineItemDTO()
                     ));
 
@@ -224,9 +197,9 @@ public class CartController {
                             cartLineItem.getStock(),
                             cartLineItem.getQuantity() + 1,
                             cartLineItem.getPrice(),
-                            cartLineItem.getMinus_image(),
+                            cartLineItem.getMinus(),
                             cartLineItem.getPlus(),
-                            cartLineItem.getX_image(),
+                            cartLineItem.getX(),
                             cartLineItem.getLineItemDTO()
                     ));
 
@@ -237,7 +210,7 @@ public class CartController {
             // x clicked
             else if (selectedColIdx == CROSS_COLUMN_POSITION) {
                 data.remove(selectedRowIdx);
-                rmiController.removeProductFromCart(cartLineItemDTO);
+                rmiController.removeLineItemFromCart(cartLineItemDTO);
             }
 
             if (rmiController.getCart().getCartLineItems().size() == 0) {
@@ -284,40 +257,6 @@ public class CartController {
     }
 
     @FXML
-    protected void searchSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMusicSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void cartSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToCartView(e);
-        }
-    }
-
-
-    @FXML
-    protected void invoiceSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToInvoiceSearchView(e);
-        }
-    }
-
-    @FXML
-    protected void messageSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToMessageProducerView(e);
-    }
-
-    @FXML
-    protected void settingsSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown())
-            sceneSwitcher.switchSceneToSettingsView(e);
-    }
-
-    @FXML
     protected void logoutSymbolClicked(MouseEvent e) throws IOException {
         if (e.isPrimaryButtonDown()) {
             try {
@@ -337,12 +276,4 @@ public class CartController {
         buyButton.setDisable(isCartEmpty);
         clearCartButton.setDisable(isCartEmpty);
     }
-
-    @FXML
-    protected void messageBoardSymbolClicked(MouseEvent e) throws IOException {
-        if (e.isPrimaryButtonDown()) {
-            sceneSwitcher.switchSceneToMessageBoardView(e);
-        }
-    }
-
 }

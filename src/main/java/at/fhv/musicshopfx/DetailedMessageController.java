@@ -8,9 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import sharedrmi.application.exceptions.UserNotFoundException;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -21,7 +19,6 @@ import java.rmi.RemoteException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -87,7 +84,7 @@ public class DetailedMessageController {
         }
 
         if(SessionManager.isNewMessageAvailable()){
-            messageBoardIconImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/at/fhv/musicshopfx/images/envelopered.png"))));
+            messageBoardIconImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/envelopered.png"))));
         }
     }
 

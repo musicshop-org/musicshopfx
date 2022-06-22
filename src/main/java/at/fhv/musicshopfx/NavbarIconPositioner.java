@@ -10,24 +10,21 @@ import javafx.scene.layout.VBox;
 import sharedrmi.communication.rmi.RMIController;
 import sharedrmi.domain.valueobjects.Role;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class NavbarIconPositioner {
 
     private final static SceneSwitcher sceneSwitcher = new SceneSwitcher();
 
-    private final String BASE_IMAGE_PATH = "src/main/resources/at/fhv/musicshopfx/images/";
-    private final String SEARCH_IMAGE = BASE_IMAGE_PATH + "search.png";
-    private final String CART_IMAGE = BASE_IMAGE_PATH + "shopping-Cart.png";
-    private final String INVOICE_IMAGE = BASE_IMAGE_PATH + "invoice.png";
-    private final String PUBLISH_IMAGE = BASE_IMAGE_PATH + "writeMessage.png";
-    private final String MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelope.png";
-    private final String NEW_MESSAGE_IMAGE = BASE_IMAGE_PATH + "envelopered.png";
-    private final String SETTINGS_IMAGE = BASE_IMAGE_PATH + "settings.png";
+    private final Image SEARCH_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/search.png"));
+    private final Image CART_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/shopping-Cart.png"));
+    private final Image INVOICE_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/invoice.png"));
+    private final Image PUBLISH_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/writeMessage.png"));
+    private final Image MESSAGE_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/envelope.png"));
+    private final Image NEW_MESSAGE_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/envelopered.png"));
+    private final Image SETTINGS_IMAGE = new Image(Launcher.class.getResourceAsStream("/images/settings.png"));
 
     private ImageView searchIcon;
     private ImageView cartIcon;
@@ -49,13 +46,13 @@ public class NavbarIconPositioner {
             int imgHeight = 28;
             int imgWidth = 28;
 
-            this.searchIcon = getImageView(SEARCH_IMAGE, imgHeight, imgWidth);
-            this.cartIcon = getImageView(CART_IMAGE, imgHeight, imgWidth);
-            this.invoiceIcon = getImageView(INVOICE_IMAGE, imgHeight, imgWidth);
-            this.publishIcon = getImageView(PUBLISH_IMAGE, 27, 27);
-            this.messageIcon = getImageView(MESSAGE_IMAGE, 26, 26);
-            this.newMessageIcon = getImageView(NEW_MESSAGE_IMAGE, 26, 26);
-            this.settingsIcon = getImageView(SETTINGS_IMAGE, imgHeight, imgWidth);
+            this.searchIcon = new ImageView(SEARCH_IMAGE);
+            this.cartIcon = new ImageView(CART_IMAGE);
+            this.invoiceIcon = new ImageView(INVOICE_IMAGE);
+            this.publishIcon = new ImageView(PUBLISH_IMAGE);
+            this.messageIcon = new ImageView(MESSAGE_IMAGE);
+            this.newMessageIcon = new ImageView(NEW_MESSAGE_IMAGE);
+            this.settingsIcon = new ImageView(SETTINGS_IMAGE);
 
             this.searchIcon.setPickOnBounds(true);
             this.cartIcon.setPickOnBounds(true);
@@ -73,7 +70,22 @@ public class NavbarIconPositioner {
             this.newMessageIcon.setCursor(Cursor.HAND);
             this.settingsIcon.setCursor(Cursor.HAND);
 
-        } catch (FileNotFoundException | NotLoggedInException e) {
+            this.searchIcon.setFitHeight(imgHeight);
+            this.searchIcon.setFitWidth(imgWidth);
+            this.cartIcon.setFitHeight(imgHeight);
+            this.cartIcon.setFitWidth(imgWidth);
+            this.invoiceIcon.setFitHeight(imgHeight);
+            this.invoiceIcon.setFitWidth(imgWidth);
+            this.publishIcon.setFitHeight(imgHeight);
+            this.publishIcon.setFitWidth(imgWidth);
+            this.messageIcon.setFitHeight(imgHeight);
+            this.messageIcon.setFitWidth(imgWidth);
+            this.newMessageIcon.setFitHeight(imgHeight);
+            this.newMessageIcon.setFitWidth(imgWidth);
+            this.settingsIcon.setFitHeight(imgHeight);
+            this.settingsIcon.setFitWidth(imgWidth);
+
+        } catch (NotLoggedInException e) {
             e.printStackTrace();
         }
     }
@@ -199,16 +211,5 @@ public class NavbarIconPositioner {
 
         VBox.setMargin(settingsIcon, new Insets(15.0, 0.0, 15.0, 18.0));
         navbarVbox.getChildren().add(settingsIcon);
-    }
-
-    private static ImageView getImageView(String pathToImage, int height, int width) throws FileNotFoundException {
-        FileInputStream inpStr = new FileInputStream(pathToImage);
-
-        Image image = new Image(inpStr);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-
-        return imageView;
     }
 }

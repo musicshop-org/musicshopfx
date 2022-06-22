@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import sharedrmi.application.dto.AlbumDTO;
@@ -180,7 +179,7 @@ public class MusicOverviewController {
             } else if (qty > Integer.parseInt(stockLabel.getText())) {
                 this.showAddToCartErrorLabel();
             } else {
-                rmiController.addProductToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
+                rmiController.addAlbumsToCart(currentAlbumDTO, Integer.parseInt(quantityTextField.getText()));
                 sceneSwitcher.switchSceneToMusicSearchView(event);
             }
 
